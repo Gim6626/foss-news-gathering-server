@@ -1,0 +1,5 @@
+env
+fngs/db.sqlite3
+fngs/fngs/secret.py
+.idea
+__pycache__
