@@ -60,6 +60,7 @@ class Command(BaseCommand):
 
     def _save_to_database(self, posts_data_from_multiple_sources):
         logger.info('Saving to database')
+        added_digest_records_count = 0
         for posts_data in posts_data_from_multiple_sources:
             for post_data in posts_data.posts_data_list:
                 short_post_data_str = f'{post_data.dt} "{post_data.title}" ({post_data.url})'
@@ -75,8 +76,9 @@ class Command(BaseCommand):
                                                  url=post_data.url,
                                                  state=DigestRecordState.UNKNOWN.name)
                     digest_record.save()
+                    added_digest_records_count +=1
                     logger.debug(f'Added {short_post_data_str} to database')
-        logger.info('Finished saving to database')
+        logger.info(f'Finished saving to database, added {added_digest_records_count} digest records')
 
     def _init_globals(self, **options):
         init_logger()
