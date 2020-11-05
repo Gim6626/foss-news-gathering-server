@@ -70,6 +70,7 @@ class Command(BaseCommand):
                 else:
                     logger.debug(f'Adding {short_post_data_str} to database')
                     digest_record = DigestRecord(dt=post_data.dt,
+                                                 gather_dt=datetime.datetime.now(),
                                                  title=post_data.title.strip(),
                                                  url=post_data.url,
                                                  state=DigestRecordState.UNKNOWN.name)

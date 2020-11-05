@@ -10,6 +10,7 @@ class DigestRecordAdmin(admin.ModelAdmin):
     list_display = (
         'id',
         'dt',
+        'gather_dt',
         'title',
         'url',
         'state',
