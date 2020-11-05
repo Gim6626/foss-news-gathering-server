@@ -10,3 +10,9 @@ class DigestRecordViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
     queryset = DigestRecord.objects.all().order_by('dt')
     serializer_class = DigestRecordSerializer
+
+
+class NewDigestRecordViewSet(viewsets.ModelViewSet):
+    permission_classes = [permissions.IsAuthenticated]
+    queryset = DigestRecord.objects.filter(state='UNKNOWN')
+    serializer_class = DigestRecordSerializer

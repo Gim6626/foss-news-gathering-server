@@ -9,6 +9,12 @@ class DigestRecordSerializer(serializers.ModelSerializer):
         fields = [
             'id',
             'dt',
+            'gather_dt',
             'title',
             'url',
+            'state',
+            'digest_number',
+            'is_main',
+            'category',
+            'subcategory',
         ]
