@@ -12,6 +12,11 @@ class DigestRecordAdmin(admin.ModelAdmin):
         'dt',
         'title',
         'url',
+        'state',
+        'digest_number',
+        'is_main',
+        'category',
+        'subcategory'
     )
 
 
