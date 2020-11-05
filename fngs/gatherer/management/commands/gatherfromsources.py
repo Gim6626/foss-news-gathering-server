@@ -79,7 +79,7 @@ class Command(BaseCommand):
                     digest_record.save()
                     added_digest_records_count += 1
                     logger.debug(f'Added {short_post_data_str} to database')
-        logger.info(f'Finished saving to database, added {added_digest_records_count} digest records, {already_existing_digest_records_count} already existed')
+        logger.info(f'Finished saving to database, added {added_digest_records_count} digest record(s), {already_existing_digest_records_count} already existed')
 
     def _init_globals(self, **options):
         init_logger()
