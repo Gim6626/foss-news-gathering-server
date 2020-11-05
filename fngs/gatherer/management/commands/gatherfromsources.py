@@ -61,12 +61,14 @@ class Command(BaseCommand):
     def _save_to_database(self, posts_data_from_multiple_sources):
         logger.info('Saving to database')
         added_digest_records_count = 0
+        already_existing_digest_records_count = 0
         for posts_data in posts_data_from_multiple_sources:
             for post_data in posts_data.posts_data_list:
                 short_post_data_str = f'{post_data.dt} "{post_data.title}" ({post_data.url})'
                 similar_urls = DigestRecord.objects.filter(url=post_data.url)
                 if similar_urls:
                     logger.warning(f'{short_post_data_str} ignored, found same in database')
+                    already_existing_digest_records_count += 1
                     continue
                 else:
                     logger.debug(f'Adding {short_post_data_str} to database')
@@ -78,7 +80,7 @@ class Command(BaseCommand):
                     digest_record.save()
                     added_digest_records_count +=1
                     logger.debug(f'Added {short_post_data_str} to database')
-        logger.info(f'Finished saving to database, added {added_digest_records_count} digest records')
+        logger.info(f'Finished saving to database, added {added_digest_records_count} digest records, {already_existing_digest_records_count} already existed')
 
     def _init_globals(self, **options):
         init_logger()
