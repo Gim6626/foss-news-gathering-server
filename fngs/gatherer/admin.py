@@ -17,7 +17,7 @@ class DigestRecordAdmin(admin.ModelAdmin):
         'digest_number',
         'is_main',
         'category',
-        'subcategory'
+        'subcategory',
     )
 
 
