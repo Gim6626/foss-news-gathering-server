@@ -5,6 +5,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 
 urlpatterns = [
     path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('specific-digest-records/<int:digest_id>/', gatherer.views.specific_digest_records, name='specific_digest_records'),
 ]
 
 router = routers.DefaultRouter()
