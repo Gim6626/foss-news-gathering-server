@@ -78,7 +78,7 @@ class Command(BaseCommand):
                                                  url=post_data.url,
                                                  state=DigestRecordState.UNKNOWN.name)
                     digest_record.save()
-                    added_digest_records_count +=1
+                    added_digest_records_count += 1
                     logger.debug(f'Added {short_post_data_str} to database')
         logger.info(f'Finished saving to database, added {added_digest_records_count} digest records, {already_existing_digest_records_count} already existed')
 
