@@ -54,7 +54,6 @@ class Command(BaseCommand):
             logger.debug(f'Parsed from {parsing_module.source_name}: {[(post_data.title, post_data.url) for post_data in posts_data_one.posts_data_list]}')
             posts_data_from_multiple_sources.append(posts_data_one)
             logger.info(f'Finished parsing {parsing_module.source_name}, got {len(posts_data_one.posts_data_list)} posts')
-        # pprint([[str(post_data) for post_data in posts_data.posts_data_list] for posts_data in posts_data_from_multiple_sources])
         logger.info('Finished parsing all sources')
         return posts_data_from_multiple_sources
 
