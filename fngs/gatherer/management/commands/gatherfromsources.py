@@ -216,7 +216,7 @@ class RssBasicParsingModule(BasicParsingModule):
         posts_data: List[PostData] = []
         response = requests.get(self.rss_url)
         if response.status_code != 200:
-            logger.error(f'{self.source_name} returned {response.status_code}')
+            logger.error(f'"{self.source_name}" returned status code {response.status_code}')
             return posts_data
         self.rss_data_root = ET.fromstring(response.text)
         for rss_data_elem in self.rss_items_root():
