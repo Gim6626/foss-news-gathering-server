@@ -1,15 +1,12 @@
-from django.shortcuts import render
 from rest_framework import (
     permissions,
     viewsets,
-    mixins,
-    status,
-    response,
 )
-from gatherer.models import *
 from gatherer.serializers import *
-from django.core import serializers
-from django.http import JsonResponse
+from rest_framework.viewsets import GenericViewSet
+from rest_framework import mixins
+from django_filters.rest_framework import DjangoFilterBackend
+from gatherer.filters import *
 
 
 class DigestRecordViewSet(viewsets.ModelViewSet):
@@ -24,10 +21,10 @@ class NewDigestRecordViewSet(viewsets.ModelViewSet):
     serializer_class = DigestRecordSerializer
 
 
-# TODO: Make it DRF style
-def specific_digest_records(request, digest_id):
-    records = list(DigestRecord.objects.filter(digest_number=digest_id).values())
-    if records:
-        return JsonResponse(data=records, safe=False, status=200)
-    else:
-        return JsonResponse(data=[], safe=False, status=404)
+class SpecificDigestRecordsViewSet(GenericViewSet, mixins.ListModelMixin):
+    permission_classes = [permissions.IsAuthenticated]
+    model = DigestRecord
+    serializer_class = DigestRecordSerializer
+    queryset = DigestRecord.objects.all()
+    filter_class = SpecificDigestRecordsFilter
+    filter_backends = [DjangoFilterBackend]

@@ -1,6 +1,7 @@
 django==2.2.3
 djangorestframework==3.10.0
 djangorestframework_simplejwt==4.3.0
+django-filter
 pyyaml
 python-dateutil
 lxml
