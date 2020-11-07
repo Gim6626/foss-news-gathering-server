@@ -21,7 +21,7 @@ class DigestRecordAdmin(admin.ModelAdmin):
     )
     search_fields = (
         'title',
-        'url'
+        'url',
     )
 
 
