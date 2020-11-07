@@ -19,6 +19,10 @@ class DigestRecordAdmin(admin.ModelAdmin):
         'category',
         'subcategory',
     )
+    search_fields = (
+        'title',
+        'url'
+    )
 
 
 admin.site.register(DigestRecord, DigestRecordAdmin)
