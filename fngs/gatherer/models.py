@@ -36,6 +36,7 @@ class DigestRecordSubcategory(Enum):
     SPECIAL = 'special'
     DATABASES = 'db'
     MULTIMEDIA = 'multimedia'
+    MOBILE = 'mobile'
     SECURITY = 'security'
     DEVOPS = 'devops'
     DATA_SCIENCE = 'data_science'
