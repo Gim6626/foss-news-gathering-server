@@ -35,6 +35,7 @@ class DigestRecordSubcategory(Enum):
     KnD = 'knd'
     SYSTEM = 'system'
     SPECIAL = 'special'
+    EDUCATION = 'education'
     DATABASES = 'db'
     MULTIMEDIA = 'multimedia'
     MOBILE = 'mobile'
