@@ -5,6 +5,7 @@ from enum import Enum
 class DigestRecordState(Enum):
     UNKNOWN = 'unknown'
     IN_DIGEST = 'in_digest'
+    OUTDATED = 'outdated'
     IGNORED = 'ignored'
 
     @classmethod
