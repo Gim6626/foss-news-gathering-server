@@ -288,7 +288,7 @@ class LinuxComParsingModule(SimpleRssBasicParsingModule):
 class OpenSourceComParsingModule(SimpleRssBasicParsingModule):
     # NOTE: Provider provides RSS feed for less than week, more regular check is needed
 
-    source_name = 'OpensourceCom'
+    source_name = 'OpenSourceCom'
     rss_url = 'https://opensource.com/feed'
 
 
@@ -473,7 +473,7 @@ class HabrComBasicParsingModule(SimpleRssBasicParsingModule):
 
 class HabrComOpenSourceParsingModule(HabrComBasicParsingModule):
 
-    source_name = f'HabrComOpensource'
+    source_name = f'HabrComOpenSource'
     hub_code = 'open_source'
 
 
