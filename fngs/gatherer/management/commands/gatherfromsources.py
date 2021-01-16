@@ -23,12 +23,14 @@ SCRIPT_DIRECTORY = os.path.dirname(os.path.realpath(__file__))
 logger: logging.Logger = None
 parsing_modules_names = []
 days_count = None
+keywords = None
 
 
 class Command(BaseCommand):
-    help = 'Upload YAML to database'
+    help = 'Parse FOSS internet sources and save to database'
 
     def add_arguments(self, parser):
+        # TODO: Option to list available sources
         parser.add_argument('MODULE',
                             type=str,
                             help='Parsing module')
@@ -51,10 +53,12 @@ class Command(BaseCommand):
             posts_data_one = PostsData(parsing_module.source_name,
                                        posts_data,
                                        parsing_module.warning)
+            for post_data in posts_data_one.posts_data_list:
+                logger.info(f'New post {post_data.dt if post_data.dt is not None else "?"} "{post_data.title}" {post_data.url}')
             logger.debug(f'Parsed from {parsing_module.source_name}: {[(post_data.title, post_data.url) for post_data in posts_data_one.posts_data_list]}')
             posts_data_from_multiple_sources.append(posts_data_one)
-            logger.info(f'Finished parsing {parsing_module.source_name}, got {len(posts_data_one.posts_data_list)} posts')
-        logger.info('Finished parsing all sources')
+            logger.info(f'Finished parsing {parsing_module.source_name}, got {len(posts_data_one.posts_data_list)} post(s)')
+        logger.info(f'Finished parsing all sources, got {sum((len(posts_data_one.posts_data_list) for posts_data_one in posts_data_from_multiple_sources))} digest record(s) from {len(posts_data_from_multiple_sources)} source(s)')
         return posts_data_from_multiple_sources
 
     def _save_to_database(self, posts_data_from_multiple_sources):
@@ -72,7 +76,7 @@ class Command(BaseCommand):
                 else:
                     logger.debug(f'Adding {short_post_data_str} to database')
                     digest_record = DigestRecord(dt=post_data.dt,
-                                                 gather_dt=datetime.datetime.now(),
+                                                 gather_dt=datetime.datetime.now(tz=dateutil.tz.tzlocal()),
                                                  title=post_data.title.strip(),
                                                  url=post_data.url,
                                                  state=DigestRecordState.UNKNOWN.name)
@@ -94,6 +98,9 @@ class Command(BaseCommand):
                     logger.error(f'Invalid parsing module type "{m}", available are: {PARSING_MODULES_TYPES}')
                     sys.exit(2)
             parsing_modules_names = [ParsingModuleType(m) for m in options['MODULE'].split(',')]
+        global keywords
+        with open(os.path.join(SCRIPT_DIRECTORY, 'keywords.txt'), 'r') as fin:
+            keywords = [line.strip() for line in fin.readlines()]
 
 
 def init_logger():
@@ -153,47 +160,48 @@ class PostsData:
         self.warning = warning
 
 
-class ParsingModuleType(Enum):
-    OPEN_NET_RU = 'OpenNetRu'
-    LINUX_COM = 'LinuxCom'
-    OPEN_SOURCE_COM = 'OpenSourceCom'
-    ITS_FOSS_COM = 'ItsFossCom'
-    LINUX_ORG_RU = 'LinuxOrgRu'
-    HABR_COM_OPEN_SOURCE = 'HabrComOpenSource'
-    HABR_COM_LINUX = 'HabrComLinux'
-    HABR_COM_LINUX_DEV = 'HabrComLinuxDev'
-    HABR_COM_NIX = 'HabrComNix'
-    HABR_COM_DEVOPS = 'HabrComDevOps'
-    HABR_COM_SYS_ADM = 'HabrComSysAdm'
-    HABR_COM_GIT = 'HabrComGit'
-    YOUTUBE_COM_ALEKSEY_SAMOILOV = 'YouTubeComAlekseySamoilov'
-    LOSST_RU = 'LosstRu'
-    PINGVINUS_RU = 'PingvinusRu'
-
-
-PARSING_MODULES_TYPES = tuple((t.value for t in ParsingModuleType))
-
-
 class BasicParsingModule(metaclass=ABCMeta):
 
     source_name = None
     warning = None
+    filtration_needed = False
 
     def parse(self) -> List[PostData]:
         posts_data: List[PostData] = self._parse()
-        filtered_posts_data: List[PostData] = self._filter_out_old(posts_data)
+        filtered_posts_data: List[PostData] = self._filter_out(posts_data)
         return filtered_posts_data
 
     @abstractmethod
     def _parse(self) -> List[PostData]:
         pass
 
+    def _filter_out(self, posts_data: List[PostData]):
+        filtered_posts_data: List[PostData] = posts_data
+        filtered_posts_data = self._filter_out_old(filtered_posts_data)
+        filtered_posts_data = self._filter_out_by_keywords(filtered_posts_data)
+        return filtered_posts_data
+
+    def _filter_out_by_keywords(self, posts_data: List[PostData]):
+        if not self.filtration_needed:
+            return posts_data
+        filtered_posts_data: List[PostData] = []
+        for post_data in posts_data:
+            matched = False
+            for keyword in keywords:
+                if keyword in post_data.title:
+                    matched = True
+                    break
+            if matched:
+                filtered_posts_data.append(post_data)
+            else:
+                logger.warning(f'"{post_data.title}" from "{self.source_name}" filtered cause not contains none of expected keywords')
+        return filtered_posts_data
+
     def _filter_out_old(self, posts_data: List[PostData]) -> List[PostData]:
         filtered_posts_data: List[PostData] = []
         dt_now = datetime.datetime.now(tz=dateutil.tz.tzlocal())
         for post_data in posts_data:
-            dt_diff = dt_now - post_data.dt
-            if dt_diff.days > days_count:
+            if post_data.dt is not None and (dt_now - post_data.dt).days > days_count:
                 logger.debug(f'"{post_data.title}" from "{self.source_name}" filtered as too old ({post_data.dt})')
             else:
                 filtered_posts_data.append(post_data)
@@ -229,7 +237,7 @@ class RssBasicParsingModule(BasicParsingModule):
                     tag = rss_data_subelem.tag
                     text = rss_data_subelem.text
                     if self.title_tag_name in tag:
-                        title = text
+                        title = text.strip()
                     elif self.pubdate_tag_name in tag:
                         dt = dateutil.parser.parse(text)
                     elif self.link_tag_name in tag:
@@ -267,38 +275,190 @@ class SimpleRssBasicParsingModule(RssBasicParsingModule):
 
 class OpenNetRuParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = "OpenNET.ru"
+    source_name = "OpenNetRu"
     rss_url = 'https://www.opennet.ru/opennews/opennews_all_utf.rss'
 
 
 class LinuxComParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = "Linux.com"
+    source_name = "LinuxCom"
     rss_url = 'https://www.linux.com/topic/feed/'
 
 
 class OpenSourceComParsingModule(SimpleRssBasicParsingModule):
     # NOTE: Provider provides RSS feed for less than week, more regular check is needed
 
-    source_name = 'OpenSource.com'
+    source_name = 'OpensourceCom'
     rss_url = 'https://opensource.com/feed'
 
 
 class ItsFossComParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'ItsFOSS.com'
+    source_name = 'ItsFossCom'
     rss_url = 'https://itsfoss.com/all-blog-posts/feed/'
 
 
 class LinuxOrgRuParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'Linux.org.ru'
+    source_name = 'LinuxOrgRu'
     rss_url = 'https://www.linux.org.ru/section-rss.jsp?section=1'
+
+
+class AnalyticsIndiaMagComParsingModule(SimpleRssBasicParsingModule):
+
+    source_name = 'AnalyticsIndiaMagCom'
+    rss_url = 'https://analyticsindiamag.com/feed/'
+    filtration_needed = True
+
+
+class ArsTechnicaComParsingModule(SimpleRssBasicParsingModule):
+
+    source_name = 'ArsTechnicaCom'
+    rss_url = 'https://arstechnica.com/feed/'
+    filtration_needed = True
+
+
+class HackadayComParsingModule(SimpleRssBasicParsingModule):
+
+    source_name = 'HackadayCom'
+    rss_url = 'https://hackaday.com/feed/'
+    filtration_needed = True
+
+
+class JaxenterComParsingModule(SimpleRssBasicParsingModule):
+
+    source_name = 'JaxenterCom'
+    rss_url = 'https://jaxenter.com/rss'
+    filtration_needed = True
+
+
+# TODO: Special parser needed
+# class LinuxInsiderComParsingModule(SimpleRssBasicParsingModule):
+#
+#     source_name = 'LinuxInsiderCom'
+#     rss_url = 'https://linuxinsider.com/rss-feed'
+
+
+class MashableComParsingModule(SimpleRssBasicParsingModule):
+
+    source_name = 'MashableCom'
+    rss_url = 'https://mashable.com/rss/'
+    filtration_needed = True
+
+
+class SdTimesComParsingModule(SimpleRssBasicParsingModule):
+
+    source_name = 'SdTimesCom'
+    rss_url = 'https://sdtimes.com/feed/'
+    filtration_needed = True
+
+
+class SecurityBoulevardComParsingModule(SimpleRssBasicParsingModule):
+
+    source_name = 'SecurityBoulevardCom'
+    rss_url = 'https://securityboulevard.com/feed/'
+    filtration_needed = True
+
+
+class SiliconAngleComParsingModule(SimpleRssBasicParsingModule):
+
+    source_name = 'SiliconAngleCom'
+    rss_url = 'https://siliconangle.com/feed/'
+    filtration_needed = True
+
+
+class TechCrunchComParsingModule(SimpleRssBasicParsingModule):
+
+    source_name = 'TechCrunchCom'
+    rss_url = 'https://techcrunch.com/feed/'
+    filtration_needed = True
+
+
+class TechNodeComParsingModule(SimpleRssBasicParsingModule):
+
+    source_name = 'TechNodeCom'
+    rss_url = 'https://technode.com/feed/'
+    filtration_needed = True
+
+
+class TheNextWebComParsingModule(SimpleRssBasicParsingModule):
+
+    source_name = 'TheNextWebCom'
+    rss_url = 'https://thenextweb.com/feed/'
+    filtration_needed = True
+
+
+class VentureBeatComParsingModule(SimpleRssBasicParsingModule):
+
+    source_name = 'VentureBeatCom'
+    rss_url = 'https://venturebeat.com/feed/'
+    filtration_needed = True
+
+
+class ThreeDPrintingMediaNetworkParsingModule(SimpleRssBasicParsingModule):
+
+    source_name = 'ThreeDPrintingMediaNetwork'
+    rss_url = 'https://www.3dprintingmedia.network/feed/'
+    filtration_needed = True
+
+
+class CbrOnlineComParsingModule(SimpleRssBasicParsingModule):
+
+    source_name = 'CbrOnlineCom'
+    rss_url = 'https://www.cbronline.com/rss'
+    filtration_needed = True
+
+
+class ComputerWeeklyComParsingModule(SimpleRssBasicParsingModule):
+
+    source_name = 'ComputerWeeklyCom'
+    rss_url = 'https://www.computerweekly.com/rss/Latest-IT-news.xml'
+    filtration_needed = True
+
+
+class HelpNetSecurityComParsingModule(SimpleRssBasicParsingModule):
+
+    source_name = 'HelpNetSecurityCom'
+    rss_url = 'https://www.helpnetsecurity.com/feed/'
+    filtration_needed = True
+
+
+class SecuritySalesComParsingModule(SimpleRssBasicParsingModule):
+
+    source_name = 'SecuritySalesCom'
+    rss_url = 'https://www.securitysales.com/feed/'
+    filtration_needed = True
+
+
+class TechRadarComParsingModule(SimpleRssBasicParsingModule):
+
+    source_name = 'TechRadarCom'
+    rss_url = 'https://www.techradar.com/rss'
+    filtration_needed = True
+
+
+class TfirIoParsingModule(SimpleRssBasicParsingModule):
+
+    source_name = 'TfirIo'
+    rss_url = 'https://www.tfir.io/feed/'
+    filtration_needed = True
+
+
+class ZdNetComLinuxParsingModule(SimpleRssBasicParsingModule):
+    # TODO: Think about parsing other sections
+    source_name = 'ZdNetComLinux'
+    rss_url = 'https://www.zdnet.com/topic/linux/rss.xml'
+
+
+class LinuxFoundationOrgParsingModule(SimpleRssBasicParsingModule):
+
+    source_name = 'LinuxFoundationOrg'
+    rss_url = 'https://linuxfoundation.org/rss'
 
 
 class HabrComBasicParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'Habr.com'
+    source_name = None
     hub_code = None
 
     @property
@@ -313,49 +473,49 @@ class HabrComBasicParsingModule(SimpleRssBasicParsingModule):
 
 class HabrComOpenSourceParsingModule(HabrComBasicParsingModule):
 
-    source_name = f'{HabrComBasicParsingModule.source_name}: Open Source'
+    source_name = f'HabrComOpensource'
     hub_code = 'open_source'
 
 
 class HabrComLinuxParsingModule(HabrComBasicParsingModule):
 
-    source_name = f'{HabrComBasicParsingModule.source_name}: Linux'
+    source_name = f'HabrComLinux'
     hub_code = 'linux'
 
 
 class HabrComLinuxDevParsingModule(HabrComBasicParsingModule):
 
-    source_name = f'{HabrComBasicParsingModule.source_name}: Linux Dev'
+    source_name = f'HabrComLinuxDev'
     hub_code = 'linux_dev'
 
 
 class HabrComNixParsingModule(HabrComBasicParsingModule):
 
-    source_name = f'{HabrComBasicParsingModule.source_name}: *nix'
+    source_name = f'HabrComNix'
     hub_code = 'nix'
 
 
 class HabrComDevOpsParsingModule(HabrComBasicParsingModule):
 
-    source_name = f'{HabrComBasicParsingModule.source_name}: DevOps'
+    source_name = f'HabrComDevOps'
     hub_code = 'devops'
 
 
 class HabrComSysAdmParsingModule(HabrComBasicParsingModule):
 
-    source_name = f'{HabrComBasicParsingModule.source_name}: SysAdm'
+    source_name = f'HabrComSysAdm'
     hub_code = 'sys_admin'
 
 
 class HabrComGitParsingModule(HabrComBasicParsingModule):
 
-    source_name = f'{HabrComBasicParsingModule.source_name}: Git'
+    source_name = f'HabrComGit'
     hub_code = 'git'
 
 
 class YouTubeComBasicParsingModule(RssBasicParsingModule):
 
-    source_name = 'YouTube.com'
+    source_name = None
     channel_id = None
     item_tag_name = 'entry'
     title_tag_name = 'title'
@@ -373,19 +533,19 @@ class YouTubeComBasicParsingModule(RssBasicParsingModule):
 
 class YouTubeComAlekseySamoilovParsingModule(YouTubeComBasicParsingModule):
 
-    source_name = f'{YouTubeComBasicParsingModule.source_name}: Aleksey Samoilov Channel'
+    source_name = f'YouTubeComAlekseySamoilov'
     channel_id = 'UC3kAbMcYr-JEMSb2xX4OdpA'
 
 
 class LosstRuParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'Losst.ru'
+    source_name = 'LosstRu'
     rss_url = 'https://losst.ru/rss'
 
 
 class PingvinusRuParsingModule(BasicParsingModule):
 
-    source_name = 'Пингвинус'
+    source_name = 'PingvinusRu'
     site_url = 'https://pingvinus.ru'
 
     def __init__(self):
@@ -415,11 +575,54 @@ class PingvinusRuParsingModule(BasicParsingModule):
 class ParsingModuleFactory:
 
     @staticmethod
-    def create(parsing_module_types: List[ParsingModuleType]) -> List[BasicParsingModule]:
+    def create(parsing_module_types: List['ParsingModuleType']) -> List[BasicParsingModule]:
         return [ParsingModuleFactory.create_one(parsing_module_type) for parsing_module_type in parsing_module_types]
 
     @staticmethod
-    def create_one(parsing_module_type: ParsingModuleType) -> BasicParsingModule:
+    def create_one(parsing_module_type: 'ParsingModuleType') -> BasicParsingModule:
         parsing_module_constructor = globals()[parsing_module_type.value + 'ParsingModule']
         parsing_module = parsing_module_constructor()
         return parsing_module
+
+
+class ParsingModuleType(Enum):
+    OPENNET_RU = OpenNetRuParsingModule.source_name
+    LINUX_COM = LinuxComParsingModule.source_name
+    OPENSOURCE_COM = OpenSourceComParsingModule.source_name
+    ITSFOSS_COM = ItsFossComParsingModule.source_name
+    LINUXORG_RU = LinuxOrgRuParsingModule.source_name
+    ANALYTICSINDIAMAG_COM = AnalyticsIndiaMagComParsingModule.source_name
+    ARSTECHNICA_COM = ArsTechnicaComParsingModule.source_name
+    HACKADAY_COM = HackadayComParsingModule.source_name
+    JAXENTER_COM = JaxenterComParsingModule.source_name
+    # LINUXINSIDER_COM = LinuxInsiderComParsingModule.source_name
+    MASHABLE_COM = MashableComParsingModule.source_name
+    SDTIMES_COM = SdTimesComParsingModule.source_name
+    SECURITYBOULEVARD_COM = SecurityBoulevardComParsingModule.source_name
+    SILICONANGLE_COM = SiliconAngleComParsingModule.source_name
+    TECHCRUNCH_COM = TechCrunchComParsingModule.source_name
+    TECHNODE_COM = TechNodeComParsingModule.source_name
+    THENEXTWEB_COM = TheNextWebComParsingModule.source_name
+    VENTUREBEAT_COM = VentureBeatComParsingModule.source_name
+    THREEDPRINTINGMEDIA_NETWORK = ThreeDPrintingMediaNetworkParsingModule.source_name
+    CBRONLINE_COM = CbrOnlineComParsingModule.source_name
+    COMPUTERWEEKLY_COM = ComputerWeeklyComParsingModule.source_name
+    HELPNETSECURITY_COM = HelpNetSecurityComParsingModule.source_name
+    SECURITYSALES_COM = SecuritySalesComParsingModule.source_name
+    TECHRADAR_COM = TechRadarComParsingModule.source_name
+    TFIR_IO = TfirIoParsingModule.source_name
+    ZDNET_COM_LINUX = ZdNetComLinuxParsingModule.source_name
+    LINUXFOUNDATION_ORG = LinuxFoundationOrgParsingModule.source_name
+    HABR_COM_OPENSOURCE = HabrComOpenSourceParsingModule.source_name
+    HABR_COM_LINUX = HabrComLinuxParsingModule.source_name
+    HABR_COM_LINUX_DEV = HabrComLinuxDevParsingModule.source_name
+    HABR_COM_NIX = HabrComNixParsingModule.source_name
+    HABR_COM_DEVOPS = HabrComDevOpsParsingModule.source_name
+    HABR_COM_SYS_ADM = HabrComSysAdmParsingModule.source_name
+    HABR_COM_GIT = HabrComGitParsingModule.source_name
+    YOUTUBE_COM_ALEKSEY_SAMOILOV = YouTubeComAlekseySamoilovParsingModule.source_name
+    LOSST_RU = LosstRuParsingModule.source_name
+    PINGVINUS_RU = PingvinusRuParsingModule.source_name
+
+
+PARSING_MODULES_TYPES = tuple((t.value for t in ParsingModuleType))

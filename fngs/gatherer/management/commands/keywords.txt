@@ -1,0 +1,791 @@
+3MF Consortium
+4MLinux
+4Pane
+AAA
+AAF
+AAI
+ACRN Project
+ACT
+ADE
+AGL
+AI Explainability 360
+AI Fairness 360
+AMP
+AOM
+APPC
+ASWF
+ATOM Language Syntax Highlighting for z/VM
+Academy Software Foundation
+Accord Project
+Active & Available Inventory
+Acumos
+Adlik
+Adversarial Robustness Toolkit
+Airflow
+Airship Installer
+Ajv
+Akraino
+Alliance for Open Media
+Ambitus
+Amundsen
+Android
+Angel
+Anomaly Detection Engine for Linux Logs
+Ansible
+Apache
+Appium
+Application Authorization Framework
+Architect
+Ardour
+Argo
+Aries
+Armbian
+Artifact Hub
+Augur
+Autoconf
+Automated Compliance Tooling
+Automotive Grade Linux
+Avalon
+BFE
+BGP LS PCEP
+BIND
+BPF
+BabelTrace
+Backstage
+Baetyl
+Bareos
+Barometer
+Bastille
+Beaker
+Besu
+Blender
+Brigade
+Btrfs
+Bubble Chains
+Budgie
+Buildpacks
+Burrow
+BusyBox
+Buttplug
+C++
+CAF
+CBT Tape
+CCC
+CCSDK
+CDF
+CDLA
+CELF
+CFF
+CHAOSS
+CHIPS Alliance Fund
+CHIPS Alliance projects
+CI-Man
+CI-Management
+CI/CD
+CICN
+CIDER
+CII
+CIM
+CIP
+CIRV
+CLA Bot
+CLAMP
+CMake
+CNAB
+CNCF
+CNI
+CNI-Genie
+COBOL Working Group
+COVID Green
+COVID Shield
+CPS
+CRI-O
+CRUX
+CSIT
+Cactus
+Caliper
+Camelot
+Canonical
+Cawbird
+Cello
+CentOS
+Centaurus Infrastructure Project
+Ceph
+Ceph Foundation
+Chaos Mesh
+Chef
+CherryTree
+Chrome OS
+ChromeSeaMonkey
+Chromium
+ChubaoFS
+Cicero
+Cinnamon
+Civil Infrastructure Platform
+ClickHouse
+Cloud Custodian
+Cloud Foundry Foundation Fund
+Cloud Information Model Fund
+Cloud Native Application Bundle
+Cloud Native Computing Foundation
+Cloud Service Certification
+CloudEvents
+CloudFoundry.org Foundation
+ClusterDuck Protocol
+CoMPAS
+Code Aurora Forum
+Common Controller SDK
+Common Infrastructure Realization/Validation
+Common Print Dialog Backends
+CommonTraceFormat
+Community Data License Agreement
+Concerto
+Confidential Computing Consortium Fund
+Configuration Persistence Service
+Consul
+Consumer Electronics Linux Forum
+Containerd
+Continuous Delivery Foundation
+Continuous System Integration and Testing
+Contour
+Coq
+Core Embedded Linux Forum
+Core Infrastructure Initiative
+CoreDNS
+Coreboot
+Cortex
+Cregit
+Crossplane
+CrowdSec
+Cups-Filters
+Cutter
+DANOS
+DCAE
+DELTA
+DENT Fund
+DENT Project
+DIF
+DMaaP
+DPDK
+DPDK Apps
+DPDK Core
+DPDK Draft
+DPDK Next
+DPDK Old
+DPDK Tools
+DPDK-burst-replay
+DTS
+Darktable
+Data Collection, Analytics, and Events
+Data Helix
+Data Movement as a Platform
+Data Plane Development Kit Project
+DataHub
+DataLoader
+DataPractices
+Debian
+Decentralized Identity Foundation
+Delta Lake Project
+DentOS
+DevOps
+Dex
+DiaMon Workgroup
+Disaggregated Network Operating System
+Docker
+Dojo
+Dovetail
+Dragonfly
+Driverless Printing
+Dronecode Project
+EDL
+ELISA Fund
+ELKS
+EM2
+EMACS
+ESLint
+EVE
+EasyCLA
+Eclipse
+EdgeX Foundry
+Egeria
+Elastic Deep Learning
+Electron
+Electron
+Embedded and Automotive PV Drivers
+Embox
+Enarx
+Energy Market Methods Consortium
+Envoy
+Ergo
+Esprima
+Etcd
+Exodus
+Explorer
+Express
+ExtAPI
+External API Framework
+FATE Project
+FD.io
+FDC3
+FDC3 Desktop Agent
+FDS
+FFmpeg
+FINOS
+FRRouting
+Fabric
+Falco
+FastDataStacks
+Fastify
+Feast
+Fedora
+Feilong
+FinOps Foundation
+Financial Objects
+Firefox
+Fledge
+FlightGear
+Fluentd
+Flutter
+Flux
+Foomatic
+ForestFlow
+Fossology
+FreeRTOS
+Fugue
+Functest
+GCompris
+GIMP
+GNOME
+GNU tar
+GNUnet
+GTK
+GXF
+GenevaERS
+Genius
+Gentoo
+GhostBSD
+Git
+GitHub
+Globalize
+Glue
+GoVPP
+Golang Toolset for VPP
+GraphQL Foundation
+GraphQL Specification
+GraphQL.js
+GraphiQL
+Greenkey Automatic Speech Recognition Toolkit
+Greenkey Discovery SDK
+Grid
+Grid eXchange Fabric
+GrimoireLab
+Grub
+Grunt
+Guitarix
+Guix
+HICN
+HVMI
+Harbor
+HarmonyOS
+Headlamp
+Helm
+Holmes
+Home Edge
+Honeycomb 2 VPP (Hc2vpp)
+Horovod
+HospitalRun
+Hybrid Information-Centric Networking Project
+Hyperledger
+IO Visor Project
+IPPUSBXD
+ISRG
+Icaros
+IceWM
+Indy
+Infrastructure Utils
+Integration Bridge
+InterUSS Platform Fund
+Interledger.js
+Intern
+Internet Security Research Group
+Iroha
+JCurl
+JVPP
+Jaeger
+JanusGraph
+Java APIs for VPP
+Javascript
+Jenkins
+Jenkins X
+JerryScript
+Joint Development Foundation
+KDE
+KDE Frameworks
+KDE Neon
+KDevelop
+KEDA
+KStars
+KUDO
+Kafka
+Kali Linux
+Kdenlive
+Kepler.GL
+Keptn
+Keylime
+Kinetic Open Storage Project
+Kivy
+Kodachi
+KubeEdge
+KubeVirt
+Kubernetes
+Kubernetes
+Kubernetes Event-driven Autoscaling
+Kubuntu
+Kuma
+Kyverno
+LF AI & Data Foundation
+LF Asia, LLC
+LF Edge Foundation
+LF Energy Foundation
+LF Networking Fund
+LF Public Health Fund
+LISP Flow Mapping
+LSP Plugins
+LTSI
+LTTng
+LVFS
+Laminas
+LazPaint
+Legend
+Let
+Let's Encrypt
+LibreOffice
+LibreSSL
+Libuv
+Lighttpd
+Linkerd
+Linux
+Linux Mint
+Linux Vendor Firmare Service
+LinuxBoot
+LitmusChaos
+Lodash
+Logging Enhancements
+Long-Term Support Initiative
+Longhorn
+Ludwig
+MAVLink
+MD-SAL
+MLflow
+MOJA Global Project
+MPV
+MSB
+MUSIC
+Mainframe Open Education
+Mapzen
+Marko
+Marquez
+Mesa
+MessageML Utilities
+Microservices Bus
+MidnightBSD
+Milvus
+Mindustry
+Minicoredumper
+Mir
+Mirage OS
+Mocha
+Moment
+Morphir
+Multi VIM/Cloud
+Multi-site State Coordination Service
+MySQL
+NATS
+NETCONF
+NFF-Go
+NFVbench
+NPM
+NativeScript
+Near Realtime RAN Intelligent Controller
+NetBeans
+NetVirt
+NethServer
+Network Service Mesh
+Neural Network (NN) Streamer
+Neural Network Streamer
+Neutron Northbound
+Nginx
+NlpCraft
+Node-RED
+Node.js
+Node.js
+Nomad
+Non-Realtime RAN Intelligent Controller
+Notary
+O-RAN Central Unit
+O-RAN Distributed Unit High Layers
+O-RAN Distributed Unit Low Layers
+O-RAN Infrastructure
+O-RAN Operations and Maintenance
+O-RAN Radio Unit
+O-RAN Simulations
+O-RAN Software Community
+OACA
+ODIM
+ODL Guice
+ODL Micro
+ODL Root Parent
+ODL Service Abstraction Framework
+ODL Tools
+OEDI
+OMP
+ONAP
+ONAP Application Controller
+ONAP Command Line Interface
+ONAP Documentation
+ONAP Integration
+ONAP Modelling
+ONAP Operations Manager
+ONAP Optimization Framework
+ONAP Policy Framework
+ONAP University
+ONNX
+OOF
+OOM
+OPNFV
+OPNFV Doctor
+OPX
+OSC
+OSLC Handbook
+OVS
+OVSDB Integration
+Open Accessibility
+Open Alliance for Cloud Adoption
+Open Compliance Program
+Open Container Initiative
+Open Developer Platform
+Open Distributed Infrastructure Management
+Open Enclave SDK
+Open Horizon
+Open Mainframe Mentorship
+Open Mainframe Project
+Open Manufacturing Platform Fund
+Open Policy Agent
+Open Security Controller Project
+Open Service Mesh
+Open Shading Language
+Open Source
+Open Voice Network
+Open source readiness
+Open vSwitch
+Open-Source
+OpenAPI Initiative
+OpenBMC
+OpenBSD
+OpenCL
+OpenChain Project
+OpenColorIO
+OpenCue
+OpenDS4All
+OpenDaylight
+OpenDaylight Documentation
+OpenDaylight Integration/Distribution
+OpenDaylight Integration/Packaging
+OpenDaylight Integration/Test
+OpenEBS
+OpenEEMeter
+OpenEEW
+OpenEXR
+OpenEmbedded
+OpenFabrics Alliance
+OpenFin Python Adapter
+OpenFin React Hooks
+OpenFlow Plugin
+OpenHPC Project
+OpenJDK
+OpenJS Foundation
+OpenKruise
+OpenMAMA Fund
+OpenMessaging
+OpenMetrics
+OpenPGP
+OpenPOWER Foundation
+OpenPrinting
+OpenSSF
+OpenSSL
+OpenShift
+OpenSwitch
+OpenTelemetry
+OpenTimelineIO
+OpenTracing
+OpenVDB
+OpenVINO
+OpenWRT
+OpenYurt
+OperatorFabric
+Otter
+PARSEC
+PEP
+PHP
+PNDA
+PX4
+Paint
+Pale Moon
+Parole
+Patroni
+PeerTube
+Perl
+Perspective
+PicoLibc
+PinePhone
+Pktgen
+Plasma
+Plasma Mobile
+Plastic
+Plexus Interop
+PoCL
+Polycephaly
+Portal Platform
+Porter
+PostgreSQL
+PowSyBl
+PowerShell
+Pravega
+Prometheus
+Prometheus
+Proton
+Proxmox
+PulseAudio
+Puppet
+Pyro
+Q4OS
+QEMU
+QGroundControl
+QMSTR
+QUnit
+QVGE
+Qt
+Quartermaster
+Quilt
+QuiteRSS
+R Consortium
+R-Hub
+R-Ladies
+REST API Specification
+RESTinio
+RIAPS
+RIC Applications
+RISC-V International
+RSocket
+RTL
+RUGS
+Raspberry Pi
+Raspberry Pi OS
+React
+Real Time Linux
+Red Team Project
+RedHat
+Redox OS
+Reference FOSS Policy
+Regolith
+RelEng/Autorelease
+RelEng/Builder
+Releng
+RethinkDB
+Rizin
+Rook
+Ruby
+RunaWFE Free
+Runc
+Rust
+S2 Common Components
+SAF
+SDC
+SDDI
+SDL
+SDNC
+SGX SDK
+SGX SDK for Linux
+SNAS
+SO
+SOAJS
+SODA Foundation
+SOF
+SPDX
+SPIFFE
+SPIRE
+SPP
+SQLite
+SUSE
+SampleVNF
+Sawtooth
+Scala
+SchemaHero
+Screwdriver
+Secure Electron Adapter
+Security Reference Data
+Serverless Workflow Specification
+Service Design & Creation
+Service Mesh Interface
+Service Orchestrator
+Service Utils
+Slackel
+Slacko Puppy
+Smartmontools
+Software Defined Network Controller
+Software Developer Diversity and Inclusion
+Software Discovery Tool
+Solaris
+Sound Open Firmware
+Spinnaker
+StackStorm Project
+State of the Edge
+Stellarium
+Stor4NFV
+StorPerf
+Strimzi
+Symphony Clojure Client
+Symphony Electron
+Symphony Hubot Client
+Symphony Java Toolkit
+T2 SDE
+TARS Foundation
+TLDK
+TODO Group
+TSeer
+TUF
+Tails
+Tarantool
+Tcl/Tk
+Tekton
+Telepresence
+Template Studio
+Tern
+Terraform
+TerseDecompress
+Tessia
+Thanos
+The Fintech Open Source Foundation
+The Hypervisor
+The Linux Foundation
+The Linux Kernel Organization
+The Open Source Security Foundation
+The Presto Foundation Fund
+The Reactive Foundation
+Themeroller
+Threema
+Thunderbird
+TiKV
+TimescaleDB
+Tinkerbell
+Tizen Project
+Tizen Studio
+ToIP
+Tor Browser
+TraceCompass
+Transact
+Transport Layer Development Kit
+TransportPCE
+Tremor
+Trust over IP Foundation Fund
+Tungsten Fabric
+Tux Paint
+Twake
+UCF
+UDPI
+UUI
+Ubuntu
+Ubuntu Touch
+Unfurl Bot
+Unikraft
+Unimgr
+Universal Deep Packet Inspection Project
+Uptane
+Urban Computing Foundation
+Ursa
+Usecase UI
+VFC
+VID
+VNF Requirements
+VNF SDK
+VNF Validation Program
+VPN
+VPP
+VSPerf
+VVP
+Vault
+Vector Packet Processing
+Verloren
+Vim
+Virtual Function Controller
+Virtual Infrastructure Deployment
+Virtual Kubelet
+Vitess
+Vkd3d
+Voice Metadata Standardization
+Void Linux
+Volcano
+Waltz
+Wasmer
+Wayland
+WebdriverIO
+Webpack
+Wget
+Windows PV Drivers
+Wine
+WireGuard
+WordPress
+XAPI
+XCP-NG
+XCP-ng
+XGVela
+Xen Project
+Xfce
+Xorg
+YANG Tools
+Yocto Project
+ZFS
+Zephyr Project
+Zorow
+Zowe
+bash
+cSvn
+cdk8s
+cert-manager
+course
+fheroes
+gRPC
+i3wm
+in-toto
+jQuery
+k3s
+kdb+
+kernelCI Initiative Fund
+libmdbx
+libmicrohttpd
+lsFusion
+make
+messageformat
+metal3-io
+motd
+mtPaint
+nano
+nvm
+open source
+open-source
+osquery
+pcem
+radare2
+seL4 Foundation
+security
+sparklyr
+systemd
+sysvinit
+webhint
+werf
+xine
+Альт
+вирус
+дистрибутив
+история
+уязвим
