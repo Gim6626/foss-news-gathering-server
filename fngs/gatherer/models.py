@@ -57,13 +57,14 @@ class DigestRecordSubcategory(Enum):
 
 
 class DigestRecord(models.Model):
-    dt = models.DateTimeField(verbose_name='Date&time')
+    dt = models.DateTimeField(verbose_name='Date&time',
+                              null=True,
+                              blank=True)
     gather_dt = models.DateTimeField(verbose_name='Gather Date&time',
                                      null=True,
                                      blank=True)
     title = models.CharField(verbose_name='Title',
                              max_length=256,
-                             unique=True,
                              blank=False)
     url = models.CharField(verbose_name='URL',
                            max_length=256,
