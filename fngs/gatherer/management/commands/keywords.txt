@@ -26,6 +26,8 @@ Airship Installer
 Ajv
 Akraino
 Alliance for Open Media
+AlmaLinux
+Alpine Linux
 Ambitus
 Amundsen
 Android
@@ -46,6 +48,7 @@ Autoconf
 Automated Compliance Tooling
 Automotive Grade Linux
 Avalon
+AviSynth+
 BFE
 BGP LS PCEP
 BIND
@@ -58,6 +61,7 @@ Barometer
 Bastille
 Beaker
 Besu
+BleachBit
 Blender
 Brigade
 Btrfs
@@ -123,6 +127,7 @@ Cicero
 Cinnamon
 Civil Infrastructure Platform
 ClickHouse
+Cloud Custodian
 Cloud Custodian
 Cloud Foundry Foundation Fund
 Cloud Information Model Fund
@@ -191,6 +196,7 @@ DevOps
 Dex
 DiaMon Workgroup
 Disaggregated Network Operating System
+Django
 Docker
 Dojo
 Dovetail
@@ -209,6 +215,7 @@ Eclipse
 EdgeX Foundry
 Egeria
 Elastic Deep Learning
+Elasticsearch
 Electron
 Electron
 Embedded and Automotive PV Drivers
@@ -242,6 +249,7 @@ Feilong
 FinOps Foundation
 Financial Objects
 Firefox
+Flatpak
 Fledge
 FlightGear
 Fluentd
@@ -269,7 +277,9 @@ GitHub
 Globalize
 Glue
 GoVPP
+Golang
 Golang Toolset for VPP
+Grafana
 GraphQL Foundation
 GraphQL Specification
 GraphQL.js
@@ -294,6 +304,7 @@ Home Edge
 Honeycomb 2 VPP (Hc2vpp)
 Horovod
 HospitalRun
+Hubzilla
 Hybrid Information-Centric Networking Project
 Hyperledger
 IO Visor Project
@@ -313,12 +324,14 @@ JCurl
 JVPP
 Jaeger
 JanusGraph
+Java
 Java APIs for VPP
-Javascript
+JavaScript
 Jenkins
 Jenkins X
 JerryScript
 Joint Development Foundation
+JuiceFS
 KDE
 KDE Frameworks
 KDE Neon
@@ -332,6 +345,7 @@ Kdenlive
 Kepler.GL
 Keptn
 Keylime
+Kibana
 Kinetic Open Storage Project
 Kivy
 Kodachi
@@ -355,6 +369,7 @@ LTSI
 LTTng
 LVFS
 Laminas
+Laravel
 LazPaint
 Legend
 Let
@@ -374,6 +389,7 @@ Logging Enhancements
 Long-Term Support Initiative
 Longhorn
 Ludwig
+Lutris
 MAVLink
 MD-SAL
 MLflow
@@ -397,6 +413,7 @@ Mirage OS
 Mocha
 Moment
 Morphir
+Mozilla VPN
 Multi VIM/Cloud
 Multi-site State Coordination Service
 MySQL
@@ -501,6 +518,7 @@ OpenFabrics Alliance
 OpenFin Python Adapter
 OpenFin React Hooks
 OpenFlow Plugin
+OpenGL
 OpenHPC Project
 OpenJDK
 OpenJS Foundation
@@ -520,6 +538,7 @@ OpenTimelineIO
 OpenTracing
 OpenVDB
 OpenVINO
+OpenVPN
 OpenWRT
 OpenYurt
 OperatorFabric
@@ -531,9 +550,11 @@ PNDA
 PX4
 Paint
 Pale Moon
+Panfrost
 Parole
 Patroni
 PeerTube
+Periskop
 Perl
 Perspective
 PicoLibc
@@ -558,6 +579,7 @@ Proxmox
 PulseAudio
 Puppet
 Pyro
+Python
 Q4OS
 QEMU
 QGroundControl
@@ -571,6 +593,7 @@ QuiteRSS
 R Consortium
 R-Hub
 R-Ladies
+RDP
 REST API Specification
 RESTinio
 RIAPS
@@ -615,6 +638,7 @@ SPDX
 SPIFFE
 SPIRE
 SPP
+SQL
 SQLite
 SUSE
 SampleVNF
@@ -644,6 +668,7 @@ Stellarium
 Stor4NFV
 StorPerf
 Strimzi
+Super Productivity
 Symphony Clojure Client
 Symphony Electron
 Symphony Hubot Client
@@ -735,6 +760,7 @@ Windows PV Drivers
 Wine
 WireGuard
 WordPress
+WordPress
 XAPI
 XCP-NG
 XCP-ng
@@ -748,15 +774,19 @@ ZFS
 Zephyr Project
 Zorow
 Zowe
+awk
 bash
+bladeRF-wiphy
 cSvn
 cdk8s
 cert-manager
 course
+exploit
 fheroes
 gRPC
 i3wm
 in-toto
+iptables
 jQuery
 k3s
 kdb+
@@ -770,6 +800,7 @@ metal3-io
 motd
 mtPaint
 nano
+nftables
 nvm
 open source
 open-source
@@ -778,14 +809,20 @@ pcem
 radare2
 seL4 Foundation
 security
+sed
 sparklyr
+sudo
 systemd
 sysvinit
+tcb
+urm
 webhint
 werf
+xVA-Synth
 xine
 Альт
 вирус
 дистрибутив
 история
 уязвим
+эксплойт
