@@ -332,11 +332,10 @@ class JaxenterComParsingModule(SimpleRssBasicParsingModule):
     filtration_needed = True
 
 
-# TODO: Special parser needed
-# class LinuxInsiderComParsingModule(SimpleRssBasicParsingModule):
-#
-#     source_name = 'LinuxInsiderCom'
-#     rss_url = 'https://linuxinsider.com/rss-feed'
+class LinuxInsiderComParsingModule(SimpleRssBasicParsingModule):
+
+    source_name = 'LinuxInsiderCom'
+    rss_url = 'https://linuxinsider.com/rss-feed'
 
 
 class MashableComParsingModule(SimpleRssBasicParsingModule):
@@ -595,7 +594,7 @@ class ParsingModuleType(Enum):
     ARSTECHNICA_COM = ArsTechnicaComParsingModule.source_name
     HACKADAY_COM = HackadayComParsingModule.source_name
     JAXENTER_COM = JaxenterComParsingModule.source_name
-    # LINUXINSIDER_COM = LinuxInsiderComParsingModule.source_name
+    LINUXINSIDER_COM = LinuxInsiderComParsingModule.source_name
     MASHABLE_COM = MashableComParsingModule.source_name
     SDTIMES_COM = SdTimesComParsingModule.source_name
     SECURITYBOULEVARD_COM = SecurityBoulevardComParsingModule.source_name
