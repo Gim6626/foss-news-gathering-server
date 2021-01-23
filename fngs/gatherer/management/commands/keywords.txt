@@ -1,3 +1,4 @@
+.NET Core
 3MF Consortium
 4MLinux
 4Pane
@@ -35,11 +36,14 @@ Angel
 Anomaly Detection Engine for Linux Logs
 Ansible
 Apache
+Apache Kylin
+Apache Superset
 Appium
 Application Authorization Framework
 Architect
 Ardour
 Argo
+Argos Translate
 Aries
 Armbian
 Artifact Hub
@@ -63,6 +67,7 @@ Beaker
 Besu
 BleachBit
 Blender
+Brave
 Brigade
 Btrfs
 Bubble Chains
@@ -119,8 +124,8 @@ Ceph Foundation
 Chaos Mesh
 Chef
 CherryTree
+Chrome
 Chrome OS
-ChromeSeaMonkey
 Chromium
 ChubaoFS
 Cicero
@@ -162,6 +167,7 @@ Cortex
 Cregit
 Crossplane
 CrowdSec
+CudaText
 Cups-Filters
 Cutter
 DANOS
@@ -229,6 +235,7 @@ Etcd
 Exodus
 Explorer
 Express
+ExpressLRS
 ExtAPI
 External API Framework
 FATE Project
@@ -246,12 +253,14 @@ Fastify
 Feast
 Fedora
 Feilong
+FileCoin
 FinOps Foundation
 Financial Objects
 Firefox
 Flatpak
 Fledge
 FlightGear
+Flipper Zero
 Fluentd
 Flutter
 Flux
@@ -264,6 +273,7 @@ Functest
 GCompris
 GIMP
 GNOME
+GNU Radio
 GNU tar
 GNUnet
 GTK
@@ -276,6 +286,7 @@ Git
 GitHub
 Globalize
 Glue
+Go
 GoVPP
 Golang
 Golang Toolset for VPP
@@ -297,7 +308,9 @@ HICN
 HVMI
 Harbor
 HarmonyOS
+Haruna
 Headlamp
+Helm
 Helm
 Holmes
 Home Edge
@@ -314,6 +327,7 @@ Icaros
 IceWM
 Indy
 Infrastructure Utils
+Inkscape
 Integration Bridge
 InterUSS Platform Fund
 Interledger.js
@@ -344,11 +358,14 @@ Kali Linux
 Kdenlive
 Kepler.GL
 Keptn
+Keras
 Keylime
 Kibana
 Kinetic Open Storage Project
 Kivy
 Kodachi
+Krita
+KubeEdge
 KubeEdge
 KubeVirt
 Kubernetes
@@ -374,6 +391,7 @@ LazPaint
 Legend
 Let
 Let's Encrypt
+Libgcrypt
 LibreOffice
 LibreSSL
 Libuv
@@ -393,6 +411,7 @@ Lutris
 MAVLink
 MD-SAL
 MLflow
+MLflow
 MOJA Global Project
 MPV
 MSB
@@ -404,6 +423,7 @@ Marquez
 Mesa
 MessageML Utilities
 Microservices Bus
+Midnight Commander
 MidnightBSD
 Milvus
 Mindustry
@@ -431,6 +451,7 @@ Network Service Mesh
 Neural Network (NN) Streamer
 Neural Network Streamer
 Neutron Northbound
+Nextcloud
 Nginx
 NlpCraft
 Node-RED
@@ -471,6 +492,7 @@ OOF
 OOM
 OPNFV
 OPNFV Doctor
+OPNsense
 OPX
 OSC
 OSLC Handbook
@@ -542,11 +564,13 @@ OpenVPN
 OpenWRT
 OpenYurt
 OperatorFabric
+Oracle Linux
 Otter
 PARSEC
 PEP
 PHP
 PNDA
+PVS-Studio
 PX4
 Paint
 Pale Moon
@@ -587,6 +611,7 @@ QMSTR
 QUnit
 QVGE
 Qt
+Quarkus
 Quartermaster
 Quilt
 QuiteRSS
@@ -596,18 +621,23 @@ R-Ladies
 RDP
 REST API Specification
 RESTinio
+RHEL
 RIAPS
 RIC Applications
 RISC-V International
 RSocket
 RTL
 RUGS
+RabbitMQ
 Raspberry Pi
 Raspberry Pi OS
 React
 Real Time Linux
+Red Hat
+Red Hat Enterprise Linux
 Red Team Project
 RedHat
+RedHat Enterprise Linux
 Redox OS
 Reference FOSS Policy
 Regolith
@@ -646,6 +676,7 @@ Sawtooth
 Scala
 SchemaHero
 Screwdriver
+SeaMonkey
 Secure Electron Adapter
 Security Reference Data
 Serverless Workflow Specification
@@ -656,6 +687,7 @@ Service Utils
 Slackel
 Slacko Puppy
 Smartmontools
+Snort
 Software Defined Network Controller
 Software Developer Diversity and Inclusion
 Software Discovery Tool
@@ -685,6 +717,7 @@ Tcl/Tk
 Tekton
 Telepresence
 Template Studio
+TensorFlow
 Tern
 Terraform
 TerseDecompress
@@ -721,6 +754,7 @@ UDPI
 UUI
 Ubuntu
 Ubuntu Touch
+Unbreakable Enterprise Kernel
 Unfurl Bot
 Unikraft
 Unimgr
@@ -731,6 +765,7 @@ Ursa
 Usecase UI
 VFC
 VID
+VLC
 VNF Requirements
 VNF SDK
 VNF Validation Program
@@ -740,11 +775,13 @@ VSPerf
 VVP
 Vault
 Vector Packet Processing
+Venus
 Verloren
 Vim
 Virtual Function Controller
 Virtual Infrastructure Deployment
 Virtual Kubelet
+VirtualBox
 Vitess
 Vkd3d
 Voice Metadata Standardization
@@ -781,9 +818,13 @@ cSvn
 cdk8s
 cert-manager
 course
+data science
+distributive
 exploit
 fheroes
 gRPC
+gedit
+goredo
 i3wm
 in-toto
 iptables
@@ -795,6 +836,7 @@ libmdbx
 libmicrohttpd
 lsFusion
 make
+malware
 messageformat
 metal3-io
 motd
@@ -806,7 +848,9 @@ open source
 open-source
 osquery
 pcem
+pfSense
 radare2
+redo
 seL4 Foundation
 security
 sed
@@ -816,6 +860,7 @@ systemd
 sysvinit
 tcb
 urm
+vulnerabilit
 webhint
 werf
 xVA-Synth
