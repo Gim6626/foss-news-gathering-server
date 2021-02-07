@@ -408,13 +408,6 @@ class CbrOnlineComParsingModule(SimpleRssBasicParsingModule):
     filtration_needed = True
 
 
-class ComputerWeeklyComParsingModule(SimpleRssBasicParsingModule):
-
-    source_name = 'ComputerWeeklyCom'
-    rss_url = 'https://www.computerweekly.com/rss/Latest-IT-news.xml'
-    filtration_needed = True
-
-
 class HelpNetSecurityComParsingModule(SimpleRssBasicParsingModule):
 
     source_name = 'HelpNetSecurityCom'
@@ -605,7 +598,6 @@ class ParsingModuleType(Enum):
     VENTUREBEAT_COM = VentureBeatComParsingModule.source_name
     THREEDPRINTINGMEDIA_NETWORK = ThreeDPrintingMediaNetworkParsingModule.source_name
     CBRONLINE_COM = CbrOnlineComParsingModule.source_name
-    COMPUTERWEEKLY_COM = ComputerWeeklyComParsingModule.source_name
     HELPNETSECURITY_COM = HelpNetSecurityComParsingModule.source_name
     SECURITYSALES_COM = SecuritySalesComParsingModule.source_name
     TECHRADAR_COM = TechRadarComParsingModule.source_name
