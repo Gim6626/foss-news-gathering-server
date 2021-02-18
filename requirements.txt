@@ -1,4 +1,4 @@
-django==2.2.3
+django==2.2.13
 djangorestframework==3.10.0
 djangorestframework_simplejwt==4.3.0
 django-filter
