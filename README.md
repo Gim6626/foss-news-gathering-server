@@ -1,3 +1,3 @@
 # FOSS News Gathering Server 
 
-Server which gathers links from FOSS News sources, store them and provides REST interface to work with.
+Gathers links from FOSS sources, store them and provides REST and admin interface to work with.
