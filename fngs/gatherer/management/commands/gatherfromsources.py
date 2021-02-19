@@ -463,6 +463,16 @@ class HabrComBasicParsingModule(SimpleRssBasicParsingModule):
                       url)
 
 
+class HabrComNewsParsingModule(HabrComBasicParsingModule):
+
+    source_name = 'HabrComNews'
+    filtration_needed = True
+
+    @property
+    def rss_url(self):
+        return f'https://habr.com/ru/rss/news/'
+
+
 class HabrComOpenSourceParsingModule(HabrComBasicParsingModule):
 
     source_name = f'HabrComOpenSource'
@@ -604,6 +614,7 @@ class ParsingModuleType(Enum):
     TFIR_IO = TfirIoParsingModule.source_name
     ZDNET_COM_LINUX = ZdNetComLinuxParsingModule.source_name
     LINUXFOUNDATION_ORG = LinuxFoundationOrgParsingModule.source_name
+    HABR_COM_NEWS = HabrComNewsParsingModule.source_name
     HABR_COM_OPENSOURCE = HabrComOpenSourceParsingModule.source_name
     HABR_COM_LINUX = HabrComLinuxParsingModule.source_name
     HABR_COM_LINUX_DEV = HabrComLinuxDevParsingModule.source_name
