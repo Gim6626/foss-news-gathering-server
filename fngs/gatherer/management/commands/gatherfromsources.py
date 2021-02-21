@@ -239,7 +239,7 @@ class RssBasicParsingModule(BasicParsingModule):
                     if self.title_tag_name in tag:
                         title = text.strip()
                     elif self.pubdate_tag_name in tag:
-                        dt = dateutil.parser.parse(text)
+                        dt = dateutil.parser.parse(self._date_from_russian_to_english(text))
                     elif self.link_tag_name in tag:
                         if text:
                             url = text
@@ -252,6 +252,38 @@ class RssBasicParsingModule(BasicParsingModule):
                 post_data = PostData(dt, title, self.process_url(url), brief)
                 posts_data.append(post_data)
         return posts_data
+
+    def _date_from_russian_to_english(self,
+                                      datetime_text: str):
+        days_map = {
+            'Пн': 'Mon',
+            'Вт': 'Tue',
+            'Ср': 'Wed',
+            'Чт': 'Thu',
+            'Пт': 'Fri',
+            'Сб': 'Sat',
+            'Вс': 'Sun',
+        }
+        months_map = {
+            'янв': 'jan',
+            'фев': 'feb',
+            'мар': 'mar',
+            'апр': 'apr',
+            'май': 'may',
+            'мая': 'may',
+            'июн': 'jun',
+            'июл': 'jul',
+            'авг': 'aug',
+            'сен': 'sep',
+            'окт': 'oct',
+            'ноя': 'nov',
+            'дек': 'dec',
+        }
+        converted_datetime_text = datetime_text
+        for ru_en_map in (days_map, months_map):
+            for ru, en in ru_en_map.items():
+                converted_datetime_text = converted_datetime_text.replace(ru, en)
+        return converted_datetime_text
 
     def process_url(self, url):
         return url
@@ -545,6 +577,18 @@ class LosstRuParsingModule(SimpleRssBasicParsingModule):
     rss_url = 'https://losst.ru/rss'
 
 
+class AstraLinuxRuParsingModule(SimpleRssBasicParsingModule):
+
+    source_name = 'AstraLinuxRu'
+    rss_url = 'https://astralinux.ru/rss'
+
+
+class BaseAltRuParsingModule(SimpleRssBasicParsingModule):
+
+    source_name = 'BaseAltRu'
+    rss_url = 'https://www.basealt.ru/feed.rss'
+
+
 class PingvinusRuParsingModule(BasicParsingModule):
 
     source_name = 'PingvinusRu'
@@ -625,6 +669,8 @@ class ParsingModuleType(Enum):
     YOUTUBE_COM_ALEKSEY_SAMOILOV = YouTubeComAlekseySamoilovParsingModule.source_name
     LOSST_RU = LosstRuParsingModule.source_name
     PINGVINUS_RU = PingvinusRuParsingModule.source_name
+    ASTRALINUX_RU = AstraLinuxRuParsingModule.source_name
+    BASEALT_RU = BaseAltRuParsingModule.source_name
 
 
 PARSING_MODULES_TYPES = tuple((t.value for t in ParsingModuleType))
