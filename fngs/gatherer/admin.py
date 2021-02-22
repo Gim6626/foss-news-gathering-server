@@ -18,6 +18,7 @@ class DigestRecordAdmin(admin.ModelAdmin):
         'is_main',
         'category',
         'subcategory',
+        'keywords',
     )
     search_fields = (
         'title',

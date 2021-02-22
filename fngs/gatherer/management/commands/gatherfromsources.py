@@ -80,7 +80,8 @@ class Command(BaseCommand):
                                                  gather_dt=datetime.datetime.now(tz=dateutil.tz.tzlocal()),
                                                  title=post_data.title.strip(),
                                                  url=post_data.url,
-                                                 state=DigestRecordState.UNKNOWN.name)
+                                                 state=DigestRecordState.UNKNOWN.name,
+                                                 keywords=';'.join(post_data.keywords))
                     digest_record.save()
                     added_digest_records_count += 1
                     logger.debug(f'Added {short_post_data_str} to database')
@@ -145,6 +146,7 @@ class PostData:
         self.title = title
         self.url = url
         self.brief = brief
+        self.keywords = []
 
     def __str__(self):
         return f'{self.dt} -- {self.url} -- {self.title} -- {shorten_text(self.brief)}'
@@ -201,7 +203,7 @@ class BasicParsingModule(metaclass=ABCMeta):
             for keyword in keywords:
                 if keyword in post_data.title:
                     matched = True
-                    break
+                    post_data.keywords.append(keyword)
             if matched:
                 filtered_posts_data.append(post_data)
             else:

@@ -91,10 +91,14 @@ class DigestRecord(models.Model):
                                    max_length=256,
                                    null=True,
                                    blank=True)
+    keywords = models.CharField(verbose_name='Keywords',
+                                max_length=1024,
+                                null=True,
+                                blank=True)
 
     class Meta:
         verbose_name = 'Digest Record'
         verbose_name_plural = 'Digest Records'
 
     def __str__(self):
-        return f'{self.dt} {self.title} {self.url} #{self.digest_number} state:"{self.state}" cat:"{self.category}" subcat: "{self.subcategory}"'
+        return f'{self.dt} {self.title} {self.url} #{self.digest_number} state:"{self.state}" cat:"{self.category}" subcat: "{self.subcategory}" keywords: "{self.keywords}"'
