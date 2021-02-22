@@ -9,11 +9,14 @@ ACRN Project
 ACT
 ADE
 AGL
+AI
 AI Explainability 360
 AI Fairness 360
+AIF360
 AMP
 AOM
 APPC
+APT
 ASWF
 ATOM Language Syntax Highlighting for z/VM
 Academy Software Foundation
@@ -22,10 +25,12 @@ Active & Available Inventory
 Acumos
 Adlik
 Adversarial Robustness Toolkit
+Airbyte
 Airflow
 Airship Installer
 Ajv
 Akraino
+AllenAct
 Alliance for Open Media
 AlmaLinux
 Alpine Linux
@@ -36,17 +41,23 @@ Angel
 Anomaly Detection Engine for Linux Logs
 Ansible
 Apache
+Apache CloudStack
 Apache Kylin
+Apache Software Foundation
 Apache Superset
 Appium
 Application Authorization Framework
 Architect
 Ardour
 Argo
+Argo CD
 Argos Translate
 Aries
+Arm Compute Library
+Arm NN
 Armbian
 Artifact Hub
+Audacious
 Augur
 Autoconf
 Automated Compliance Tooling
@@ -65,6 +76,8 @@ Barometer
 Bastille
 Beaker
 Besu
+Binutils
+Bitwarden
 BleachBit
 Blender
 Brave
@@ -88,6 +101,7 @@ CFF
 CHAOSS
 CHIPS Alliance Fund
 CHIPS Alliance projects
+CI CD
 CI-Man
 CI-Management
 CI/CD
@@ -111,10 +125,14 @@ CPS
 CRI-O
 CRUX
 CSIT
+CUBA Platform
+CUPS
 Cactus
 Caliper
+Callisto
 Camelot
 Canonical
+Cantera
 Cawbird
 Cello
 CentOS
@@ -126,13 +144,17 @@ Chef
 CherryTree
 Chrome
 Chrome OS
+ChromeOS
 Chromium
+Chromium OS
+ChromiumOS
 ChubaoFS
 Cicero
+Cine Encoder
 Cinnamon
 Civil Infrastructure Platform
 ClickHouse
-Cloud Custodian
+Clonezilla Live
 Cloud Custodian
 Cloud Foundry Foundation Fund
 Cloud Information Model Fund
@@ -143,6 +165,7 @@ CloudEvents
 CloudFoundry.org Foundation
 ClusterDuck Protocol
 CoMPAS
+Cocos Creator
 Code Aurora Forum
 Common Controller SDK
 Common Infrastructure Realization/Validation
@@ -152,6 +175,7 @@ Community Data License Agreement
 Concerto
 Confidential Computing Consortium Fund
 Configuration Persistence Service
+Connman
 Consul
 Consumer Electronics Linux Forum
 Containerd
@@ -170,13 +194,16 @@ CrowdSec
 CudaText
 Cups-Filters
 Cutter
+D-Bus
 DANOS
 DCAE
 DELTA
 DENT Fund
 DENT Project
 DIF
+DL
 DMaaP
+DNF
 DPDK
 DPDK Apps
 DPDK Core
@@ -186,6 +213,8 @@ DPDK Old
 DPDK Tools
 DPDK-burst-replay
 DTS
+DXVK
+Dapr
 Darktable
 Data Collection, Analytics, and Events
 Data Helix
@@ -196,19 +225,24 @@ DataLoader
 DataPractices
 Debian
 Decentralized Identity Foundation
+Deep learning
 Delta Lake Project
 DentOS
 DevOps
+Devuan
 Dex
 DiaMon Workgroup
 Disaggregated Network Operating System
 Django
 Docker
 Dojo
+Dotenv-linter
 Dovetail
 Dragonfly
 Driverless Printing
 Dronecode Project
+Drupal
+ECharts
 EDL
 ELISA Fund
 ELKS
@@ -220,9 +254,9 @@ EasyCLA
 Eclipse
 EdgeX Foundry
 Egeria
+EiskaltDC++
 Elastic Deep Learning
 Elasticsearch
-Electron
 Electron
 Embedded and Automotive PV Drivers
 Embox
@@ -254,13 +288,17 @@ Feast
 Fedora
 Feilong
 FileCoin
+Filmulator
 FinOps Foundation
 Financial Objects
+Finnix
 Firefox
+Firejail
 Flatpak
 Fledge
 FlightGear
 Flipper Zero
+Flowblade
 Fluentd
 Flutter
 Flux
@@ -270,27 +308,40 @@ Fossology
 FreeRTOS
 Fugue
 Functest
+FuzixOS
 GCompris
+GHC
 GIMP
 GNOME
+GNU Guix
 GNU Radio
 GNU tar
 GNUnet
+GPG
+GParted
+GParted Live
 GTK
 GXF
+GeckoLinux
 GenevaERS
 Genius
 Gentoo
 GhostBSD
 Git
 GitHub
+GitLab
+GitQlient
+Glibc
 Globalize
 Glue
 Go
 GoVPP
+Gobblin
+Godot Engine
 Golang
 Golang Toolset for VPP
 Grafana
+Grafana Tempo
 GraphQL Foundation
 GraphQL Specification
 GraphQL.js
@@ -304,16 +355,20 @@ Grub
 Grunt
 Guitarix
 Guix
+HAProxy
 HICN
 HVMI
+Hadoop
 Harbor
 HarmonyOS
 Haruna
+Haxe
 Headlamp
 Helm
-Helm
 Holmes
+Home Assistant
 Home Edge
+HomeBank
 Honeycomb 2 VPP (Hc2vpp)
 Horovod
 HospitalRun
@@ -321,6 +376,7 @@ Hubzilla
 Hybrid Information-Centric Networking Project
 Hyperledger
 IO Visor Project
+IPCDump
 IPPUSBXD
 ISRG
 Icaros
@@ -344,6 +400,8 @@ JavaScript
 Jenkins
 Jenkins X
 JerryScript
+JingOS
+Jmix
 Joint Development Foundation
 JuiceFS
 KDE
@@ -355,6 +413,7 @@ KStars
 KUDO
 Kafka
 Kali Linux
+Kate
 Kdenlive
 Kepler.GL
 Keptn
@@ -364,20 +423,22 @@ Kibana
 Kinetic Open Storage Project
 Kivy
 Kodachi
+Kodi
 Krita
-KubeEdge
+Kube-dump
 KubeEdge
 KubeVirt
-Kubernetes
 Kubernetes
 Kubernetes Event-driven Autoscaling
 Kubuntu
 Kuma
 Kyverno
+LAMA
 LF AI & Data Foundation
 LF Asia, LLC
 LF Edge Foundation
 LF Energy Foundation
+LF Networking
 LF Networking Fund
 LF Public Health Fund
 LISP Flow Mapping
@@ -395,9 +456,11 @@ Libgcrypt
 LibreOffice
 LibreSSL
 Libuv
+LightAutoML
 Lighttpd
 Linkerd
 Linux
+Linux Foundation
 Linux Mint
 Linux Vendor Firmare Service
 LinuxBoot
@@ -408,18 +471,23 @@ Long-Term Support Initiative
 Longhorn
 Ludwig
 Lutris
+MAPS.ME
 MAVLink
 MD-SAL
-MLflow
+ML
 MLflow
 MOJA Global Project
 MPV
 MSB
 MUSIC
+Machine learning
 Mainframe Open Education
+Manticore Search
 Mapzen
+MariaDB
 Marko
 Marquez
+MatPlotLib
 Mesa
 MessageML Utilities
 Microservices Bus
@@ -432,14 +500,20 @@ Mir
 Mirage OS
 Mocha
 Moment
+Monado
+Moodle
 Morphir
+Movim
+Mozilla
 Mozilla VPN
 Multi VIM/Cloud
 Multi-site State Coordination Service
+MyCompany
 MySQL
 NATS
 NETCONF
 NFF-Go
+NFS
 NFVbench
 NPM
 NativeScript
@@ -453,13 +527,14 @@ Neural Network Streamer
 Neutron Northbound
 Nextcloud
 Nginx
+Nitrux
 NlpCraft
 Node-RED
-Node.js
 Node.js
 Nomad
 Non-Realtime RAN Intelligent Controller
 Notary
+NumPy
 O-RAN Central Unit
 O-RAN Distributed Unit High Layers
 O-RAN Distributed Unit Low Layers
@@ -498,6 +573,7 @@ OSC
 OSLC Handbook
 OVS
 OVSDB Integration
+Octopod
 Open Accessibility
 Open Alliance for Cloud Adoption
 Open Compliance Program
@@ -546,8 +622,11 @@ OpenJDK
 OpenJS Foundation
 OpenKruise
 OpenMAMA Fund
+OpenMandriva
+OpenMandriva Lx
 OpenMessaging
 OpenMetrics
+OpenOffice
 OpenPGP
 OpenPOWER Foundation
 OpenPrinting
@@ -555,6 +634,7 @@ OpenSSF
 OpenSSL
 OpenShift
 OpenSwitch
+OpenTaxSolver
 OpenTelemetry
 OpenTimelineIO
 OpenTracing
@@ -565,8 +645,10 @@ OpenWRT
 OpenYurt
 OperatorFabric
 Oracle Linux
+OrbitDB
 Otter
 PARSEC
+PCLinuxOS
 PEP
 PHP
 PNDA
@@ -576,17 +658,21 @@ Paint
 Pale Moon
 Panfrost
 Parole
+Paru
 Patroni
 PeerTube
+PennyLane
 Periskop
 Perl
 Perspective
+Phoronix Test Suite
 PicoLibc
 PinePhone
 Pktgen
 Plasma
 Plasma Mobile
 Plastic
+Plausible
 Plexus Interop
 PoCL
 Polycephaly
@@ -597,16 +683,18 @@ PowSyBl
 PowerShell
 Pravega
 Prometheus
-Prometheus
 Proton
 Proxmox
 PulseAudio
 Puppet
+PyCubed
+PyTorch
 Pyro
 Python
 Q4OS
 QEMU
 QGroundControl
+QMMP
 QMSTR
 QUnit
 QVGE
@@ -629,6 +717,7 @@ RSocket
 RTL
 RUGS
 RabbitMQ
+Racket
 Raspberry Pi
 Raspberry Pi OS
 React
@@ -639,13 +728,17 @@ Red Team Project
 RedHat
 RedHat Enterprise Linux
 Redox OS
+Redpanda
 Reference FOSS Policy
 Regolith
 RelEng/Autorelease
 RelEng/Builder
 Releng
+Restic
 RethinkDB
 Rizin
+Rocket Chat
+Rocket.Chat
 Rook
 Ruby
 RunaWFE Free
@@ -653,10 +746,12 @@ Runc
 Rust
 S2 Common Components
 SAF
+SARIF
 SDC
 SDDI
 SDL
 SDNC
+SFTPGo
 SGX SDK
 SGX SDK for Linux
 SNAS
@@ -670,54 +765,73 @@ SPIRE
 SPP
 SQL
 SQLite
+SSH
 SUSE
+Sailfish
 SampleVNF
+Sane
 Sawtooth
 Scala
 SchemaHero
 Screwdriver
+Scylla
 SeaMonkey
 Secure Electron Adapter
 Security Reference Data
+Selenium Grid
 Serverless Workflow Specification
 Service Design & Creation
 Service Mesh Interface
 Service Orchestrator
 Service Utils
+Shotcut
+Siduction
+Signal
+Skrooge
 Slackel
 Slacko Puppy
+SmartApp Framework
 Smartmontools
 Snort
 Software Defined Network Controller
 Software Developer Diversity and Inclusion
 Software Discovery Tool
 Solaris
+Solus
+Solus Linux
 Sound Open Firmware
 Spinnaker
 StackStorm Project
+Starship
 State of the Edge
 Stellarium
 Stor4NFV
 StorPerf
 Strimzi
 Super Productivity
+SuperAnnotate
 Symphony Clojure Client
 Symphony Electron
 Symphony Hubot Client
 Symphony Java Toolkit
+SystemTap
 T2 SDE
 TARS Foundation
+TF 3D
 TLDK
 TODO Group
 TSeer
 TUF
+Taiga UI
 Tails
 Tarantool
 Tcl/Tk
 Tekton
+Tekton Pipeline
 Telepresence
 Template Studio
 TensorFlow
+TensorFlow 3D
 Tern
 Terraform
 TerseDecompress
@@ -732,13 +846,18 @@ The Presto Foundation Fund
 The Reactive Foundation
 Themeroller
 Threema
+Thunar
 Thunderbird
 TiKV
+Tilt Brush
+TimeSynth
 TimescaleDB
 Tinkerbell
+Tiny Core Linux
 Tizen Project
 Tizen Studio
 ToIP
+Tor
 Tor Browser
 TraceCompass
 Transact
@@ -753,6 +872,7 @@ UCF
 UDPI
 UUI
 Ubuntu
+Ubuntu Core
 Ubuntu Touch
 Unbreakable Enterprise Kernel
 Unfurl Bot
@@ -765,6 +885,7 @@ Ursa
 Usecase UI
 VFC
 VID
+VISSL
 VLC
 VNF Requirements
 VNF SDK
@@ -773,11 +894,14 @@ VPN
 VPP
 VSPerf
 VVP
+Vala
 Vault
 Vector Packet Processing
 Venus
 Verloren
+VictoriaMetrics
 Vim
+Viper
 Virtual Function Controller
 Virtual Infrastructure Deployment
 Virtual Kubelet
@@ -790,13 +914,15 @@ Volcano
 Waltz
 Wasmer
 Wayland
+WebRTC
 WebdriverIO
 Webpack
 Wget
 Windows PV Drivers
+Windows Terminal
+Windows Terminal Preview
 Wine
 WireGuard
-WordPress
 WordPress
 XAPI
 XCP-NG
@@ -804,29 +930,46 @@ XCP-ng
 XGVela
 Xen Project
 Xfce
+XigmaNAS
 Xorg
 YANG Tools
 Yocto Project
+Yum
 ZFS
+Zabbix
+Zentyal
 Zephyr Project
+Zimbra
 Zorow
 Zowe
+Zypper
 awk
+backdoor
 bash
 bladeRF-wiphy
+botnet
+bpftrace
 cSvn
 cdk8s
 cert-manager
 course
+curl
 data science
+database
+deno
 distributive
+distro
 exploit
-fheroes
+fheroes2
 gRPC
+gThumb
+gdb
 gedit
 goredo
+helloSystem
 i3wm
 in-toto
+inetutils
 iptables
 jQuery
 k3s
@@ -847,27 +990,43 @@ nvm
 open source
 open-source
 osquery
+ownCloud
 pcem
 pfSense
+pgmpy
+qutebrowser
 radare2
 redo
+ruleguard
 seL4 Foundation
+secure
 security
 sed
+spaCy
 sparklyr
+strongSwan
 sudo
 systemd
 sysvinit
 tcb
+threat
 urm
 vulnerabilit
+vulnerabl
 webhint
 werf
+wolfSSL
 xVA-Synth
 xine
+youtube-dl
+zero-day
 Альт
+ОС
+СУБД
 вирус
 дистрибутив
 история
+линукс
+утечка
 уязвим
 эксплойт
