@@ -15,6 +15,7 @@ import sys
 import requests
 import re
 import os
+import traceback
 from pprint import pprint
 
 
@@ -167,9 +168,19 @@ class BasicParsingModule(metaclass=ABCMeta):
     filtration_needed = False
 
     def parse(self) -> List[PostData]:
-        posts_data: List[PostData] = self._parse()
-        filtered_posts_data: List[PostData] = self._filter_out(posts_data)
-        return filtered_posts_data
+        try:
+            posts_data: List[PostData] = self._parse()
+        except Exception as e:
+            logger.error(f'Failed to parse "{self.source_name}" source: {str(e)}')
+            logger.error(traceback.format_exc())
+            return []
+        try:
+            filtered_posts_data: List[PostData] = self._filter_out(posts_data)
+            return filtered_posts_data
+        except Exception as e:
+            logger.error(f'Failed to filter data parsed from "{self.source_name}" source: {str(e)}')
+            logger.error(traceback.format_exc())
+            return []
 
     @abstractmethod
     def _parse(self) -> List[PostData]:
