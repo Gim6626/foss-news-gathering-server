@@ -17,4 +17,5 @@ class DigestRecordSerializer(serializers.ModelSerializer):
             'is_main',
             'category',
             'subcategory',
+            'keywords',
         ]
