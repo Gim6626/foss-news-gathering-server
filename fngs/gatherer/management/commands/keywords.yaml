@@ -407,6 +407,7 @@ specific:
 - Glibc
 - Globalize
 - Glue
+- Go
 - GoReleaser
 - GoVPP
 - Gobblin
@@ -1127,6 +1128,7 @@ specific:
 - libmdbx
 - libmicrohttpd
 - lsFusion
+- make
 - messageformat
 - metal3-io
 - motd
@@ -1151,6 +1153,7 @@ specific:
 - radare2
 - ruleguard
 - seL4 Foundation
+- sed
 - spaCy
 - sparklyr
 - strongSwan
