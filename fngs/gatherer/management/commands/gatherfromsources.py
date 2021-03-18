@@ -16,6 +16,7 @@ import requests
 import re
 import os
 import traceback
+import yaml
 from pprint import pprint
 
 
@@ -24,7 +25,7 @@ SCRIPT_DIRECTORY = os.path.dirname(os.path.realpath(__file__))
 logger: logging.Logger = None
 parsing_modules_names = []
 days_count = None
-keywords = None
+keywords = {}
 
 
 class Command(BaseCommand):
@@ -101,8 +102,8 @@ class Command(BaseCommand):
                     sys.exit(2)
             parsing_modules_names = [ParsingModuleType(m) for m in options['MODULE'].split(',')]
         global keywords
-        with open(os.path.join(SCRIPT_DIRECTORY, 'keywords.txt'), 'r') as fin:
-            keywords = [line.strip() for line in fin.readlines()]
+        with open(os.path.join(SCRIPT_DIRECTORY, 'keywords.yaml'), 'r') as fin:
+            keywords = yaml.safe_load(fin)
 
 
 def init_logger():
@@ -163,11 +164,17 @@ class PostsData:
         self.warning = warning
 
 
+class FiltrationType(Enum):
+    GENERIC = 'generic'
+    SPECIFIC = 'specific'
+
+
 class BasicParsingModule(metaclass=ABCMeta):
 
     source_name = None
     warning = None
     filtration_needed = False
+    filters = []
 
     def parse(self) -> List[PostData]:
         try:
@@ -198,16 +205,22 @@ class BasicParsingModule(metaclass=ABCMeta):
         if not self.filtration_needed:
             return posts_data
         filtered_posts_data: List[PostData] = []
+        keywords_to_check = []
+        if FiltrationType.GENERIC in self.filters:
+            keywords_to_check += keywords['generic']
+        if FiltrationType.SPECIFIC in self.filters:
+            keywords_to_check += keywords['specific']
         for post_data in posts_data:
             matched = False
-            for keyword in keywords:
+            for keyword in keywords_to_check:
                 if keyword in post_data.title:
                     matched = True
                     post_data.keywords.append(keyword)
             if matched:
+                logger.debug(f'"{post_data.title}" from "{self.source_name}" added because it contains keywords {post_data.keywords}')
                 filtered_posts_data.append(post_data)
             else:
-                logger.warning(f'"{post_data.title}" from "{self.source_name}" filtered cause not contains none of expected keywords')
+                logger.warning(f'"{post_data.title}" from "{self.source_name}" filtered out cause not contains none of expected keywords')
         return filtered_posts_data
 
     def _filter_out_old(self, posts_data: List[PostData]) -> List[PostData]:
@@ -354,6 +367,10 @@ class AnalyticsIndiaMagComParsingModule(SimpleRssBasicParsingModule):
     source_name = 'AnalyticsIndiaMagCom'
     rss_url = 'https://analyticsindiamag.com/feed/'
     filtration_needed = True
+    filters = [
+        FiltrationType.SPECIFIC,
+        FiltrationType.GENERIC,
+    ]
 
 
 class ArsTechnicaComParsingModule(SimpleRssBasicParsingModule):
@@ -361,6 +378,9 @@ class ArsTechnicaComParsingModule(SimpleRssBasicParsingModule):
     source_name = 'ArsTechnicaCom'
     rss_url = 'https://arstechnica.com/feed/'
     filtration_needed = True
+    filters = [
+        FiltrationType.SPECIFIC,
+    ]
 
 
 class HackadayComParsingModule(SimpleRssBasicParsingModule):
@@ -368,6 +388,9 @@ class HackadayComParsingModule(SimpleRssBasicParsingModule):
     source_name = 'HackadayCom'
     rss_url = 'https://hackaday.com/feed/'
     filtration_needed = True
+    filters = [
+        FiltrationType.SPECIFIC,
+    ]
 
 
 class JaxenterComParsingModule(SimpleRssBasicParsingModule):
@@ -375,6 +398,9 @@ class JaxenterComParsingModule(SimpleRssBasicParsingModule):
     source_name = 'JaxenterCom'
     rss_url = 'https://jaxenter.com/rss'
     filtration_needed = True
+    filters = [
+        FiltrationType.SPECIFIC,
+    ]
 
 
 class LinuxInsiderComParsingModule(SimpleRssBasicParsingModule):
@@ -388,6 +414,9 @@ class MashableComParsingModule(SimpleRssBasicParsingModule):
     source_name = 'MashableCom'
     rss_url = 'https://mashable.com/rss/'
     filtration_needed = True
+    filters = [
+        FiltrationType.SPECIFIC,
+    ]
 
 
 class SdTimesComParsingModule(SimpleRssBasicParsingModule):
@@ -395,6 +424,9 @@ class SdTimesComParsingModule(SimpleRssBasicParsingModule):
     source_name = 'SdTimesCom'
     rss_url = 'https://sdtimes.com/feed/'
     filtration_needed = True
+    filters = [
+        FiltrationType.SPECIFIC,
+    ]
 
 
 class SecurityBoulevardComParsingModule(SimpleRssBasicParsingModule):
@@ -402,6 +434,9 @@ class SecurityBoulevardComParsingModule(SimpleRssBasicParsingModule):
     source_name = 'SecurityBoulevardCom'
     rss_url = 'https://securityboulevard.com/feed/'
     filtration_needed = True
+    filters = [
+        FiltrationType.SPECIFIC,
+    ]
 
 
 class SiliconAngleComParsingModule(SimpleRssBasicParsingModule):
@@ -409,6 +444,9 @@ class SiliconAngleComParsingModule(SimpleRssBasicParsingModule):
     source_name = 'SiliconAngleCom'
     rss_url = 'https://siliconangle.com/feed/'
     filtration_needed = True
+    filters = [
+        FiltrationType.SPECIFIC,
+    ]
 
 
 class TechCrunchComParsingModule(SimpleRssBasicParsingModule):
@@ -416,6 +454,9 @@ class TechCrunchComParsingModule(SimpleRssBasicParsingModule):
     source_name = 'TechCrunchCom'
     rss_url = 'https://techcrunch.com/feed/'
     filtration_needed = True
+    filters = [
+        FiltrationType.SPECIFIC,
+    ]
 
 
 class TechNodeComParsingModule(SimpleRssBasicParsingModule):
@@ -423,6 +464,9 @@ class TechNodeComParsingModule(SimpleRssBasicParsingModule):
     source_name = 'TechNodeCom'
     rss_url = 'https://technode.com/feed/'
     filtration_needed = True
+    filters = [
+        FiltrationType.SPECIFIC,
+    ]
 
 
 class TheNextWebComParsingModule(SimpleRssBasicParsingModule):
@@ -430,6 +474,9 @@ class TheNextWebComParsingModule(SimpleRssBasicParsingModule):
     source_name = 'TheNextWebCom'
     rss_url = 'https://thenextweb.com/feed/'
     filtration_needed = True
+    filters = [
+        FiltrationType.SPECIFIC,
+    ]
 
 
 class VentureBeatComParsingModule(SimpleRssBasicParsingModule):
@@ -437,6 +484,9 @@ class VentureBeatComParsingModule(SimpleRssBasicParsingModule):
     source_name = 'VentureBeatCom'
     rss_url = 'https://venturebeat.com/feed/'
     filtration_needed = True
+    filters = [
+        FiltrationType.SPECIFIC,
+    ]
 
 
 class ThreeDPrintingMediaNetworkParsingModule(SimpleRssBasicParsingModule):
@@ -444,6 +494,9 @@ class ThreeDPrintingMediaNetworkParsingModule(SimpleRssBasicParsingModule):
     source_name = 'ThreeDPrintingMediaNetwork'
     rss_url = 'https://www.3dprintingmedia.network/feed/'
     filtration_needed = True
+    filters = [
+        FiltrationType.SPECIFIC,
+    ]
 
 
 class CbrOnlineComParsingModule(SimpleRssBasicParsingModule):
@@ -451,6 +504,9 @@ class CbrOnlineComParsingModule(SimpleRssBasicParsingModule):
     source_name = 'CbrOnlineCom'
     rss_url = 'https://www.cbronline.com/rss'
     filtration_needed = True
+    filters = [
+        FiltrationType.SPECIFIC,
+    ]
 
 
 class HelpNetSecurityComParsingModule(SimpleRssBasicParsingModule):
@@ -458,6 +514,9 @@ class HelpNetSecurityComParsingModule(SimpleRssBasicParsingModule):
     source_name = 'HelpNetSecurityCom'
     rss_url = 'https://www.helpnetsecurity.com/feed/'
     filtration_needed = True
+    filters = [
+        FiltrationType.SPECIFIC,
+    ]
 
 
 class SecuritySalesComParsingModule(SimpleRssBasicParsingModule):
@@ -465,6 +524,9 @@ class SecuritySalesComParsingModule(SimpleRssBasicParsingModule):
     source_name = 'SecuritySalesCom'
     rss_url = 'https://www.securitysales.com/feed/'
     filtration_needed = True
+    filters = [
+        FiltrationType.SPECIFIC,
+    ]
 
 
 class TechRadarComParsingModule(SimpleRssBasicParsingModule):
@@ -472,6 +534,9 @@ class TechRadarComParsingModule(SimpleRssBasicParsingModule):
     source_name = 'TechRadarCom'
     rss_url = 'https://www.techradar.com/rss'
     filtration_needed = True
+    filters = [
+        FiltrationType.SPECIFIC,
+    ]
 
 
 class TfirIoParsingModule(SimpleRssBasicParsingModule):
@@ -479,6 +544,9 @@ class TfirIoParsingModule(SimpleRssBasicParsingModule):
     source_name = 'TfirIo'
     rss_url = 'https://www.tfir.io/feed/'
     filtration_needed = True
+    filters = [
+        FiltrationType.SPECIFIC,
+    ]
 
 
 class ZdNetComLinuxParsingModule(SimpleRssBasicParsingModule):
@@ -512,6 +580,9 @@ class HabrComNewsParsingModule(HabrComBasicParsingModule):
 
     source_name = 'HabrComNews'
     filtration_needed = True
+    filters = [
+        FiltrationType.SPECIFIC,
+    ]
 
     @property
     def rss_url(self):
