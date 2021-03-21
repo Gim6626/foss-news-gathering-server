@@ -220,7 +220,7 @@ class BasicParsingModule(metaclass=ABCMeta):
                 logger.debug(f'"{post_data.title}" from "{self.source_name}" added because it contains keywords {post_data.keywords}')
                 filtered_posts_data.append(post_data)
             else:
-                logger.warning(f'"{post_data.title}" from "{self.source_name}" filtered out cause not contains none of expected keywords')
+                logger.warning(f'"{post_data.title}" ({post_data.url}) from "{self.source_name}" filtered out cause not contains none of expected keywords')
         return filtered_posts_data
 
     def _filter_out_old(self, posts_data: List[PostData]) -> List[PostData]:
