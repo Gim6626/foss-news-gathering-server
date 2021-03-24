@@ -213,6 +213,8 @@ class BasicParsingModule(metaclass=ABCMeta):
         for post_data in posts_data:
             matched = False
             for keyword in keywords_to_check:
+                if keyword in post_data.keywords:
+                    continue
                 if re.search(rf'\b{re.escape(keyword)}\b', post_data.title, re.IGNORECASE):
                     matched = True
                     post_data.keywords.append(keyword)
