@@ -9,13 +9,16 @@ generic:
 - Neural
 - SQL
 - VPN
+- attack
 - backdoor
 - botnet
 - course
+- database
 - distributive
 - distro
 - exploit
 - malware
+- management
 - secure
 - security
 - threat
@@ -26,6 +29,7 @@ generic:
 - "\u041E\u0421"
 - "\u0421\u0423\u0411\u0414"
 - "\u0430\u0442\u0430\u043A\u0430"
+- "\u0431\u0435\u0437\u043E\u043F\u0430\u0441\u043D\u043E\u0441\u0442\u044C"
 - "\u0432\u0438\u0440\u0443\u0441"
 - "\u0432\u043D\u0435\u0434\u0440"
 - "\u0434\u0435\u0432\u043E\u043F\u0441"
@@ -33,6 +37,7 @@ generic:
 - "\u0434\u0438\u0441\u0442\u0440\u0438\u0431\u0443\u0442\u0438\u0432\u0430"
 - "\u0438\u0441\u0442\u043E\u0440\u0438\u044F"
 - "\u043A\u0443\u0440\u0441"
+- "\u043C\u0435\u043D\u0435\u0434\u0436\u043C\u0435\u043D\u0442"
 - "\u0443\u0442\u0435\u0447\u043A\u0430"
 - "\u0443\u044F\u0437\u0432\u0438\u043C\u043E\u0441\u0442\u044C"
 - "\u044D\u043A\u0441\u043F\u043B\u043E\u0439\u0442"
@@ -52,8 +57,6 @@ specific:
 - ADE
 - AGL
 - AI Explainability 360
-- AI Explainability 360
-- AI Fairness 360
 - AI Fairness 360
 - AIF360
 - ALBERT
@@ -91,6 +94,8 @@ specific:
 - Apache Arrow Flight
 - Apache CloudStack
 - Apache Kylin
+- Apache OpenMeetings
+- Apache Pinot
 - Apache Software Foundation
 - Apache Superset
 - Appium
@@ -104,9 +109,11 @@ specific:
 - Arm Compute Library
 - Arm NN
 - Armbian
+- Arrow
 - Artifact Hub
 - Asahi Linux
 - Audacious
+- Audacity
 - Augur
 - AutoMaker
 - Autoconf
@@ -184,8 +191,10 @@ specific:
 - Camelot
 - Canonical
 - Cantera
+- Catalyst
 - Cawbird
 - Cello
+- Celluloid
 - CentOS
 - Centaurus Infrastructure Project
 - Ceph
@@ -208,7 +217,6 @@ specific:
 - ClearML
 - ClickHouse
 - Clonezilla Live
-- Cloud Custodian
 - Cloud Custodian
 - Cloud Foundry Foundation Fund
 - Cloud Information Model Fund
@@ -242,11 +250,11 @@ specific:
 - CoreDNS
 - Coreboot
 - Cortex
-- Cortex
+- Cosmic Pi
 - Cregit
 - Crossplane
 - CrowdSec
-- CrowdSec
+- Crystal
 - CudaText
 - Cups-Filters
 - Curiefense
@@ -286,13 +294,14 @@ specific:
 - Debian
 - Debian ISO FastInstall
 - Decentralized Identity Foundation
+- Deepin
+- Deepin Linux
 - Delta Lake Project
 - DentOS
 - Devuan
 - Dex
 - DiaMon Workgroup
 - Disaggregated Network Operating System
-- Discord
 - Django
 - Docker
 - Dojo
@@ -300,12 +309,12 @@ specific:
 - Dotenv-linter
 - Dovetail
 - Dragonfly
-- Dragonfly
 - Driverless Printing
 - Dronecode Project
 - Drupal
 - ECharts
 - EDL
+- ELECTRA
 - ELISA Fund
 - ELK
 - ELKS
@@ -316,18 +325,17 @@ specific:
 - EVE
 - EasyCLA
 - Eclipse
+- Eclipse Foundation
 - EdgeX Foundry
 - Egeria
 - EiskaltDC++
 - Elastic Deep Learning
 - Elasticsearch
 - Electron
-- Electron
 - Embedded and Automotive PV Drivers
 - Embox
 - Enarx
 - Energy Market Methods Consortium
-- Envoy
 - Envoy
 - Ergo
 - Erlang
@@ -375,6 +383,7 @@ specific:
 - Fossology
 - Free Heroes of Might and Magic 2
 - Free Heroes of Might and Magic II
+- FreeCAD
 - FreeDOS
 - FreeRDP
 - FreeRTOS
@@ -399,6 +408,7 @@ specific:
 - GPyTorch
 - GTK
 - GXF
+- Garuda
 - GeckoLinux
 - "Gemini-\u043A\u043B\u0438\u0435\u043D\u0442\u0430"
 - GenevaERS
@@ -447,7 +457,6 @@ specific:
 - Haxe
 - Headlamp
 - Helm
-- Helm
 - Holmes
 - Home Assistant
 - Home Edge
@@ -484,7 +493,6 @@ specific:
 - Java APIs for VPP
 - JavaScript
 - Jenkins
-- Jenkins
 - Jenkins X
 - JerryScript
 - JingOS
@@ -493,8 +501,10 @@ specific:
 - JuiceFS
 - Julia
 - KDE
+- KDE Applications
 - KDE Apps
 - KDE Frameworks
+- KDE Gear
 - KDE Neon
 - KDevelop
 - KEDA
@@ -509,6 +519,7 @@ specific:
 - Kepler.GL
 - Keptn
 - Keras
+- KernelCI
 - Keylime
 - Kibana
 - Kinetic Open Storage Project
@@ -517,13 +528,13 @@ specific:
 - Kodachi
 - Kodi
 - Kooha
+- Kornia
 - Kotlin
 - Krita
 - Kube-dump
 - KubeEdge
-- KubeEdge
 - KubeVirt
-- Kubernetes
+- Kubeflow
 - Kubernetes
 - Kubernetes Event-driven Autoscaling
 - Kubuntu
@@ -548,8 +559,8 @@ specific:
 - Laravel
 - LazPaint
 - Legend
+- Lens
 - LeoCAD
-- Let
 - Let's Encrypt
 - Libgcrypt
 - LibreOffice
@@ -557,7 +568,6 @@ specific:
 - Libuv
 - LightAutoML
 - Lighttpd
-- Linkerd
 - Linkerd
 - Linux
 - Linux Foundation
@@ -570,13 +580,11 @@ specific:
 - Logging Enhancements
 - Long-Term Support Initiative
 - Longhorn
-- Longhorn
 - Ludwig
 - Lutris
 - MAPS.ME
 - MAVLink
 - MD-SAL
-- MLflow
 - MLflow
 - MNF
 - MOJA Global Project
@@ -586,6 +594,8 @@ specific:
 - MUSIC
 - Mageia
 - Mainframe Open Education
+- Manjaro
+- Manjaro Linux
 - Manticore Search
 - Mapzen
 - MariaDB
@@ -605,12 +615,15 @@ specific:
 - Minicoredumper
 - Mir
 - Mirage OS
+- Mirantis Lens
 - Mobile Native Foundation
 - Mocha
 - Model Search
+- Mojolicious
 - Moment
 - Monado
 - MongoDB
+- Monitorix
 - Moodle
 - Morphir
 - Movim
@@ -644,7 +657,6 @@ specific:
 - Nitrux
 - NlpCraft
 - Node-RED
-- Node.js
 - Node.js
 - Nomad
 - NomadBSD
@@ -704,7 +716,6 @@ specific:
 - Open Horizon
 - Open Mainframe Mentorship
 - Open Mainframe Project
-- Open Mainframe Project
 - Open Manufacturing Platform Fund
 - Open Policy Agent
 - Open Security Controller Project
@@ -741,12 +752,14 @@ specific:
 - OpenFlow Plugin
 - OpenGL
 - OpenHPC Project
+- OpenHarmony
 - OpenJDK
 - OpenJS Foundation
 - OpenKruise
 - OpenMAMA Fund
 - OpenMandriva
 - OpenMandriva Lx
+- OpenMeetings
 - OpenMessaging
 - OpenMetrics
 - OpenOffice
@@ -759,7 +772,6 @@ specific:
 - OpenSwitch
 - OpenTaxSolver
 - OpenTelemetry
-- OpenTelemetry
 - OpenTimelineIO
 - OpenTracing
 - OpenVDB
@@ -769,6 +781,7 @@ specific:
 - OpenYurt
 - OperatorFabric
 - Oracle Linux
+- Orbit
 - OrbitDB
 - OroCRM
 - OroCommerce
@@ -778,6 +791,7 @@ specific:
 - PARSEC
 - PCLinuxOS
 - PEP
+- PF
 - PHP
 - PNDA
 - PVS-Studio
@@ -787,8 +801,11 @@ specific:
 - Panfrost
 - Parole
 - Paru
+- PascalABC.NET
 - Pastas
 - Patroni
+- PeaZip
+- PeachPie
 - PeerTube
 - PennyLane
 - Periskop
@@ -797,7 +814,9 @@ specific:
 - Phoronix Test Suite
 - PicoLibc
 - PinePhone
+- Pinot
 - Pktgen
+- Plan9
 - Plasma
 - Plasma Mobile
 - Plastic
@@ -808,12 +827,13 @@ specific:
 - Polycephaly
 - Portal Platform
 - Porter
+- Porteus Kiosk
 - PostgreSQL
 - PowSyBl
 - Power Fx
 - PowerShell
 - Pravega
-- Prometheus
+- Presto
 - Prometheus
 - Proton
 - Proxmox
@@ -821,10 +841,11 @@ specific:
 - Puppet
 - PyCubed
 - PyG
+- PyKeen
 - PyTorch
 - PyTorch Geometric
 - PyTorch GeometricTemporal
-- Pyro
+- PyVista
 - Pyro
 - Python
 - Q4OS
@@ -860,6 +881,7 @@ specific:
 - Raspberry Pi OS
 - React
 - Real Time Linux
+- Real-time Voice Cloning
 - Red Hat
 - Red Hat Enterprise Linux
 - Red Team Project
@@ -875,11 +897,14 @@ specific:
 - Rend-o-matic
 - Restic
 - RethinkDB
+- RetroArch
+- RetroShare
 - Rizin
 - Rocket Chat
 - Rocket.Chat
 - Rook
 - Ruby
+- RudderStack
 - RunaWFE Free
 - Runc
 - Rust
@@ -895,10 +920,10 @@ specific:
 - SGX SDK
 - SGX SDK for Linux
 - SNAS
-- SO
 - SOAJS
 - SODA Foundation
 - SOF
+- SONiC
 - SPDX
 - SPIFFE
 - SPIRE
@@ -921,6 +946,7 @@ specific:
 - Secure Electron Adapter
 - Security Reference Data
 - Selenium Grid
+- SelfTime
 - Serverless Workflow Specification
 - Service Design & Creation
 - Service Mesh Interface
@@ -942,13 +968,14 @@ specific:
 - Solus
 - Solus Linux
 - Sound Open Firmware
+- Sphinx
+- Sphinx Search
 - Spinnaker
+- Spleeter
 - StackStorm Project
 - Stanza
 - Starship
 - State of the Edge
-- Steam
-- Steam Link
 - Stellarium
 - Stor4NFV
 - StorPerf
@@ -967,6 +994,7 @@ specific:
 - TARS Foundation
 - TF 3D
 - TFX
+- THiNC
 - TLDK
 - TODO Group
 - TSeer
@@ -975,7 +1003,6 @@ specific:
 - Tails
 - Tarantool
 - Tcl/Tk
-- Tekton
 - Tekton
 - Tekton Pipeline
 - Telegram
@@ -986,6 +1013,7 @@ specific:
 - TensorFlow 3D
 - TensorFlow Extended
 - TensorLy
+- TerminusDB
 - Tern
 - Terraform
 - TerseDecompress
@@ -1013,6 +1041,7 @@ specific:
 - ToIP
 - Tor
 - Tor Browser
+- Torch-Points3D
 - TraceCompass
 - Transact
 - Transport Layer Development Kit
@@ -1069,8 +1098,11 @@ specific:
 - Voice Metadata Standardization
 - Void Linux
 - Volcano
+- Vowpal Wabbit
 - Waltz
 - Wasmer
+- Wave
+- Wave ML
 - Wayland
 - WebAssembly
 - WebRTC
@@ -1087,6 +1119,7 @@ specific:
 - XCP-NG
 - XCP-ng
 - XGVela
+- XWayland
 - Xen Project
 - Xfce
 - XigmaNAS
@@ -1107,6 +1140,7 @@ specific:
 - Zypper
 - aTox
 - anacron
+- aptitude
 - asciinema
 - awk
 - bash
@@ -1118,7 +1152,6 @@ specific:
 - coreutils
 - curl
 - data science
-- database
 - deno
 - fheroes2
 - fish
@@ -1126,6 +1159,7 @@ specific:
 - gRPC
 - gThumb
 - gdb
+- gdu
 - gedit
 - goredo
 - helloSystem
@@ -1136,38 +1170,40 @@ specific:
 - jQuery
 - journald
 - k3s
+- k6
 - kdb+
 - kernelCI Initiative Fund
 - labwc
 - lebowski
 - libmdbx
 - libmicrohttpd
+- lightsquid
+- links
 - lsFusion
-- make
 - messageformat
 - metal3-io
 - motd
 - msd
 - mtPaint
 - nano
+- newsboat
 - nftables
 - nim
 - nvm
-- open source
-- open-source
 - openSUSE
 - osquery
 - ossh
+- ovpn-admin
 - ownCloud
 - passwdqc
 - pcem
-- pfSense
 - pfSense
 - pgmpy
 - qBittorrent
 - qutebrowser
 - radare2
 - ruleguard
+- sK1
 - seL4 Foundation
 - sed
 - spaCy
@@ -1185,6 +1221,8 @@ specific:
 - xVA-Synth
 - xine
 - youtube-dl
+- zlib
+- zlib-ng
 - "\u0410\u043B\u044C\u0442"
 - "\u043B\u0438\u043D\u0443\u043A\u0441"
 
