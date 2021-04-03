@@ -13,6 +13,7 @@ generic:
 - backdoor
 - botnet
 - course
+- data science
 - database
 - distributive
 - distro
@@ -30,14 +31,20 @@ generic:
 - "\u0421\u0423\u0411\u0414"
 - "\u0430\u0442\u0430\u043A\u0430"
 - "\u0431\u0435\u0437\u043E\u043F\u0430\u0441\u043D\u043E\u0441\u0442\u044C"
+- "\u0431\u044D\u043A\u0434\u043E\u0440"
 - "\u0432\u0438\u0440\u0443\u0441"
-- "\u0432\u043D\u0435\u0434\u0440"
+- "\u0432\u043D\u0435\u0434\u0440\u0435\u043D\u0438\u0435"
+- "\u0432\u0441\u0442\u0440\u0435\u0447\u0430"
 - "\u0434\u0435\u0432\u043E\u043F\u0441"
 - "\u0434\u0438\u0441\u0442\u0440\u0438\u0431\u0443\u0442\u0438\u0432"
 - "\u0434\u0438\u0441\u0442\u0440\u0438\u0431\u0443\u0442\u0438\u0432\u0430"
 - "\u0438\u0441\u0442\u043E\u0440\u0438\u044F"
+- "\u043A\u043E\u043D\u0444\u0435\u0440\u0435\u043D\u0446\u0438\u044F"
 - "\u043A\u0443\u0440\u0441"
 - "\u043C\u0435\u043D\u0435\u0434\u0436\u043C\u0435\u043D\u0442"
+- "\u043C\u0438\u0442\u0430\u043F"
+- "\u0441\u043C\u0430\u0440\u0442\u0444\u043E\u043D"
+- "\u0442\u0435\u043B\u0435\u0444\u043E\u043D"
 - "\u0443\u0442\u0435\u0447\u043A\u0430"
 - "\u0443\u044F\u0437\u0432\u0438\u043C\u043E\u0441\u0442\u044C"
 - "\u044D\u043A\u0441\u043F\u043B\u043E\u0439\u0442"
@@ -85,6 +92,7 @@ specific:
 - AlmaLinux
 - Alpine Linux
 - Ambitus
+- AmpliGraph
 - Amundsen
 - Android
 - Angel
@@ -93,6 +101,7 @@ specific:
 - Apache
 - Apache Arrow Flight
 - Apache CloudStack
+- Apache Ignite
 - Apache Kylin
 - Apache OpenMeetings
 - Apache Pinot
@@ -134,6 +143,7 @@ specific:
 - Beaker
 - Besu
 - Beyond Linux From Scratch
+- BigGAN
 - Binutils
 - Bitwarden
 - BleachBit
@@ -191,6 +201,7 @@ specific:
 - Camelot
 - Canonical
 - Cantera
+- Cassandra
 - Catalyst
 - Cawbird
 - Cello
@@ -199,6 +210,7 @@ specific:
 - Centaurus Infrastructure Project
 - Ceph
 - Ceph Foundation
+- Cesium
 - Chaos Mesh
 - Chef
 - CherryTree
@@ -248,6 +260,7 @@ specific:
 - Core Embedded Linux Forum
 - Core Infrastructure Initiative
 - CoreDNS
+- CoreMLTools
 - Coreboot
 - Cortex
 - Cosmic Pi
@@ -259,6 +272,7 @@ specific:
 - Cups-Filters
 - Curiefense
 - Cutter
+- Cygwin
 - D-Bus
 - DALL-E
 - DAML
@@ -280,10 +294,12 @@ specific:
 - DPDK-burst-replay
 - DRBD
 - DTS
+- DVC
 - DXVK
 - Daffodil
 - Dapr
 - Darktable
+- Darts
 - Data Collection, Analytics, and Events
 - Data Helix
 - Data Movement as a Platform
@@ -360,6 +376,7 @@ specific:
 - FastDataStacks
 - Fastify
 - Feast
+- Featuretools
 - Fedora
 - Feilong
 - FileCoin
@@ -395,6 +412,7 @@ specific:
 - GHC
 - GIMP
 - GNOME
+- GNOME Commander
 - GNU Debugger
 - GNU Guix
 - GNU Make
@@ -430,6 +448,7 @@ specific:
 - Godot Engine
 - Golang
 - Golang Toolset for VPP
+- Gradle
 - Grafana
 - Grafana Tempo
 - GraphHopper
@@ -457,6 +476,7 @@ specific:
 - Haxe
 - Headlamp
 - Helm
+- HiSD
 - Holmes
 - Home Assistant
 - Home Edge
@@ -472,9 +492,11 @@ specific:
 - IPCDump
 - IPFS
 - IPPUSBXD
+- IPython
 - ISRG
 - Icaros
 - IceWM
+- Ignite
 - Indy
 - Infrastructure Utils
 - Inkscape
@@ -500,6 +522,7 @@ specific:
 - Joint Development Foundation
 - JuiceFS
 - Julia
+- Jupyter
 - KDE
 - KDE Applications
 - KDE Apps
@@ -537,6 +560,7 @@ specific:
 - Kubeflow
 - Kubernetes
 - Kubernetes Event-driven Autoscaling
+- Kubestr
 - Kubuntu
 - Kubuntu Focus
 - Kuma
@@ -568,6 +592,7 @@ specific:
 - Libuv
 - LightAutoML
 - Lighttpd
+- LinDoz
 - Linkerd
 - Linux
 - Linux Foundation
@@ -582,6 +607,7 @@ specific:
 - Longhorn
 - Ludwig
 - Lutris
+- Lux
 - MAPS.ME
 - MAVLink
 - MD-SAL
@@ -594,6 +620,8 @@ specific:
 - MUSIC
 - Mageia
 - Mainframe Open Education
+- Makulu
+- MakuluLinux
 - Manjaro
 - Manjaro Linux
 - Manticore Search
@@ -602,6 +630,7 @@ specific:
 - Marko
 - Marquez
 - MatPlotLib
+- Mayavi
 - MediaGoblin
 - Mes
 - Mesa
@@ -648,12 +677,15 @@ specific:
 - Netrunner
 - Network Service Mesh
 - NetworkManager
+- Neural Body
 - Neural Network (NN) Streamer
 - Neural Network Streamer
 - Neutron Northbound
+- NewsFlash
 - Nextcloud
 - Nextcloud Hub
 - Nginx
+- Nginx Unit
 - Nitrux
 - NlpCraft
 - Node-RED
@@ -726,6 +758,7 @@ specific:
 - Open source readiness
 - Open vSwitch
 - Open-Source
+- Open3D
 - OpenAPI Initiative
 - OpenBMC
 - OpenBSD
@@ -762,6 +795,7 @@ specific:
 - OpenMeetings
 - OpenMessaging
 - OpenMetrics
+- OpenNebula
 - OpenOffice
 - OpenPGP
 - OpenPOWER Foundation
@@ -793,13 +827,16 @@ specific:
 - PEP
 - PF
 - PHP
+- PM4Py
 - PNDA
 - PVS-Studio
 - PX4
+- PaddleSeg
 - Paint
 - Pale Moon
 - Panfrost
 - Parole
+- Parrot
 - Paru
 - PascalABC.NET
 - Pastas
@@ -837,11 +874,15 @@ specific:
 - Prometheus
 - Proton
 - Proxmox
+- Proxmox Mail Gateway
+- Pulsar
 - PulseAudio
 - Puppet
 - PyCubed
+- PyFlux
 - PyG
 - PyKeen
+- PyOD
 - PyTorch
 - PyTorch Geometric
 - PyTorch GeometricTemporal
@@ -850,6 +891,7 @@ specific:
 - Python
 - Q4OS
 - QEMU
+- QGit
 - QGroundControl
 - QMMP
 - QMSTR
@@ -910,6 +952,7 @@ specific:
 - Rust
 - S2 Common Components
 - SAF
+- SAIL
 - SARIF
 - "SAS.\u041F\u043B\u0430\u043D\u0435\u0442\u0430"
 - SDC
@@ -941,6 +984,7 @@ specific:
 - SchemaHero
 - SciBERT
 - Screwdriver
+- Sculpt
 - Scylla
 - SeaMonkey
 - Secure Electron Adapter
@@ -956,6 +1000,7 @@ specific:
 - Siduction
 - Signal
 - Skrooge
+- Sktime
 - Slackel
 - Slacko Puppy
 - SmartApp Framework
@@ -968,6 +1013,7 @@ specific:
 - Solus
 - Solus Linux
 - Sound Open Firmware
+- SpamAssassin
 - Sphinx
 - Sphinx Search
 - Spinnaker
@@ -997,6 +1043,7 @@ specific:
 - THiNC
 - TLDK
 - TODO Group
+- TSFRESH
 - TSeer
 - TUF
 - Taiga UI
@@ -1012,6 +1059,7 @@ specific:
 - TensorFlow
 - TensorFlow 3D
 - TensorFlow Extended
+- TensorForce
 - TensorLy
 - TerminusDB
 - Tern
@@ -1105,10 +1153,12 @@ specific:
 - Wave ML
 - Wayland
 - WebAssembly
+- WebKitGTK
 - WebRTC
 - WebdriverIO
 - Webpack
 - Wget
+- WindTerm
 - Windows PV Drivers
 - Windows Terminal
 - Windows Terminal Preview
@@ -1119,6 +1169,7 @@ specific:
 - XCP-NG
 - XCP-ng
 - XGVela
+- XRDP
 - XWayland
 - Xen Project
 - Xfce
@@ -1151,8 +1202,8 @@ specific:
 - cert-manager
 - coreutils
 - curl
-- data science
 - deno
+- digiKam
 - fheroes2
 - fish
 - gImageReader
@@ -1162,6 +1213,7 @@ specific:
 - gdu
 - gedit
 - goredo
+- grex
 - helloSystem
 - i3wm
 - in-toto
@@ -1182,10 +1234,12 @@ specific:
 - lsFusion
 - messageformat
 - metal3-io
+- moe
 - motd
 - msd
 - mtPaint
 - nano
+- neuralbody
 - newsboat
 - nftables
 - nim
