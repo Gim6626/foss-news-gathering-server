@@ -19,6 +19,7 @@ class DigestRecordAdmin(admin.ModelAdmin):
         'category',
         'subcategory',
         'keywords',
+        'duplicates',
     )
     search_fields = (
         'title',
@@ -26,4 +27,14 @@ class DigestRecordAdmin(admin.ModelAdmin):
     )
 
 
+class DigestRecordDuplicateAdmin(admin.ModelAdmin):
+    readonly_fields = (
+        'id',
+    )
+    filter_horizontal = (
+        'digest_records',
+    )
+
+
 admin.site.register(DigestRecord, DigestRecordAdmin)
+admin.site.register(DigestRecordDuplicate, DigestRecordDuplicateAdmin)

@@ -28,3 +28,27 @@ class SpecificDigestRecordsViewSet(GenericViewSet, mixins.ListModelMixin):
     queryset = DigestRecord.objects.all()
     filter_class = SpecificDigestRecordsFilter
     filter_backends = [DjangoFilterBackend]
+
+
+class DigestRecordDuplicateViewSet(viewsets.ModelViewSet):
+    permission_classes = [permissions.IsAuthenticated]
+    queryset = DigestRecordDuplicate.objects.all()
+    serializer_class = DigestRecordDuplicateSerializer
+
+
+class SimilarDigestRecordsViewSet(GenericViewSet, mixins.ListModelMixin):
+    permission_classes = [permissions.IsAuthenticated]
+    model = DigestRecord
+    serializer_class = DigestRecordSerializer
+    queryset = DigestRecord.objects.all()
+    filter_class = SimilarDigestRecordsFilter
+    filter_backends = [DjangoFilterBackend]
+
+
+class DuplicatesByDigestRecordsViewSet(GenericViewSet, mixins.ListModelMixin):
+    permission_classes = [permissions.IsAuthenticated]
+    model = DigestRecordDuplicate
+    serializer_class = DigestRecordDuplicateSerializer
+    queryset = DigestRecordDuplicate.objects.all()
+    filter_class = DuplicatesByDigestRecordFilter
+    filter_backends = [DjangoFilterBackend]

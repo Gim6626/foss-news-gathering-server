@@ -102,3 +102,21 @@ class DigestRecord(models.Model):
 
     def __str__(self):
         return f'{self.dt} {self.title} {self.url} #{self.digest_number} state:"{self.state}" cat:"{self.category}" subcat: "{self.subcategory}" keywords: "{self.keywords}"'
+
+
+class DigestRecordDuplicate(models.Model):
+
+    digest_records = models.ManyToManyField(to=DigestRecord,
+                                            verbose_name='Digest Record',
+                                            related_name='duplicates',
+                                            # through='DigestRecordDuplicateConnection',
+                                            )
+
+    def __str__(self):
+        return f'{", ".join([dr.title for dr in self.digest_records.all()])}'
+
+
+# class DigestRecordDuplicateConnection(models.Model):
+#
+#     digest_record = models.ForeignKey(to=DigestRecord, on_delete=models.CASCADE)
+#     digest_record_duplicate = models.ForeignKey(to=DigestRecordDuplicate, on_delete=models.CASCADE)

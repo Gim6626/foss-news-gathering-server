@@ -19,3 +19,13 @@ class DigestRecordSerializer(serializers.ModelSerializer):
             'subcategory',
             'keywords',
         ]
+
+
+class DigestRecordDuplicateSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = DigestRecordDuplicate
+        fields = [
+            'id',
+            'digest_records',
+        ]
