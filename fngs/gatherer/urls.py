@@ -12,7 +12,7 @@ router.register('digest-records', DigestRecordViewSet, base_name='digest_records
 router.register('new-digest-records', NewDigestRecordViewSet, base_name='new_digest_records')
 router.register('specific-digest-records', SpecificDigestRecordsViewSet, basename='specific_digest_records')
 router.register('digest-records-duplicates', DigestRecordDuplicateViewSet, basename='digest_records_duplicates')
-router.register('similar-digest-records-duplicates', SimilarDigestRecordsViewSet, basename='similar_digest_records')
+router.register('similar-digest-records', SimilarDigestRecordsViewSet, basename='similar_digest_records')
 router.register('duplicates-by-digest-record', DuplicatesByDigestRecordsViewSet, basename='duplicates_by_digest_record')
 
 urlpatterns += router.urls
