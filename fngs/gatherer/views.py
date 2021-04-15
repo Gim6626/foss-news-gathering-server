@@ -40,7 +40,7 @@ class SimilarDigestRecordsViewSet(GenericViewSet, mixins.ListModelMixin):
     permission_classes = [permissions.IsAuthenticated]
     model = DigestRecord
     serializer_class = DigestRecordSerializer
-    queryset = DigestRecord.objects.all()
+    queryset = DigestRecord.objects.filter(state='IN_DIGEST')
     filter_class = SimilarDigestRecordsFilter
     filter_backends = [DjangoFilterBackend]
 
