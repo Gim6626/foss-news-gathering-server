@@ -27,5 +27,6 @@ class DigestRecordDuplicateSerializer(serializers.ModelSerializer):
         model = DigestRecordDuplicate
         fields = [
             'id',
+            'digest_number',
             'digest_records',
         ]
