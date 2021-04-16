@@ -106,14 +106,20 @@ class DigestRecord(models.Model):
 
 class DigestRecordDuplicate(models.Model):
 
+    digest_number = models.IntegerField(verbose_name='Digest Number',
+                                        null=True,
+                                        blank=True)
     digest_records = models.ManyToManyField(to=DigestRecord,
                                             verbose_name='Digest Record',
                                             related_name='duplicates',
                                             # through='DigestRecordDuplicateConnection',
                                             )
 
-    def __str__(self):
+    def digest_records_titles(self):
         return f'{", ".join([dr.title for dr in self.digest_records.all()])}'
+
+    def __str__(self):
+        return self.digest_records_titles()
 
 
 # class DigestRecordDuplicateConnection(models.Model):

@@ -31,6 +31,11 @@ class DigestRecordDuplicateAdmin(admin.ModelAdmin):
     readonly_fields = (
         'id',
     )
+    list_display = (
+        'id',
+        'digest_number',
+        'digest_records_titles',
+    )
     filter_horizontal = (
         'digest_records',
     )
