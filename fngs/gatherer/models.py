@@ -112,7 +112,6 @@ class DigestRecordDuplicate(models.Model):
     digest_records = models.ManyToManyField(to=DigestRecord,
                                             verbose_name='Digest Record',
                                             related_name='duplicates',
-                                            # through='DigestRecordDuplicateConnection',
                                             )
 
     def digest_records_titles(self):
@@ -120,9 +119,3 @@ class DigestRecordDuplicate(models.Model):
 
     def __str__(self):
         return self.digest_records_titles()
-
-
-# class DigestRecordDuplicateConnection(models.Model):
-#
-#     digest_record = models.ForeignKey(to=DigestRecord, on_delete=models.CASCADE)
-#     digest_record_duplicate = models.ForeignKey(to=DigestRecordDuplicate, on_delete=models.CASCADE)
