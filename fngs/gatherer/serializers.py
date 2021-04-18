@@ -30,3 +30,15 @@ class DigestRecordDuplicateSerializer(serializers.ModelSerializer):
             'digest_number',
             'digest_records',
         ]
+
+
+class DigestRecordDuplicateDetailedSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = DigestRecordDuplicate
+        depth = 1
+        fields = [
+            'id',
+            'digest_number',
+            'digest_records',
+        ]
