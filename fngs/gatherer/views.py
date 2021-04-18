@@ -40,6 +40,8 @@ class DigestRecordDuplicateDetailedViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
     queryset = DigestRecordDuplicate.objects.all()
     serializer_class = DigestRecordDuplicateDetailedSerializer
+    filter_class = CurrentDigestRecordsDuplicatesFilter
+    filter_backends = [DjangoFilterBackend]
 
 
 class SimilarDigestRecordsViewSet(GenericViewSet, mixins.ListModelMixin):

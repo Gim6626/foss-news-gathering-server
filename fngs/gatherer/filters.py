@@ -15,6 +15,19 @@ class SpecificDigestRecordsFilter(filters.FilterSet):
         return queryset.filter(digest_number=value)
 
 
+class CurrentDigestRecordsDuplicatesFilter(filters.FilterSet):
+    digest_number = filters.NumberFilter(method='digest_filter')
+
+    class Meta:
+        model = DigestRecordDuplicate
+        fields = [
+            'digest_number',
+        ]
+
+    def digest_filter(self, queryset, name, value):
+        return queryset.filter(digest_number=value)
+
+
 class SimilarDigestRecordsFilter(filters.FilterSet):
     digest_number = filters.NumberFilter(method='digest_filter')
     category = filters.CharFilter(method='category_filter')
