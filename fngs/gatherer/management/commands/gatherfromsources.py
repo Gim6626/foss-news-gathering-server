@@ -202,8 +202,6 @@ class BasicParsingModule(metaclass=ABCMeta):
         return filtered_posts_data
 
     def _filter_out_by_keywords(self, posts_data: List[PostData]):
-        if not self.filtration_needed:
-            return posts_data
         filtered_posts_data: List[PostData] = []
         keywords_to_check = []
         if FiltrationType.GENERIC in self.filters:
@@ -218,11 +216,14 @@ class BasicParsingModule(metaclass=ABCMeta):
                 if re.search(rf'\b{re.escape(keyword)}\b', post_data.title, re.IGNORECASE):
                     matched = True
                     post_data.keywords.append(keyword)
-            if matched:
-                logger.debug(f'"{post_data.title}" from "{self.source_name}" added because it contains keywords {post_data.keywords}')
-                filtered_posts_data.append(post_data)
+            if self.filtration_needed:
+                if matched:
+                    logger.debug(f'"{post_data.title}" from "{self.source_name}" added because it contains keywords {post_data.keywords}')
+                    filtered_posts_data.append(post_data)
+                else:
+                    logger.warning(f'"{post_data.title}" ({post_data.url}) from "{self.source_name}" filtered out cause not contains none of expected keywords')
             else:
-                logger.warning(f'"{post_data.title}" ({post_data.url}) from "{self.source_name}" filtered out cause not contains none of expected keywords')
+                filtered_posts_data.append(post_data)
         return filtered_posts_data
 
     def _filter_out_old(self, posts_data: List[PostData]) -> List[PostData]:
