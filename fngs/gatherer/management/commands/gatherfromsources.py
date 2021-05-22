@@ -185,6 +185,7 @@ class BasicParsingModule(metaclass=ABCMeta):
             return []
         try:
             filtered_posts_data: List[PostData] = self._filter_out(posts_data)
+            self._fill_keywords(filtered_posts_data)
             return filtered_posts_data
         except Exception as e:
             logger.error(f'Failed to filter data parsed from "{self.source_name}" source: {str(e)}')
@@ -195,6 +196,20 @@ class BasicParsingModule(metaclass=ABCMeta):
     def _parse(self) -> List[PostData]:
         pass
 
+    def _fill_keywords(self, posts_data: List[PostData]):
+        keywords_to_check = []
+        keywords_to_check += keywords['generic']
+        keywords_to_check += keywords['specific']
+        for post_data in posts_data:
+            for keyword in keywords_to_check:
+                if keyword in post_data.keywords:
+                    continue
+                if self._find_keyword_in_title(keyword, post_data.title):
+                    post_data.keywords.append(keyword)
+
+    def _find_keyword_in_title(self, keyword, title):
+        return re.search(rf'\b{re.escape(keyword)}\b', title, re.IGNORECASE)
+
     def _filter_out(self, posts_data: List[PostData]):
         filtered_posts_data: List[PostData] = posts_data
         filtered_posts_data = self._filter_out_old(filtered_posts_data)
@@ -202,6 +217,8 @@ class BasicParsingModule(metaclass=ABCMeta):
         return filtered_posts_data
 
     def _filter_out_by_keywords(self, posts_data: List[PostData]):
+        if not self.filtration_needed:
+            return posts_data
         filtered_posts_data: List[PostData] = []
         keywords_to_check = []
         if FiltrationType.GENERIC in self.filters:
@@ -211,19 +228,14 @@ class BasicParsingModule(metaclass=ABCMeta):
         for post_data in posts_data:
             matched = False
             for keyword in keywords_to_check:
-                if keyword in post_data.keywords:
-                    continue
-                if re.search(rf'\b{re.escape(keyword)}\b', post_data.title, re.IGNORECASE):
+                if self._find_keyword_in_title(keyword, post_data.title):
                     matched = True
-                    post_data.keywords.append(keyword)
-            if self.filtration_needed:
-                if matched:
-                    logger.debug(f'"{post_data.title}" from "{self.source_name}" added because it contains keywords {post_data.keywords}')
-                    filtered_posts_data.append(post_data)
-                else:
-                    logger.warning(f'"{post_data.title}" ({post_data.url}) from "{self.source_name}" filtered out cause not contains none of expected keywords')
-            else:
+                    break
+            if matched:
+                logger.debug(f'"{post_data.title}" from "{self.source_name}" added because it contains keywords {post_data.keywords}')
                 filtered_posts_data.append(post_data)
+            else:
+                logger.warning(f'"{post_data.title}" ({post_data.url}) from "{self.source_name}" filtered out cause not contains none of expected keywords')
         return filtered_posts_data
 
     def _filter_out_old(self, posts_data: List[PostData]) -> List[PostData]:
