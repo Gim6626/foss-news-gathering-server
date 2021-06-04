@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'django_filters',
     'gatherer',
+    'search',
 ]
 
 MIDDLEWARE = [
@@ -62,7 +63,11 @@ ROOT_URLCONF = 'fngs.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            os.path.join(BASE_DIR,
+                         'search',
+                         'templates')
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
