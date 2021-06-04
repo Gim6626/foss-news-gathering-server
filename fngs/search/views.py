@@ -16,7 +16,8 @@ class SearchResultsView(ListView):
 
     def get_queryset(self):
         query = self.request.GET.get('q')
-        object_list = DigestRecord.objects.filter(
+        filtered_objects = DigestRecord.objects.filter(
             Q(title__icontains=query) | Q(url__icontains=query)
         )
-        return object_list
+        ordered_filtered_objects = filtered_objects.order_by('-dt')
+        return ordered_filtered_objects
