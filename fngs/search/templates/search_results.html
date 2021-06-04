@@ -3,7 +3,11 @@
 <ol>
   {% for digest_record in object_list %}
     <li>
-        {{ digest_record.title }} [{{ digest_record.state }}], <a href="{{ digest_record.url }}" target="_blank">{{ digest_record.url }}</a>
+        {% if digest_record.dt %}
+            {{ digest_record.dt|date:"Y.m.d" }}
+        {% endif %}
+        {{ digest_record.title }}
+        [{{ digest_record.state }}], <a href="{{ digest_record.url }}" target="_blank">{{ digest_record.url }}</a>
     </li>
   {% endfor %}
 </ol>
