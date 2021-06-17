@@ -40,6 +40,7 @@ class DigestRecordSubcategory(Enum):
     MULTIMEDIA = 'multimedia'
     MOBILE = 'mobile'
     SECURITY = 'security'
+    SYSADM = 'sysadm'
     DEVOPS = 'devops'
     DATA_SCIENCE = 'data_science'
     WEB = 'web'
