@@ -1,23 +1,31 @@
 generic:
 - AI
+- CI CD
 - CI/CD
 - DL
 - Deep learning
 - DevOps
 - ML
 - Machine learning
+- Natural Language Processing
 - Neural
 - SQL
 - VPN
 - attack
 - backdoor
 - botnet
+- checksec
+- conference
 - course
 - cybersecurity
 - data science
 - database
+- databases
 - distributive
 - distro
+- event
+- exam
+- exams
 - exploit
 - game
 - games
@@ -27,6 +35,7 @@ generic:
 - secure
 - securing
 - security
+- teach
 - threat
 - vulnerabilities
 - vulnerability
@@ -41,6 +50,7 @@ generic:
 - бэкдор
 - вирус
 - внедрение
+- внедряет
 - вредоносное
 - встреча
 - девопс
@@ -87,6 +97,7 @@ specific:
 - ASF
 - ASWF
 - ATOM Language Syntax Highlighting for z/VM
+- AV Linux
 - AWS SaaS Boost
 - Academy Software Foundation
 - Accord Project
@@ -103,7 +114,9 @@ specific:
 - Akraino
 - AllenAct
 - Alliance for Open Media
+- Alma Linux
 - AlmaLinux
+- AlmaLinux OS
 - Alpine
 - Alpine Linux
 - Ambitus
@@ -115,6 +128,7 @@ specific:
 - Angel
 - Anomaly Detection Engine for Linux Logs
 - Ansible
+- AntiX
 - Apache
 - Apache Airflow
 - Apache Arrow Flight
@@ -128,11 +142,14 @@ specific:
 - Apache Superset
 - Appium
 - Application Authorization Framework
+- Appwrite
+- Archinstall
 - Architect
 - ArchiveBox
 - Ardour
 - Argo
 - Argo CD
+- Argo Rollouts
 - Argos Translate
 - Aries
 - Arm Compute Library
@@ -141,6 +158,7 @@ specific:
 - Arrow
 - Artifact Hub
 - Asahi Linux
+- Ascii Image Converter
 - Asterisk
 - Astra Linux
 - Atom
@@ -161,11 +179,13 @@ specific:
 - BPF
 - BabelTrace
 - Backstage
+- Bacula
 - Baetyl
 - Bareos
 - Barometer
 - Bastille
 - Beaker
+- BentoML
 - Besu
 - Beyond Linux From Scratch
 - BigGAN
@@ -198,7 +218,6 @@ specific:
 - CHAOSS
 - CHIPS Alliance Fund
 - CHIPS Alliance projects
-- CI CD
 - CI-Man
 - CI-Management
 - CICN
@@ -219,6 +238,8 @@ specific:
 - COVID Green
 - COVID Shield
 - CPS
+- CPU-G
+- CPU-X
 - CPython
 - CRI-O
 - CRUX
@@ -227,6 +248,7 @@ specific:
 - CUPS
 - Cactus
 - Calculate Linux
+- Calico
 - Caliper
 - Callisto
 - Camelot
@@ -238,6 +260,7 @@ specific:
 - Cello
 - Celluloid
 - CentOS
+- CentOS Stream
 - Centaurus Infrastructure Project
 - Ceph
 - Ceph Foundation
@@ -245,6 +268,7 @@ specific:
 - Chaos Mesh
 - Chef
 - CherryTree
+- Chia
 - Chipmunk
 - Chrome
 - Chrome OS
@@ -256,10 +280,12 @@ specific:
 - Cicero
 - Cine Encoder
 - Cinnamon
+- Cirq
 - Civil Infrastructure Platform
 - ClamAV
 - Clapper
 - Classy Vision
+- CleanText
 - ClearML
 - ClickHouse
 - Clonezilla Live
@@ -273,6 +299,7 @@ specific:
 - CloudEvents
 - CloudFoundry.org Foundation
 - ClusterDuck Protocol
+- Clustergram
 - CoMPAS
 - Cockpit
 - Cocos Creator
@@ -309,6 +336,7 @@ specific:
 - CudaText
 - Cups-Filters
 - Curiefense
+- CuteFish
 - Cutter
 - Cygwin
 - D-Bus
@@ -338,7 +366,7 @@ specific:
 - DVC
 - DXVK
 - Daffodil
-- Dapr
+- Daprs
 - Darktable
 - Dart Code Metrics
 - Darts
@@ -353,19 +381,25 @@ specific:
 - Debian
 - Debian ISO FastInstall
 - Decentralized Identity Foundation
+- DeepDetect
 - Deepin
 - Deepin Linux
+- Delta Lake
 - Delta Lake Project
+- Delta Sharing
 - DentOS
+- Deskreen
 - Detection
 - Detectron2
 - Devuan
 - Dex
 - DiaMon Workgroup
+- Diglossa.js
 - Disaggregated Network Operating System
 - Django
 - DoKC
 - Docker
+- Dockle
 - DogLinux
 - Dojo
 - Dolt
@@ -423,6 +457,7 @@ specific:
 - FDS
 - FFmpeg
 - FINOS
+- FPC
 - FRRouting
 - Fabric
 - Falco
@@ -449,6 +484,7 @@ specific:
 - Fledge
 - FlightGear
 - Flipper Zero
+- Floppinux
 - Flowblade
 - Fluentd
 - Flutter
@@ -486,6 +522,7 @@ specific:
 - GNUnet
 - GNUstep
 - GPG
+- GPT Neo
 - GPT-Neo
 - GParted
 - GParted Live
@@ -493,6 +530,7 @@ specific:
 - GTK
 - GXF
 - Garuda
+- Garuda Linux
 - Geary
 - GeckoLinux
 - Gemini-клиента
@@ -536,6 +574,7 @@ specific:
 - Grid
 - Grid eXchange Fabric
 - GrimoireLab
+- Gromit-MPX
 - Grub
 - Grub2
 - Grunt
@@ -549,16 +588,19 @@ specific:
 - HVMI
 - Hadoop
 - Harbor
+- Hardinfo
 - HarmonyOS
 - Haruna
 - Haxe
 - Headlamp
+- Helix
 - Helm
 - HiSD
 - Holmes
 - Home Assistant
 - Home Edge
 - HomeBank
+- Homebrew
 - Honeycomb 2 VPP (Hc2vpp)
 - Horovod
 - HospitalRun
@@ -573,6 +615,7 @@ specific:
 - IPFS
 - IPPUSBXD
 - IPython
+- ISAC-SIMO
 - ISRG
 - Icaros
 - IceWM
@@ -591,6 +634,7 @@ specific:
 - JCurl
 - JVPP
 - Jaeger
+- Jami
 - JanusGraph
 - Java
 - Java APIs for VPP
@@ -614,10 +658,12 @@ specific:
 - KDE Neon
 - KDevelop
 - KEDA
+- KFServing
 - KGCNN
 - KStars
 - KUDO
 - KaOS
+- Kaboxer
 - Kafka
 - Kali Linux
 - Kaolin
@@ -639,19 +685,24 @@ specific:
 - Kooha
 - Kornia
 - Kotlin
+- KotlinDL
 - KrakenD
 - Krita
+- Ksnip
 - Kube-dump
 - KubeEdge
 - KubeLinter
+- KubeSphere
 - KubeVirt
 - Kubeflow
 - Kubegres
 - Kubernetes
 - Kubernetes Event-driven Autoscaling
+- KubernetesExecutor
 - Kubesploit
 - Kubestr
 - Kubestriker
+- Kubevious
 - Kubuntu
 - Kubuntu Focus
 - Kuma
@@ -675,6 +726,7 @@ specific:
 - LVFS
 - LXQt
 - Lagrange
+- Lakka
 - Laminas
 - Laravel
 - Launch
@@ -688,6 +740,7 @@ specific:
 - LibreBMC
 - LibreOffice
 - LibreSSL
+- Libreboot
 - Libuv
 - LightAutoML
 - Lighttpd
@@ -725,6 +778,7 @@ specific:
 - MSB
 - MUSIC
 - MX Linux
+- MXNet
 - Mageia
 - Magisk
 - Mainframe Open Education
@@ -775,6 +829,7 @@ specific:
 - Movim
 - Mozilla
 - Mozilla VPN
+- Multi Model Server
 - Multi VIM/Cloud
 - Multi-site State Coordination Service
 - MusE
@@ -812,6 +867,7 @@ specific:
 - Nitrux
 - Nix
 - NlpCraft
+- NocoDB
 - Node-RED
 - Node.js
 - NodeJS
@@ -822,6 +878,7 @@ specific:
 - Notary
 - NumPy
 - Numba
+- Nyxt
 - O-RAN Central Unit
 - O-RAN Distributed Unit High Layers
 - O-RAN Distributed Unit Low Layers
@@ -862,6 +919,7 @@ specific:
 - OPNsense
 - OPX
 - OSC
+- OSGeo-Live
 - OSLC Handbook
 - OVS
 - OVSDB Integration
@@ -939,6 +997,8 @@ specific:
 - OpenPOWER Foundation
 - OpenPrinting
 - OpenProject
+- OpenPyXL
+- OpenRGB
 - OpenSSF
 - OpenSSH
 - OpenSSL
@@ -969,6 +1029,7 @@ specific:
 - OxiKit
 - PARSEC
 - PCLinuxOS
+- PCRE2
 - PEP
 - PF
 - PHP
@@ -976,6 +1037,7 @@ specific:
 - PNDA
 - PVS-Studio
 - PX4
+- Pacman
 - PaddleSeg
 - Paint
 - Pale Moon
@@ -997,6 +1059,7 @@ specific:
 - Perspective
 - Phoronix Test Suite
 - PicoLibc
+- PicoVGA
 - PinePhone
 - Pinot
 - Pixie
@@ -1007,15 +1070,21 @@ specific:
 - Plastic
 - Plausible
 - Plexus Interop
+- Plot
 - PoCL
 - Poke
+- PolarDB
+- Polaris
+- Polkit
 - Polycephaly
 - Portal Platform
 - Porter
 - Porteus Kiosk
+- PostHog
 - Postfix
 - PostgreSQL
 - PowSyBl
+- Power BI
 - Power Fx
 - PowerShell
 - Pravega
@@ -1031,6 +1100,7 @@ specific:
 - Pulsar
 - PulseAudio
 - Puppet
+- PureOS
 - PyCubed
 - PyFlux
 - PyG
@@ -1043,6 +1113,7 @@ specific:
 - PyTorch Geometric Temporal
 - PyTorch GeometricTemporal
 - PyTorch3D
+- PyTouch
 - PyVista
 - Pykg2vec
 - Pyro
@@ -1053,11 +1124,15 @@ specific:
 - QGit
 - QGroundControl
 - QMMP
+- QMPlay2
 - QMSTR
+- QUIC
 - QUnit
 - QVGE
+- Qbs
 - Qt
 - Qt Creator
+- QtProtobuf
 - Quarkus
 - Quartermaster
 - Qubes
@@ -1082,24 +1157,30 @@ specific:
 - Racket
 - Raku
 - Rakudo
-- Raspberry Pi
 - Raspberry Pi OS
 - React
 - Real Time Linux
 - Real-time Voice Cloning
+- Reaqtor
 - Red Hat
 - Red Hat Enterprise Linux
 - Red Team Project
 - RedHat
 - RedHat Enterprise Linux
+- Redcore
+- Redis
 - Redox OS
 - Redpanda
 - Reference FOSS Policy
 - Regolith
+- Reiser4
+- ReiserFS
 - RelEng/Autorelease
 - RelEng/Builder
 - Releng
 - Rend-o-matic
+- Rescuezilla
+- Reskue
 - Restic
 - RethinkDB
 - RetroArch
@@ -1143,6 +1224,7 @@ specific:
 - SSHFS
 - SUSE
 - Sailfish
+- SaluteJS
 - Samba
 - SampleVNF
 - Sane
@@ -1168,12 +1250,14 @@ specific:
 - Shadow
 - Shapash
 - ShellCheck
+- ShellHub
 - Shortwave
 - Shotcut
 - Siduction
 - SigNoz
 - Sigil
 - Signal
+- Simply Linux
 - Skrooge
 - Sktime
 - Slackel
@@ -1189,6 +1273,7 @@ specific:
 - Solaris
 - Solus
 - Solus Linux
+- Solvespace
 - SonoBus
 - Sound Open Firmware
 - SpamAssassin
@@ -1206,6 +1291,7 @@ specific:
 - Stor4NFV
 - StorPerf
 - Strimzi
+- Subtitld
 - Super Productivity
 - SuperAnnotate
 - Sway
@@ -1248,6 +1334,7 @@ specific:
 - TensorFlow
 - TensorFlow 3D
 - TensorFlow Extended
+- TensorFlow Lite
 - TensorFlow Quantum
 - TensorForce
 - TensorLy
@@ -1270,6 +1357,7 @@ specific:
 - Thunar
 - Thunderbird
 - TiKV
+- Til
 - Tilt Brush
 - TimeSynth
 - Timescale
@@ -1283,6 +1371,7 @@ specific:
 - Tor
 - Tor Browser
 - Torch-Points3D
+- TorchServe
 - TraceCompass
 - TransMaintain
 - Transact
@@ -1293,6 +1382,7 @@ specific:
 - Trinity Desktop Environment
 - Triskel
 - Trisquel
+- Triton Inference Server
 - Trust over IP Foundation Fund
 - TrustyAI
 - Ttyper
@@ -1302,20 +1392,25 @@ specific:
 - Twake
 - UCF
 - UDPI
+- UQ360
 - UUI
+- UXP
 - Ubuntu
 - Ubuntu Core
 - Ubuntu RescuePack
 - Ubuntu Touch
+- Ugly Duckling
 - Unbreakable Enterprise Kernel
 - Unfurl Bot
 - Unikraft
 - Unimgr
 - Universal Deep Packet Inspection Project
+- Upbound Universal Crossplane
 - Uptane
 - Urban Computing Foundation
 - Ursa
 - Usecase UI
+- Util-linux
 - VFC
 - VID
 - VISSL
@@ -1327,9 +1422,11 @@ specific:
 - VSPerf
 - VVP
 - Vala
+- Valhalla
 - Vault
 - Vector Packet Processing
 - Velociraptor
+- Veloren
 - Venus
 - VeraCrypt
 - Verloren
@@ -1350,12 +1447,14 @@ specific:
 - Void Linux
 - Volcano
 - Vowpal Wabbit
+- VzLinux
 - Waltz
 - Warzone 2100
 - Wasmer
 - Wave
 - Wave ML
 - Wayland
+- Wayward
 - WebAssembly
 - WebKitGTK
 - WebRTC
@@ -1364,6 +1463,7 @@ specific:
 - Wget
 - WindTerm
 - Windows PV Drivers
+- Windows Package Manager
 - Windows Terminal
 - Windows Terminal Preview
 - Wine
@@ -1386,12 +1486,14 @@ specific:
 - Yggdrasil
 - Ymuse
 - Yocto Project
+- Yor
 - Yum
 - Yunohost
 - ZFS
 - Zabbix
 - Zentyal
 - Zephyr Project
+- Zig
 - Zimbra
 - Zimbra Open-Source
 - Zorow
@@ -1400,7 +1502,9 @@ specific:
 - Zypper
 - aTox
 - anacron
+- angelspie
 - aptitude
+- arataga
 - asciinema
 - awk
 - bash
@@ -1408,6 +1512,7 @@ specific:
 - bpftrace
 - bspwm
 - cSvn
+- cache-bench
 - cdk8s
 - cert-manager
 - coreutils
@@ -1431,17 +1536,26 @@ specific:
 - hola-proxy
 - i3wm
 - iDempiere
+- immudb
 - in-toto
 - inetutils
+- iperf
 - iptables
 - jQuery
+- jo
 - journald
+- jq
 - jsPolicy
+- jsVoronoiPCB
+- jshon
+- json_pp
 - k0s
 - k3s
 - k6
+- kchmviewer
 - kdb+
 - kernelCI Initiative Fund
+- kube-monkey
 - labelCloud
 - labwc
 - lebowski
@@ -1452,6 +1566,7 @@ specific:
 - lightsquid
 - links
 - lsFusion
+- mailcow
 - messageformat
 - metal3-io
 - moe
@@ -1466,24 +1581,32 @@ specific:
 - nim
 - nnn
 - nvm
+- openITCOCKPIT
 - openSUSE
+- openSUSE Leap
 - opera-proxy
 - osquery
 - ossh
 - ovpn-admin
 - ownCloud
+- pText
+- page-fetch
 - passwdqc
 - pcem
 - pfSense
+- pgSCV
 - pgmpy
 - postmarketOS
 - qBittorrent
 - qutebrowser
+- r-test
 - radare2
+- rqlite
 - ruleguard
 - sK1
 - seL4 Foundation
 - sed
+- server-fw
 - shadowsocks
 - skweak
 - spaCy
@@ -1493,14 +1616,19 @@ specific:
 - syslog
 - systemd
 - sysvinit
+- tc
 - tcb
 - tmux
+- typos
 - u2if
 - urm
+- video2midi
+- vsftpd
 - wayland-protocols
 - webOS Open Source Edition
 - webhint
 - werf
+- winget
 - wlroots
 - wolfSSL
 - xVA-Synth
@@ -1511,5 +1639,6 @@ specific:
 - zsh
 - Альт
 - ГК Astra Linux
+- ХPaste
 - линукс
 
