@@ -21,3 +21,8 @@ class SearchResultsView(ListView):
         )
         ordered_filtered_objects = filtered_objects.order_by('-dt')
         return ordered_filtered_objects
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(SearchResultsView, self).get_context_data(**kwargs)
+        context['query'] = self.request.GET.get('q')
+        return context

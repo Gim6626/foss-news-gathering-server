@@ -1,13 +1,19 @@
 <h1>FNGS Search Results</h1>
 
-<ol>
-  {% for digest_record in object_list %}
-    <li>
-        {% if digest_record.dt %}
+{% if object_list %}
+    <p><b>Results for query "{{ query }}":</b></p>
+    <ol>
+        {% for digest_record in object_list %}
+        <li>
+            {% if digest_record.dt %}
             {{ digest_record.dt|date:"Y.m.d" }}
-        {% endif %}
-        {{ digest_record.title }}
-        [{{ digest_record.state }}], <a href="{{ digest_record.url }}" target="_blank">{{ digest_record.url }}</a>
-    </li>
-  {% endfor %}
-</ol>
+            {% endif %}
+            {{ digest_record.title }}
+            [{{ digest_record.state }}], <a href="{{ digest_record.url }}" target="_blank">{{ digest_record.url }}</a>
+        </li>
+        {% endfor %}
+    </ol>
+{% else %}
+    <p>No results for query "{{ query }}"</p>
+{% endif %}
+<p><a href="/search">New query</a></p>
