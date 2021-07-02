@@ -45,6 +45,7 @@ class DigestRecordSubcategory(Enum):
     DATA_SCIENCE = 'data_science'
     WEB = 'web'
     DEV = 'dev'
+    TESTING = 'testing'
     HISTORY = 'history'
     MANAGEMENT = 'management'
     USER = 'user'
