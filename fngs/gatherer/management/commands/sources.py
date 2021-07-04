@@ -15,6 +15,7 @@ from .keywords import keywords
 
 
 foss_news_project = Project.objects.get(name='FOSS News')
+os_friday_project = Project.objects.get(name='OS Friday')
 
 
 def shorten_text(s: str, max_length: int = 20):
