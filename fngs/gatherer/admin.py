@@ -20,6 +20,7 @@ class DigestRecordAdmin(admin.ModelAdmin):
         'subcategory',
         'keywords',
         'duplicates',
+        'projects_names',
     )
     search_fields = (
         'title',
@@ -41,5 +42,18 @@ class DigestRecordDuplicateAdmin(admin.ModelAdmin):
     )
 
 
+class ProjectAdmin(admin.ModelAdmin):
+
+    readonly_fields = (
+        'id',
+    )
+
+    list_display = (
+        'id',
+        'name',
+    )
+
+
 admin.site.register(DigestRecord, DigestRecordAdmin)
 admin.site.register(DigestRecordDuplicate, DigestRecordDuplicateAdmin)
+admin.site.register(Project, ProjectAdmin)

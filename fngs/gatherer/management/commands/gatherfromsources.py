@@ -2,11 +2,12 @@ from django.core.management.base import BaseCommand
 from gatherer.models import (
     DigestRecord,
     DigestRecordState,
+    Project,
 )
 from abc import ABCMeta, abstractmethod
 import datetime
 from enum import Enum
-from typing import List
+from typing import List, Tuple
 import xml.etree.ElementTree as ET
 import dateutil.parser
 from lxml import html
@@ -26,6 +27,8 @@ logger: logging.Logger = None
 parsing_modules_names = []
 days_count = None
 keywords = {}
+
+foss_news_project = Project.objects.get(name='FOSS News')
 
 
 class Command(BaseCommand):
@@ -84,6 +87,8 @@ class Command(BaseCommand):
                                                  state=DigestRecordState.UNKNOWN.name,
                                                  keywords=';'.join(post_data.keywords))
                     digest_record.save()
+                    digest_record.projects.set(post_data.projects)
+                    digest_record.save()
                     added_digest_records_count += 1
                     logger.debug(f'Added {short_post_data_str} to database')
         logger.info(f'Finished saving to database, added {added_digest_records_count} digest record(s), {already_existing_digest_records_count} already existed')
@@ -141,10 +146,12 @@ class PostData:
     def __init__(self,
                  dt: datetime.datetime,
                  title: str,
+                 projects: Tuple[Project],
                  url: str,
                  brief: str):
         self.dt = dt
         self.title = title
+        self.projects = projects
         self.url = url
         self.brief = brief
         self.keywords = []
@@ -172,6 +179,7 @@ class FiltrationType(Enum):
 class BasicParsingModule(metaclass=ABCMeta):
 
     source_name = None
+    projects: Tuple[Project] = ()
     warning = None
     filtration_needed = False
     filters = []
@@ -179,6 +187,8 @@ class BasicParsingModule(metaclass=ABCMeta):
     def parse(self) -> List[PostData]:
         try:
             posts_data: List[PostData] = self._parse()
+            for pd in posts_data:
+                pd.projects = self.projects
         except Exception as e:
             logger.error(f'Failed to parse "{self.source_name}" source: {str(e)}')
             logger.error(traceback.format_exc())
@@ -290,7 +300,7 @@ class RssBasicParsingModule(BasicParsingModule):
                             logger.error(f'Could not find URL for "{title}" feed record')
                     elif self.description_tag_name in tag:
                         brief = text
-                post_data = PostData(dt, title, self.process_url(url), brief)
+                post_data = PostData(dt, title, self.projects, self.process_url(url), brief)
                 posts_data.append(post_data)
         return posts_data
 
@@ -349,12 +359,18 @@ class SimpleRssBasicParsingModule(RssBasicParsingModule):
 class OpenNetRuParsingModule(SimpleRssBasicParsingModule):
 
     source_name = "OpenNetRu"
+    projects = (
+        foss_news_project,
+    )
     rss_url = 'https://www.opennet.ru/opennews/opennews_all_utf.rss'
 
 
 class LinuxComParsingModule(SimpleRssBasicParsingModule):
 
     source_name = "LinuxCom"
+    projects = (
+        foss_news_project,
+    )
     rss_url = 'https://www.linux.com/topic/feed/'
 
 
@@ -362,24 +378,36 @@ class OpenSourceComParsingModule(SimpleRssBasicParsingModule):
     # NOTE: Provider provides RSS feed for less than week, more regular check is needed
 
     source_name = 'OpenSourceCom'
+    projects = (
+        foss_news_project,
+    )
     rss_url = 'https://opensource.com/feed'
 
 
 class ItsFossComParsingModule(SimpleRssBasicParsingModule):
 
     source_name = 'ItsFossCom'
+    projects = (
+        foss_news_project,
+    )
     rss_url = 'https://itsfoss.com/all-blog-posts/feed/'
 
 
 class LinuxOrgRuParsingModule(SimpleRssBasicParsingModule):
 
     source_name = 'LinuxOrgRu'
+    projects = (
+        foss_news_project,
+    )
     rss_url = 'https://www.linux.org.ru/section-rss.jsp?section=1'
 
 
 class AnalyticsIndiaMagComParsingModule(SimpleRssBasicParsingModule):
 
     source_name = 'AnalyticsIndiaMagCom'
+    projects = (
+        foss_news_project,
+    )
     rss_url = 'https://analyticsindiamag.com/feed/'
     filtration_needed = True
     filters = [
@@ -391,6 +419,9 @@ class AnalyticsIndiaMagComParsingModule(SimpleRssBasicParsingModule):
 class ArsTechnicaComParsingModule(SimpleRssBasicParsingModule):
 
     source_name = 'ArsTechnicaCom'
+    projects = (
+        foss_news_project,
+    )
     rss_url = 'https://arstechnica.com/feed/'
     filtration_needed = True
     filters = [
@@ -401,6 +432,9 @@ class ArsTechnicaComParsingModule(SimpleRssBasicParsingModule):
 class HackadayComParsingModule(SimpleRssBasicParsingModule):
 
     source_name = 'HackadayCom'
+    projects = (
+        foss_news_project,
+    )
     rss_url = 'https://hackaday.com/feed/'
     filtration_needed = True
     filters = [
@@ -411,6 +445,9 @@ class HackadayComParsingModule(SimpleRssBasicParsingModule):
 class JaxenterComParsingModule(SimpleRssBasicParsingModule):
 
     source_name = 'JaxenterCom'
+    projects = (
+        foss_news_project,
+    )
     rss_url = 'https://jaxenter.com/rss'
     filtration_needed = True
     filters = [
@@ -421,12 +458,18 @@ class JaxenterComParsingModule(SimpleRssBasicParsingModule):
 class LinuxInsiderComParsingModule(SimpleRssBasicParsingModule):
 
     source_name = 'LinuxInsiderCom'
+    projects = (
+        foss_news_project,
+    )
     rss_url = 'https://linuxinsider.com/rss-feed'
 
 
 class MashableComParsingModule(SimpleRssBasicParsingModule):
 
     source_name = 'MashableCom'
+    projects = (
+        foss_news_project,
+    )
     rss_url = 'https://mashable.com/rss/'
     filtration_needed = True
     filters = [
@@ -437,6 +480,9 @@ class MashableComParsingModule(SimpleRssBasicParsingModule):
 class SdTimesComParsingModule(SimpleRssBasicParsingModule):
 
     source_name = 'SdTimesCom'
+    projects = (
+        foss_news_project,
+    )
     rss_url = 'https://sdtimes.com/feed/'
     filtration_needed = True
     filters = [
@@ -447,6 +493,9 @@ class SdTimesComParsingModule(SimpleRssBasicParsingModule):
 class SecurityBoulevardComParsingModule(SimpleRssBasicParsingModule):
 
     source_name = 'SecurityBoulevardCom'
+    projects = (
+        foss_news_project,
+    )
     rss_url = 'https://securityboulevard.com/feed/'
     filtration_needed = True
     filters = [
@@ -457,6 +506,9 @@ class SecurityBoulevardComParsingModule(SimpleRssBasicParsingModule):
 class SiliconAngleComParsingModule(SimpleRssBasicParsingModule):
 
     source_name = 'SiliconAngleCom'
+    projects = (
+        foss_news_project,
+    )
     rss_url = 'https://siliconangle.com/feed/'
     filtration_needed = True
     filters = [
@@ -467,6 +519,9 @@ class SiliconAngleComParsingModule(SimpleRssBasicParsingModule):
 class TechCrunchComParsingModule(SimpleRssBasicParsingModule):
 
     source_name = 'TechCrunchCom'
+    projects = (
+        foss_news_project,
+    )
     rss_url = 'https://techcrunch.com/feed/'
     filtration_needed = True
     filters = [
@@ -477,6 +532,9 @@ class TechCrunchComParsingModule(SimpleRssBasicParsingModule):
 class TechNodeComParsingModule(SimpleRssBasicParsingModule):
 
     source_name = 'TechNodeCom'
+    projects = (
+        foss_news_project,
+    )
     rss_url = 'https://technode.com/feed/'
     filtration_needed = True
     filters = [
@@ -487,6 +545,9 @@ class TechNodeComParsingModule(SimpleRssBasicParsingModule):
 class TheNextWebComParsingModule(SimpleRssBasicParsingModule):
 
     source_name = 'TheNextWebCom'
+    projects = (
+        foss_news_project,
+    )
     rss_url = 'https://thenextweb.com/feed/'
     filtration_needed = True
     filters = [
@@ -497,6 +558,9 @@ class TheNextWebComParsingModule(SimpleRssBasicParsingModule):
 class VentureBeatComParsingModule(SimpleRssBasicParsingModule):
 
     source_name = 'VentureBeatCom'
+    projects = (
+        foss_news_project,
+    )
     rss_url = 'https://venturebeat.com/feed/'
     filtration_needed = True
     filters = [
@@ -507,6 +571,9 @@ class VentureBeatComParsingModule(SimpleRssBasicParsingModule):
 class ThreeDPrintingMediaNetworkParsingModule(SimpleRssBasicParsingModule):
 
     source_name = 'ThreeDPrintingMediaNetwork'
+    projects = (
+        foss_news_project,
+    )
     rss_url = 'https://www.3dprintingmedia.network/feed/'
     filtration_needed = True
     filters = [
@@ -517,6 +584,9 @@ class ThreeDPrintingMediaNetworkParsingModule(SimpleRssBasicParsingModule):
 class CbrOnlineComParsingModule(SimpleRssBasicParsingModule):
 
     source_name = 'CbrOnlineCom'
+    projects = (
+        foss_news_project,
+    )
     rss_url = 'https://www.cbronline.com/rss'
     filtration_needed = True
     filters = [
@@ -527,6 +597,9 @@ class CbrOnlineComParsingModule(SimpleRssBasicParsingModule):
 class HelpNetSecurityComParsingModule(SimpleRssBasicParsingModule):
 
     source_name = 'HelpNetSecurityCom'
+    projects = (
+        foss_news_project,
+    )
     rss_url = 'https://www.helpnetsecurity.com/feed/'
     filtration_needed = True
     filters = [
@@ -537,6 +610,9 @@ class HelpNetSecurityComParsingModule(SimpleRssBasicParsingModule):
 class SecuritySalesComParsingModule(SimpleRssBasicParsingModule):
 
     source_name = 'SecuritySalesCom'
+    projects = (
+        foss_news_project,
+    )
     rss_url = 'https://www.securitysales.com/feed/'
     filtration_needed = True
     filters = [
@@ -547,6 +623,9 @@ class SecuritySalesComParsingModule(SimpleRssBasicParsingModule):
 class TechRadarComParsingModule(SimpleRssBasicParsingModule):
 
     source_name = 'TechRadarCom'
+    projects = (
+        foss_news_project,
+    )
     rss_url = 'https://www.techradar.com/rss'
     filtration_needed = True
     filters = [
@@ -557,6 +636,9 @@ class TechRadarComParsingModule(SimpleRssBasicParsingModule):
 class TfirIoParsingModule(SimpleRssBasicParsingModule):
 
     source_name = 'TfirIo'
+    projects = (
+        foss_news_project,
+    )
     rss_url = 'https://www.tfir.io/feed/'
     filtration_needed = True
     filters = [
@@ -567,12 +649,18 @@ class TfirIoParsingModule(SimpleRssBasicParsingModule):
 class ZdNetComLinuxParsingModule(SimpleRssBasicParsingModule):
     # TODO: Think about parsing other sections
     source_name = 'ZdNetComLinux'
+    projects = (
+        foss_news_project,
+    )
     rss_url = 'https://www.zdnet.com/topic/linux/rss.xml'
 
 
 class LinuxFoundationOrgParsingModule(SimpleRssBasicParsingModule):
 
     source_name = 'LinuxFoundationOrg'
+    projects = (
+        foss_news_project,
+    )
     rss_url = 'https://linuxfoundation.org/rss'
 
 
@@ -594,6 +682,9 @@ class HabrComBasicParsingModule(SimpleRssBasicParsingModule):
 class HabrComNewsParsingModule(HabrComBasicParsingModule):
 
     source_name = 'HabrComNews'
+    projects = (
+        foss_news_project,
+    )
     filtration_needed = True
     filters = [
         FiltrationType.SPECIFIC,
@@ -607,42 +698,63 @@ class HabrComNewsParsingModule(HabrComBasicParsingModule):
 class HabrComOpenSourceParsingModule(HabrComBasicParsingModule):
 
     source_name = f'HabrComOpenSource'
+    projects = (
+        foss_news_project,
+    )
     hub_code = 'open_source'
 
 
 class HabrComLinuxParsingModule(HabrComBasicParsingModule):
 
     source_name = f'HabrComLinux'
+    projects = (
+        foss_news_project,
+    )
     hub_code = 'linux'
 
 
 class HabrComLinuxDevParsingModule(HabrComBasicParsingModule):
 
     source_name = f'HabrComLinuxDev'
+    projects = (
+        foss_news_project,
+    )
     hub_code = 'linux_dev'
 
 
 class HabrComNixParsingModule(HabrComBasicParsingModule):
 
     source_name = f'HabrComNix'
+    projects = (
+        foss_news_project,
+    )
     hub_code = 'nix'
 
 
 class HabrComDevOpsParsingModule(HabrComBasicParsingModule):
 
     source_name = f'HabrComDevOps'
+    projects = (
+        foss_news_project,
+    )
     hub_code = 'devops'
 
 
 class HabrComSysAdmParsingModule(HabrComBasicParsingModule):
 
     source_name = f'HabrComSysAdm'
+    projects = (
+        foss_news_project,
+    )
     hub_code = 'sys_admin'
 
 
 class HabrComGitParsingModule(HabrComBasicParsingModule):
 
     source_name = f'HabrComGit'
+    projects = (
+        foss_news_project,
+    )
     hub_code = 'git'
 
 
@@ -667,30 +779,45 @@ class YouTubeComBasicParsingModule(RssBasicParsingModule):
 class YouTubeComAlekseySamoilovParsingModule(YouTubeComBasicParsingModule):
 
     source_name = f'YouTubeComAlekseySamoilov'
+    projects = (
+        foss_news_project,
+    )
     channel_id = 'UC3kAbMcYr-JEMSb2xX4OdpA'
 
 
 class LosstRuParsingModule(SimpleRssBasicParsingModule):
 
     source_name = 'LosstRu'
+    projects = (
+        foss_news_project,
+    )
     rss_url = 'https://losst.ru/rss'
 
 
 class AstraLinuxRuParsingModule(SimpleRssBasicParsingModule):
 
     source_name = 'AstraLinuxRu'
+    projects = (
+        foss_news_project,
+    )
     rss_url = 'https://astralinux.ru/rss'
 
 
 class BaseAltRuParsingModule(SimpleRssBasicParsingModule):
 
     source_name = 'BaseAltRu'
+    projects = (
+        foss_news_project,
+    )
     rss_url = 'https://www.basealt.ru/feed.rss'
 
 
 class PingvinusRuParsingModule(BasicParsingModule):
 
     source_name = 'PingvinusRu'
+    projects = (
+        foss_news_project,
+    )
     site_url = 'https://pingvinus.ru'
 
     def __init__(self):
@@ -712,7 +839,7 @@ class PingvinusRuParsingModule(BasicParsingModule):
         for title, date_str, url in zip(titles_texts, dates_texts, urls):
             dt = datetime.datetime.strptime(date_str, '%d.%m.%Y')
             dt = dt.replace(tzinfo=dateutil.tz.gettz('Europe/Moscow'))
-            post_data = PostData(dt, title, url, None)
+            post_data = PostData(dt, title, self.projects, url, None)
             posts.append(post_data)
         return posts
 

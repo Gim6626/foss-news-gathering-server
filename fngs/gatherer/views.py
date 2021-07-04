@@ -60,3 +60,9 @@ class DuplicatesByDigestRecordsViewSet(GenericViewSet, mixins.ListModelMixin):
     queryset = DigestRecordDuplicate.objects.all()
     filter_class = DuplicatesByDigestRecordFilter
     filter_backends = [DjangoFilterBackend]
+
+
+class ProjectViewSet(viewsets.ModelViewSet):
+    permission_classes = [permissions.IsAuthenticated]
+    queryset = Project.objects.all()
+    serializer_class = ProjectSerializer

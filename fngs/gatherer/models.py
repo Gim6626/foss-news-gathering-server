@@ -97,6 +97,12 @@ class DigestRecord(models.Model):
                                 max_length=1024,
                                 null=True,
                                 blank=True)
+    projects = models.ManyToManyField(to='Project',
+                                      verbose_name='Projects',
+                                      related_name='records')
+
+    def projects_names(self):
+        return f'{", ".join([p.name for p in self.projects.all()])}'
 
     class Meta:
         verbose_name = 'Digest Record'
@@ -121,3 +127,15 @@ class DigestRecordDuplicate(models.Model):
 
     def __str__(self):
         return self.digest_records_titles()
+
+
+class Project(models.Model):
+
+    name = models.CharField(verbose_name='Название', max_length=64)
+
+    class Meta:
+        verbose_name = 'Project'
+        verbose_name_plural = 'Projects'
+
+    def __str__(self):
+        return self.name

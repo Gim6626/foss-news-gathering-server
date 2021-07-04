@@ -18,6 +18,7 @@ class DigestRecordSerializer(serializers.ModelSerializer):
             'category',
             'subcategory',
             'keywords',
+            'projects',
         ]
 
 
@@ -41,4 +42,15 @@ class DigestRecordDuplicateDetailedSerializer(serializers.ModelSerializer):
             'id',
             'digest_number',
             'digest_records',
+        ]
+
+
+class ProjectSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Project
+        fields = [
+            'id',
+            'name',
+            'records',
         ]
