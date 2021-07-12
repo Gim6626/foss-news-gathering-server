@@ -98,6 +98,8 @@ class DigestRecord(models.Model):
                                 null=True,
                                 blank=True)
     projects = models.ManyToManyField(to='Project',
+                                      null=True,
+                                      blank=True,
                                       verbose_name='Projects',
                                       related_name='records')
 
