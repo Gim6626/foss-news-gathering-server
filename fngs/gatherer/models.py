@@ -25,6 +25,15 @@ class DigestRecordCategory(Enum):
         return tuple((i.name, i.value) for i in cls)
 
 
+class Language(Enum):
+    ENGLISH = 'eng'
+    RUSSIAN = 'rus'
+
+    @classmethod
+    def choices(cls):
+        return tuple((i.name, i.value) for i in cls)
+
+
 class DigestRecordSubcategory(Enum):
     EVENTS = 'events'
     INTROS = 'intros'
@@ -102,6 +111,11 @@ class DigestRecord(models.Model):
                                       blank=True,
                                       verbose_name='Projects',
                                       related_name='records')
+    language = models.CharField(verbose_name='Language',
+                                choices=Language.choices(),
+                                max_length=3,
+                                null=True,
+                                blank=True)
 
     def projects_names(self):
         return f'{", ".join([p.name for p in self.projects.all()])}'
