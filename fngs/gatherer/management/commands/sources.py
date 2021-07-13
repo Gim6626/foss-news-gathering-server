@@ -254,6 +254,7 @@ class LinuxComParsingModule(SimpleRssBasicParsingModule):
     source_name = "LinuxCom"
     projects = (
         foss_news_project,
+        os_friday_project,
     )
     rss_url = 'https://www.linux.com/topic/feed/'
 
@@ -264,6 +265,7 @@ class OpenSourceComParsingModule(SimpleRssBasicParsingModule):
     source_name = 'OpenSourceCom'
     projects = (
         foss_news_project,
+        os_friday_project
     )
     rss_url = 'https://opensource.com/feed'
 
