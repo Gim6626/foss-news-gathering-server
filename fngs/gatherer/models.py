@@ -84,7 +84,7 @@ class DigestRecord(models.Model):
                            blank=False)
     state = models.CharField(verbose_name='State',
                              choices=DigestRecordState.choices(),
-                             max_length=256,
+                             max_length=15,
                              null=True,
                              blank=True)
     digest_number = models.IntegerField(verbose_name='Digest Number',
@@ -95,12 +95,12 @@ class DigestRecord(models.Model):
                                   blank=True)
     category = models.CharField(verbose_name='Category',
                                 choices=DigestRecordCategory.choices(),
-                                max_length=256,
+                                max_length=15,
                                 null=True,
                                 blank=True)
     subcategory = models.CharField(verbose_name='Subcategory',
                                    choices=DigestRecordSubcategory.choices(),
-                                   max_length=256,
+                                   max_length=15,
                                    null=True,
                                    blank=True)
     keywords = models.CharField(verbose_name='Keywords',
@@ -113,7 +113,7 @@ class DigestRecord(models.Model):
                                       related_name='records')
     language = models.CharField(verbose_name='Language',
                                 choices=Language.choices(),
-                                max_length=3,
+                                max_length=15,
                                 null=True,
                                 blank=True)
 
