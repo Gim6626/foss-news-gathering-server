@@ -165,6 +165,9 @@ class ParsingModuleType(Enum):
     ASTRALINUX_RU = AstraLinuxRuParsingModule.source_name
     BASEALT_RU = BaseAltRuParsingModule.source_name
     # From Alex
+    OPEN_SOURCE_ON_REDDIT = OpenSourceOnRedditParsingModule.source_name
+    LINUX_GNU_LINUX_FREE_SOFTWARE = LinuxGnuLinuxFreeSoftwareParsingModule.source_name
+    CONTAINER_JOURNAL = ContainerJournalParsingModule.source_name
     BLOG_CLOUD_NATIVE_COMPUTING_FOUNDATION = BlogCloudNativeComputingFoundationParsingModule.source_name
     KUBEDEX_COM = KubedexComParsingModule.source_name
     CILIUM_BLOG = CiliumBlogParsingModule.source_name

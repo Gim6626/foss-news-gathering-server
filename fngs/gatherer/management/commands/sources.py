@@ -166,7 +166,8 @@ class RssBasicParsingModule(BasicParsingModule):
 
     def _parse(self):
         posts_data: List[PostData] = []
-        response = requests.get(self.rss_url)
+        response = requests.get(self.rss_url,
+                                headers={'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36'})
         if response.status_code != 200:
             logger.error(f'"{self.source_name}" returned status code {response.status_code}')
             return posts_data
