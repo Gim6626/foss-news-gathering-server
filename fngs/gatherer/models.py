@@ -39,7 +39,8 @@ class DigestRecordSubcategory(Enum):
     EVENTS = 'events'
     INTROS = 'intros'
     OPENING = 'opening'
-    NEWS = 'news'
+    NEWS = 'news'  # TODO: Remove after prod migration
+    ORG = 'org'
     DIY = 'diy'
     LAW = 'law'
     KnD = 'knd'
