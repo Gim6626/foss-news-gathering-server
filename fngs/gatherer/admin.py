@@ -19,6 +19,7 @@ class DigestRecordAdmin(admin.ModelAdmin):
         'category',
         'subcategory',
         'keywords',
+        'language',
         'duplicates',
         'projects_names',
     )
