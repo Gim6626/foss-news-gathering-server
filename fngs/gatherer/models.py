@@ -7,6 +7,7 @@ class DigestRecordState(Enum):
     IN_DIGEST = 'in_digest'
     OUTDATED = 'outdated'
     IGNORED = 'ignored'
+    FILTERED = 'filtered'
 
     @classmethod
     def choices(cls):
