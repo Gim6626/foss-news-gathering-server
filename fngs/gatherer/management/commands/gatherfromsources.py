@@ -10,7 +10,7 @@ import os
 import yaml
 
 from .sources import *
-from .logger import logger
+from .logger import logger, init_logger
 
 
 SCRIPT_DIRECTORY = os.path.dirname(os.path.realpath(__file__))
@@ -25,6 +25,10 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         # TODO: Option to list available sources
+        parser.add_argument('-d',
+                            '--debug',
+                            action='store_true',
+                            help='Debug mode')
         parser.add_argument('MODULE',
                             type=str,
                             help='Parsing module')
@@ -88,7 +92,7 @@ class Command(BaseCommand):
         logger.info(f'Finished saving to database, added {added_digest_records_count} digest record(s), {already_existing_digest_records_count} already existed')
 
     def _init_globals(self, **options):
-        init_logger()
+        init_logger(options['debug'])
         global days_count
         days_count = options['DAYS_COUNT']
         global parsing_modules_names
@@ -103,11 +107,6 @@ class Command(BaseCommand):
         global keywords
         with open(os.path.join(SCRIPT_DIRECTORY, 'keywords.yaml'), 'r') as fin:
             keywords = yaml.safe_load(fin)
-
-
-def init_logger():
-    global logger
-
 
 
 class ParsingModuleFactory:
