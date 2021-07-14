@@ -8,6 +8,7 @@ from pprint import pprint
 import traceback
 import datetime
 import dateutil
+from copy import copy
 
 from gatherer.models import *
 from .logger import logger
@@ -33,12 +34,14 @@ class PostData:
                  dt: datetime.datetime,
                  title: str,
                  url: str,
-                 brief: str):
+                 brief: str,
+                 filtered: bool = None):
         self.dt = dt
         self.title = title
         self.url = url
         self.brief = brief
         self.keywords = []
+        self.filtered = None
 
     def __str__(self):
         return f'{self.dt} -- {self.url} -- {self.title} -- {shorten_text(self.brief)}'
@@ -126,11 +129,14 @@ class BasicParsingModule(metaclass=ABCMeta):
                 if self._find_keyword_in_title(keyword, post_data.title):
                     matched = True
                     break
+            processed_post_data = copy(post_data)
             if matched:
                 logger.debug(f'"{post_data.title}" from "{self.source_name}" added because it contains keywords {post_data.keywords}')
-                filtered_posts_data.append(post_data)
+                processed_post_data.filtered = False
             else:
                 logger.warning(f'"{post_data.title}" ({post_data.url}) from "{self.source_name}" filtered out cause not contains none of expected keywords')
+                processed_post_data.filtered = True
+            filtered_posts_data.append(processed_post_data)
         return filtered_posts_data
 
     def _filter_out_old(self, posts_data: List[PostData], days_count: int) -> List[PostData]:

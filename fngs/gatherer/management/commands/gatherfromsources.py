@@ -74,7 +74,9 @@ class Command(BaseCommand):
                                                  gather_dt=datetime.datetime.now(tz=dateutil.tz.tzlocal()),
                                                  title=post_data.title.strip(),
                                                  url=post_data.url,
-                                                 state=DigestRecordState.UNKNOWN.name,
+                                                 state=DigestRecordState.UNKNOWN.name
+                                                       if not post_data.filtered
+                                                       else DigestRecordState.FILTERED.name,
                                                  keywords=';'.join(post_data.keywords))
                     digest_record.save()
                     digest_record.projects.set(posts_data.projects)
