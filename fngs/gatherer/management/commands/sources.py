@@ -778,7 +778,17 @@ class PingvinusRuParsingModule(BasicParsingModule):
         return posts
 
 
-class OpenSourceOnRedditParsingModule(SimpleRssBasicParsingModule):
+class RedditRssBasicParsingModule(SimpleRssBasicParsingModule):
+
+    item_tag_name = 'entry'
+    pubdate_tag_name = 'published'
+    description_tag_name = 'content'
+
+    def rss_items_root(self):
+        return self.rss_data_root
+
+
+class OpenSourceOnRedditParsingModule(RedditRssBasicParsingModule):
 
     source_name = 'OpenSourceOnReddit'
     projects = (
@@ -788,7 +798,7 @@ class OpenSourceOnRedditParsingModule(SimpleRssBasicParsingModule):
     language = Language.ENGLISH
 
 
-class LinuxGnuLinuxFreeSoftwareParsingModule(SimpleRssBasicParsingModule):
+class LinuxGnuLinuxFreeSoftwareParsingModule(RedditRssBasicParsingModule):
 
     source_name = 'LinuxGnuLinuxFreeSoftware'
     projects = (
@@ -1078,7 +1088,7 @@ class LastWeekInKubernetesDevelopmentParsingModule(SimpleRssBasicParsingModule):
     language = Language.ENGLISH
 
 
-class KubernetesParsingModule(SimpleRssBasicParsingModule):
+class KubernetesParsingModule(RedditRssBasicParsingModule):
 
     source_name = 'Kubernetes'
     projects = (
