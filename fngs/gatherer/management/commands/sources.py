@@ -53,10 +53,12 @@ class PostsData:
                  source_name: str,
                  projects: List[Project],
                  posts_data_list: List[PostData],
+                 language: Language,
                  warning: str = None):
         self.source_name = source_name
         self.projects = projects
         self.posts_data_list = posts_data_list
+        self.language = language
         self.warning = warning
 
 

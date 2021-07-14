@@ -47,6 +47,7 @@ class Command(BaseCommand):
             posts_data_one = PostsData(parsing_module.source_name,
                                        parsing_module.projects,
                                        posts_data,
+                                       parsing_module.language,
                                        parsing_module.warning)
             for post_data in posts_data_one.posts_data_list:
                 logger.info(f'New post {post_data.dt if post_data.dt is not None else "?"} "{post_data.title}" {post_data.url}')
@@ -56,7 +57,7 @@ class Command(BaseCommand):
         logger.info(f'Finished parsing all sources, got {sum((len(posts_data_one.posts_data_list) for posts_data_one in posts_data_from_multiple_sources))} digest record(s) from {len(posts_data_from_multiple_sources)} source(s)')
         return posts_data_from_multiple_sources
 
-    def _save_to_database(self, posts_data_from_multiple_sources):
+    def _save_to_database(self, posts_data_from_multiple_sources: List[PostsData]):
         logger.info('Saving to database')
         added_digest_records_count = 0
         already_existing_digest_records_count = 0
@@ -77,7 +78,8 @@ class Command(BaseCommand):
                                                  state=DigestRecordState.UNKNOWN.name
                                                        if not post_data.filtered
                                                        else DigestRecordState.FILTERED.name,
-                                                 keywords=';'.join(post_data.keywords))
+                                                 keywords=';'.join(post_data.keywords),
+                                                 language=posts_data.language.name)
                     digest_record.save()
                     digest_record.projects.set(posts_data.projects)
                     digest_record.save()
