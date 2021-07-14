@@ -110,10 +110,10 @@ class BasicParsingModule(metaclass=ABCMeta):
     def _find_keyword_in_title(self, keyword, title):
         return re.search(rf'\b{re.escape(keyword)}\b', title, re.IGNORECASE)
 
-    def _filter_out(self, posts_data: List[PostData], days_count: int):
-        filtered_posts_data: List[PostData] = posts_data
-        filtered_posts_data = self._filter_out_old(filtered_posts_data, days_count)
-        filtered_posts_data = self._filter_out_by_keywords(filtered_posts_data)
+    def _filter_out(self, source_posts_data: List[PostData], days_count: int):
+        actual_posts_data = self._filter_out_old(source_posts_data, days_count)
+        logger.info(f'{len(source_posts_data) - len(actual_posts_data)} posts ignored as too old')
+        filtered_posts_data = self._filter_out_by_keywords(actual_posts_data)
         return filtered_posts_data
 
     def _filter_out_by_keywords(self, posts_data: List[PostData]):
