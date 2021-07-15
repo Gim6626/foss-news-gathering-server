@@ -75,8 +75,12 @@ class BasicParsingModule(metaclass=ABCMeta):
     filtration_needed = False
     filters = []
     language: Language = None
+    disabled = False
 
     def parse(self, days_count: int) -> List[PostData]:
+        if self.disabled:
+            logger.warning(f'"{self.source_name}" is disabled')
+            return []
         try:
             posts_data: List[PostData] = self._parse()
         except Exception as e:
@@ -112,7 +116,9 @@ class BasicParsingModule(metaclass=ABCMeta):
 
     def _filter_out(self, source_posts_data: List[PostData], days_count: int):
         actual_posts_data = self._filter_out_old(source_posts_data, days_count)
-        logger.info(f'{len(source_posts_data) - len(actual_posts_data)} posts ignored as too old')
+        ignored_len = len(source_posts_data) - len(actual_posts_data)
+        if ignored_len:
+            logger.info(f'{len(source_posts_data) - len(actual_posts_data)} posts ignored as too old')
         filtered_posts_data = self._filter_out_by_keywords(actual_posts_data)
         return filtered_posts_data
 
@@ -182,6 +188,8 @@ class RssBasicParsingModule(BasicParsingModule):
                     tag = rss_data_subelem.tag
                     text = rss_data_subelem.text
                     if self.title_tag_name in tag:
+                        if not text:
+                            continue
                         title = text.strip()
                     elif self.pubdate_tag_name in tag:
                         dt = dateutil.parser.parse(self._date_from_russian_to_english(text))
@@ -194,7 +202,11 @@ class RssBasicParsingModule(BasicParsingModule):
                             logger.error(f'Could not find URL for "{title}" feed record')
                     elif self.description_tag_name in tag:
                         brief = text
-                post_data = PostData(dt, title, self.process_url(url), brief)
+                url = self.process_url(url)
+                if not url:
+                    logger.error('Empty URL')
+                    continue
+                post_data = PostData(dt, title, url, brief)
                 posts_data.append(post_data)
         return posts_data
 
@@ -932,7 +944,9 @@ class WeaveworksParsingModule(SimpleRssBasicParsingModule):
     projects = (
         os_friday_project,
     )
-    rss_url = 'https://www.weave.works/blog/'
+    # TODO: Fix
+    disabled = True
+    rss_url = 'https://www.weave.works/feed.xml'
     language = Language.ENGLISH
     filtration_needed = True
     filters = (
@@ -990,6 +1004,10 @@ class PrometheusBlogParsingModule(SimpleRssBasicParsingModule):
     )
     rss_url = 'http://prometheus.io/blog/feed.xml'
     language = Language.ENGLISH
+    item_tag_name = 'entry'
+
+    def rss_items_root(self):
+        return self.rss_data_root
 
 
 class SysdigParsingModule(SimpleRssBasicParsingModule):
@@ -1026,7 +1044,7 @@ class TheNewStackPodcastParsingModule(SimpleRssBasicParsingModule):
     projects = (
         os_friday_project,
     )
-    rss_url = 'http://feeds.soundcloud.com/users/soundcloud:users:107605642/sounds.rss'
+    rss_url = 'https://feeds.simplecast.com/IgzWks06'
     language = Language.ENGLISH
     filtration_needed = True
     filters = (
@@ -1086,6 +1104,10 @@ class LastWeekInKubernetesDevelopmentParsingModule(SimpleRssBasicParsingModule):
     )
     rss_url = 'http://lwkd.info/feed.xml'
     language = Language.ENGLISH
+    item_tag_name = 'entry'
+
+    def rss_items_root(self):
+        return self.rss_data_root
 
 
 class KubernetesParsingModule(RedditRssBasicParsingModule):
@@ -1132,6 +1154,8 @@ class TigeraParsingModule(SimpleRssBasicParsingModule):
     projects = (
         os_friday_project,
     )
+    # TODO: Fix
+    disabled = True
     rss_url = 'https://blog.tigera.io/feed'
     language = Language.ENGLISH
     filtration_needed = True
@@ -1146,6 +1170,8 @@ class TwistlockParsingModule(SimpleRssBasicParsingModule):
     projects = (
         os_friday_project,
     )
+    # TODO: Fix
+    disabled = True
     rss_url = 'https://www.twistlock.com/feed/'
     language = Language.ENGLISH
     filtration_needed = True
