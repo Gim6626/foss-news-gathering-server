@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0">
+    <channel>
+        <title>OS Friday Sources Feed</title>
+        <link>https://habr.com/ru/users/ahriman/</link>
+        <description>Aggregation of sources to prepare OS Friday digests</description>
+        {% for digest_record in object_list %}
+        <item>
+            <title>{{ digest_record.title }}</title>
+            <link>{{ digest_record.url }}</link>
+            <guid>{{ digest_record.id }}</guid>
+            <pubDate>{{ digest_record.gather_dt|date:'r' }} Sun, 11 Jul 2021 23:59:00 +0500</pubDate>
+        </item>
+        {% endfor %}
+    </channel>
+</rss>
