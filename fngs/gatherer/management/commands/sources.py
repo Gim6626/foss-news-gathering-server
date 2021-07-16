@@ -477,6 +477,7 @@ class TheNextWebComParsingModule(SimpleRssBasicParsingModule):
     filters = (
         FiltrationType.SPECIFIC,
     )
+    language = Language.ENGLISH
 
 
 class VentureBeatComParsingModule(SimpleRssBasicParsingModule):
