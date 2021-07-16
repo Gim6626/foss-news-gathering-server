@@ -9,7 +9,7 @@
             <title>{{ digest_record.title }}</title>
             <link>{{ digest_record.url }}</link>
             <guid>{{ digest_record.id }}</guid>
-            <pubDate>{{ digest_record.gather_dt|date:'r' }} Sun, 11 Jul 2021 23:59:00 +0500</pubDate>
+            <pubDate>{{ digest_record.dt|date:'r' }}</pubDate>
         </item>
         {% endfor %}
     </channel>
