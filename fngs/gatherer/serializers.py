@@ -19,6 +19,7 @@ class DigestRecordSerializer(serializers.ModelSerializer):
             'subcategory',
             'keywords',
             'projects',
+            'language',
         ]
 
 
