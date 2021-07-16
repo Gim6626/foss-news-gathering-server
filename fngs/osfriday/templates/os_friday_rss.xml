@@ -9,7 +9,11 @@
             <title>{{ digest_record.title }}</title>
             <link>{{ digest_record.url }}</link>
             <guid>{{ digest_record.id }}</guid>
-            <pubDate>{{ digest_record.dt|date:'r' }}</pubDate>
+            {% if digest_record.dt %}
+                <pubDate>{{ digest_record.dt|date:'r' }}</pubDate>
+            {% else %}
+                <pubDate>{{ digest_record.gather_dt|date:'r' }}</pubDate>
+            {% endif %}
         </item>
         {% endfor %}
     </channel>
