@@ -1107,6 +1107,7 @@ class LastWeekInKubernetesDevelopmentParsingModule(SimpleRssBasicParsingModule):
     rss_url = 'http://lwkd.info/feed.xml'
     language = Language.ENGLISH
     item_tag_name = 'entry'
+    pubdate_tag_name = 'published'
 
     def rss_items_root(self):
         return self.rss_data_root
