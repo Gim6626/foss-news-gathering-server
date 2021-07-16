@@ -39,57 +39,54 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         self._init_globals(**options)
         parsing_modules = ParsingModuleFactory.create(parsing_modules_names)
-        posts_data_from_multiple_sources = self._parse(parsing_modules)
-        self._save_to_database(posts_data_from_multiple_sources)
-
-    def _parse(self, parsing_modules):
-        posts_data_from_multiple_sources: List[PostsData] = []
         logger.info('Started parsing all sources')
         for parsing_module in parsing_modules:
-            logger.info(f'Started parsing {parsing_module.source_name}')
-            posts_data = parsing_module.parse(days_count)
-            posts_data_one = PostsData(parsing_module.source_name,
-                                       parsing_module.projects,
-                                       posts_data,
-                                       parsing_module.language,
-                                       parsing_module.warning)
-            for post_data in posts_data_one.posts_data_list:
-                logger.info(f'New post {post_data.dt if post_data.dt is not None else "?"} "{post_data.title}" {post_data.url}')
-            logger.debug(f'Parsed from {parsing_module.source_name}: {[(post_data.title, post_data.url) for post_data in posts_data_one.posts_data_list]}')
-            posts_data_from_multiple_sources.append(posts_data_one)
-            logger.info(f'Finished parsing {parsing_module.source_name}, got {len(posts_data_one.posts_data_list)} post(s)')
-        logger.info(f'Finished parsing all sources, got {sum((len(posts_data_one.posts_data_list) for posts_data_one in posts_data_from_multiple_sources))} digest record(s) from {len(posts_data_from_multiple_sources)} source(s)')
-        return posts_data_from_multiple_sources
+            posts_data_one = self._parse(parsing_module)
+            self._save_to_database(posts_data_one)
+        logger.info(f'Finished parsing all sources, all saved to database')  # TODO: Add stats
 
-    def _save_to_database(self, posts_data_from_multiple_sources: List[PostsData]):
-        logger.info('Saving to database')
+    def _parse(self, parsing_module):
+        logger.info(f'Started parsing {parsing_module.source_name}')
+        posts_data = parsing_module.parse(days_count)
+        posts_data_one = PostsData(parsing_module.source_name,
+                                   parsing_module.projects,
+                                   posts_data,
+                                   parsing_module.language,
+                                   parsing_module.warning)
+        for post_data in posts_data_one.posts_data_list:
+            logger.info(f'New post {post_data.dt if post_data.dt is not None else "?"} "{post_data.title}" {post_data.url}')
+        logger.debug(f'Parsed from {parsing_module.source_name}: {[(post_data.title, post_data.url) for post_data in posts_data_one.posts_data_list]}')
+        logger.info(f'Finished parsing {parsing_module.source_name}, got {len(posts_data_one.posts_data_list)} post(s)')
+        return posts_data_one
+
+    def _save_to_database(self, posts_data_one: PostsData):
+        logger.info(f'Saving to database for source "{posts_data_one.source_name}"')
         added_digest_records_count = 0
         already_existing_digest_records_count = 0
-        for posts_data in posts_data_from_multiple_sources:
-            for post_data in posts_data.posts_data_list:
-                short_post_data_str = f'{post_data.dt} "{post_data.title}" ({post_data.url})'
-                similar_urls = DigestRecord.objects.filter(url=post_data.url)
-                if similar_urls:
-                    logger.warning(f'{short_post_data_str} ignored, found same in database')
-                    already_existing_digest_records_count += 1
-                    continue
-                else:
-                    logger.debug(f'Adding {short_post_data_str} to database')
-                    digest_record = DigestRecord(dt=post_data.dt,
-                                                 gather_dt=datetime.datetime.now(tz=dateutil.tz.tzlocal()),
-                                                 title=post_data.title.strip(),
-                                                 url=post_data.url,
-                                                 state=DigestRecordState.UNKNOWN.name
-                                                       if not post_data.filtered
-                                                       else DigestRecordState.FILTERED.name,
-                                                 keywords=';'.join(post_data.keywords),
-                                                 language=posts_data.language.name)
-                    digest_record.save()
-                    digest_record.projects.set(posts_data.projects)
-                    digest_record.save()
-                    added_digest_records_count += 1
-                    logger.debug(f'Added {short_post_data_str} to database')
-        logger.info(f'Finished saving to database, added {added_digest_records_count} digest record(s), {already_existing_digest_records_count} already existed')
+        for post_data in posts_data_one.posts_data_list:
+            short_post_data_str = f'{post_data.dt} "{post_data.title}" ({post_data.url})'
+            similar_urls = DigestRecord.objects.filter(url=post_data.url)
+            if similar_urls:
+                logger.warning(f'{short_post_data_str} ignored, found same in database')
+                already_existing_digest_records_count += 1
+                continue
+            else:
+                logger.debug(f'Adding {short_post_data_str} to database')
+                digest_record = DigestRecord(dt=post_data.dt,
+                                             gather_dt=datetime.datetime.now(tz=dateutil.tz.tzlocal()),
+                                             title=post_data.title.strip(),
+                                             url=post_data.url,
+                                             state=DigestRecordState.UNKNOWN.name
+                                                   if not post_data.filtered
+                                                   else DigestRecordState.FILTERED.name,
+                                             keywords=';'.join(post_data.keywords),
+                                             language=posts_data_one.language.name)
+                digest_record.save()
+                digest_record.projects.set(posts_data_one.projects)
+                digest_record.save()
+                added_digest_records_count += 1
+                logger.debug(f'Added {short_post_data_str} to database')
+        logger.info(f'Finished saving to database for source "{posts_data_one.source_name}", added {added_digest_records_count} digest record(s), {already_existing_digest_records_count} already existed')
 
     def _init_globals(self, **options):
         init_logger(options['debug'])
