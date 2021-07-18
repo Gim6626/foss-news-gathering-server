@@ -192,6 +192,7 @@ class RssBasicParsingModule(BasicParsingModule):
                             continue
                         title = text.strip()
                     elif self.pubdate_tag_name in tag:
+                        text = text.replace('PDT', 'UTC-07')
                         dt = dateutil.parser.parse(self._date_from_russian_to_english(text))
                     elif self.link_tag_name in tag:
                         if text:
@@ -1261,6 +1262,8 @@ class D2IqBlogParsingModule(SimpleRssBasicParsingModule):
     projects = (
         os_friday_project,
     )
+    # TODO: Fix
+    disabled = True
     rss_url = 'http://mesosphere.io/blog/atom.xml'
     language = Language.ENGLISH
     filtration_needed = True
@@ -1275,6 +1278,8 @@ class PodctlEnterpriseKubernetesParsingModule(SimpleRssBasicParsingModule):
     projects = (
         os_friday_project,
     )
+    # TODO: Fix
+    disabled = True
     rss_url = 'https://www.buzzsprout.com/110399.rss'
     language = Language.ENGLISH
 
@@ -1351,6 +1356,10 @@ class LxerLinuxNewsParsingModule(SimpleRssBasicParsingModule):
     )
     rss_url = 'http://lxer.com/module/newswire/headlines.rss'
     language = Language.ENGLISH
+    pubdate_tag_name = 'date'
+
+    def rss_items_root(self):
+        return self.rss_data_root
 
 
 class NativecloudDevParsingModule(SimpleRssBasicParsingModule):
@@ -1477,10 +1486,14 @@ class AmericanExpressTechnologyParsingModule(SimpleRssBasicParsingModule):
     )
     rss_url = 'http://americanexpress.io/feed.xml'
     language = Language.ENGLISH
+    item_tag_name = 'entry'
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
     )
+
+    def rss_items_root(self):
+        return self.rss_data_root
 
 
 class NewestOpenSourceQuestionsFeedParsingModule(SimpleRssBasicParsingModule):
@@ -1491,6 +1504,11 @@ class NewestOpenSourceQuestionsFeedParsingModule(SimpleRssBasicParsingModule):
     )
     rss_url = 'https://stackoverflow.com/feeds/tag?tagnames=open-source&sort=newest'
     language = Language.ENGLISH
+    item_tag_name = 'entry'
+    pubdate_tag_name = 'published'
+
+    def rss_items_root(self):
+        return self.rss_data_root
 
 
 class TeejeetechParsingModule(SimpleRssBasicParsingModule):
@@ -1499,6 +1517,8 @@ class TeejeetechParsingModule(SimpleRssBasicParsingModule):
     projects = (
         os_friday_project,
     )
+    # TODO: Fix
+    disabled = True
     rss_url = 'http://teejeetech.blogspot.com/feeds/posts/default'
     language = Language.ENGLISH
     filtration_needed = True
@@ -1513,6 +1533,8 @@ class FreedomPenguinParsingModule(SimpleRssBasicParsingModule):
     projects = (
         os_friday_project,
     )
+    # TODO: Fix
+    disabled = True
     rss_url = 'http://feeds.feedburner.com/FreedomPenguin'
     language = Language.ENGLISH
 
@@ -1557,6 +1579,8 @@ class EaglemanBlogParsingModule(SimpleRssBasicParsingModule):
     projects = (
         os_friday_project,
     )
+    # TODO: Fix
+    disabled = True
     rss_url = 'http://www.eagleman.com/blog?format=feed&type=rss'
     language = Language.ENGLISH
     filtration_needed = True
