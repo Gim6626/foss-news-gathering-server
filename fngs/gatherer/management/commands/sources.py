@@ -1675,6 +1675,7 @@ class LobstersSecurityNetsecAppsecAndInfosecParsingModule(SimpleRssBasicParsingM
 
 class BlogParsingModule(SimpleRssBasicParsingModule):
 
+    # TODO: Fix name
     source_name = 'Blog'
     projects = (
         os_friday_project,
@@ -1717,6 +1718,7 @@ class LobstersDevopsDevopsParsingModule(SimpleRssBasicParsingModule):
 
 class RssParsingModule(SimpleRssBasicParsingModule):
 
+    # TODO: Fix name
     source_name = 'Rss'
     projects = (
         os_friday_project,
@@ -1735,6 +1737,8 @@ class AzureAdvocatesContentWrapUpParsingModule(SimpleRssBasicParsingModule):
     projects = (
         os_friday_project,
     )
+    # TODO: Investigate, loads too long
+    disabled = True
     rss_url = 'https://www.onazure.today/feed.xml'
     language = Language.ENGLISH
     filtration_needed = True
@@ -1769,6 +1773,11 @@ class ThoughtworksInsightsParsingModule(SimpleRssBasicParsingModule):
     filters = (
         FiltrationType.SPECIFIC,
     )
+
+    item_tag_name = 'entry'
+
+    def rss_items_root(self):
+        return self.rss_data_root
 
 
 class LobstersOsdevOperatingSystemDesignAndDevelopmentWhenNoSpecificOsTagExistsParsingModule(SimpleRssBasicParsingModule):
@@ -1845,6 +1854,12 @@ class PerformanceIsAFeatureParsingModule(SimpleRssBasicParsingModule):
     filters = (
         FiltrationType.SPECIFIC,
     )
+
+    item_tag_name = 'entry'
+    pubdate_tag_name = 'updated'
+
+    def rss_items_root(self):
+        return self.rss_data_root
 
 
 class LobstersWasmWebassemblyParsingModule(SimpleRssBasicParsingModule):
