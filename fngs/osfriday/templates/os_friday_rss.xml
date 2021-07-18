@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<rss version="2.0">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
+        <atom:link href="https://fn.permlug.org/os-friday/feed" rel="self" type="application/rss+xml" />
         <title>OS Friday Sources Feed</title>
         <link>https://habr.com/ru/users/ahriman/</link>
         <description>Aggregation of sources to prepare OS Friday digests</description>
