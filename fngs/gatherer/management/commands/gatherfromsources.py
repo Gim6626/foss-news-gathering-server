@@ -63,12 +63,21 @@ class Command(BaseCommand):
         logger.info(f'Saving to database for source "{posts_data_one.source_name}"')
         added_digest_records_count = 0
         already_existing_digest_records_count = 0
+        already_existing_digest_records_dt_updated_count = 0
         for post_data in posts_data_one.posts_data_list:
             short_post_data_str = f'{post_data.dt} "{post_data.title}" ({post_data.url})'
-            similar_urls = DigestRecord.objects.filter(url=post_data.url)
-            if similar_urls:
-                logger.warning(f'{short_post_data_str} ignored, found same in database')
-                already_existing_digest_records_count += 1
+            similar_records = DigestRecord.objects.filter(url=post_data.url)  # TODO: Replace check for duplicates before and with "get"
+            if similar_records:
+                print(f'!!! Similar found for {short_post_data_str}')
+                if not similar_records[0].dt:
+                    print(f'->>>> Fixing date')
+                    similar_records[0].dt = post_data.dt
+                    logger.debug(f'{short_post_data_str} already exists in database, but without date, fix it')
+                    already_existing_digest_records_dt_updated_count += 1
+                    similar_records[0].save()
+                else:
+                    logger.warning(f'{short_post_data_str} ignored, found same in database')
+                    already_existing_digest_records_count += 1
                 continue
             else:
                 logger.debug(f'Adding {short_post_data_str} to database')
@@ -86,7 +95,7 @@ class Command(BaseCommand):
                 digest_record.save()
                 added_digest_records_count += 1
                 logger.debug(f'Added {short_post_data_str} to database')
-        logger.info(f'Finished saving to database for source "{posts_data_one.source_name}", added {added_digest_records_count} digest record(s), {already_existing_digest_records_count} already existed')
+        logger.info(f'Finished saving to database for source "{posts_data_one.source_name}", added {added_digest_records_count} digest record(s), {already_existing_digest_records_count} already existed, dates filled for {already_existing_digest_records_dt_updated_count} existing record(s)')
 
     def _init_globals(self, **options):
         init_logger(options['debug'])
