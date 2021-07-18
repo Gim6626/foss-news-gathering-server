@@ -14,6 +14,11 @@
             {% else %}
                 <pubDate>{{ digest_record.gather_dt|date:'r' }}</pubDate>
             {% endif %}
+            <description>
+                    <![CDATA[
+                        <a href="{{ digest_record.url }}">{{ digest_record.url }}</a>
+                    ]]>
+            </description>
         </item>
         {% endfor %}
     </channel>
