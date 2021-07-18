@@ -8,7 +8,7 @@
         <item>
             <title>{{ digest_record.title }}</title>
             <link>{{ digest_record.url }}</link>
-            <guid isPermalink="false">{{ digest_record.id }}</guid>
+            <guid isPermaLink="false">{{ digest_record.id }}</guid>
             {% if digest_record.dt %}
                 <pubDate>{{ digest_record.dt|date:'r' }}</pubDate>
             {% else %}
