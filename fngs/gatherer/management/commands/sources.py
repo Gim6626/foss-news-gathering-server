@@ -153,11 +153,21 @@ class BasicParsingModule(metaclass=ABCMeta):
     def _filter_out_old(self, posts_data: List[PostData], days_count: int) -> List[PostData]:
         filtered_posts_data: List[PostData] = []
         dt_now = datetime.datetime.now(tz=dateutil.tz.tzlocal())
+        already_existing_digest_records_dt_updated_count = 0
         for post_data in posts_data:
             if post_data.dt is not None and (dt_now - post_data.dt).days > days_count:
                 logger.debug(f'"{post_data.title}" from "{self.source_name}" filtered as too old ({post_data.dt})')
+                similar_records = DigestRecord.objects.filter(url=post_data.url)  # TODO: Replace check for duplicates before and with "get"
+                if similar_records:
+                    if not similar_records[0].dt:
+                        similar_records[0].dt = post_data.dt
+                        logger.debug(f'{post_data.url} already exists in database, but without date, fix it')
+                        already_existing_digest_records_dt_updated_count += 1
+                        similar_records[0].save()
             else:
                 filtered_posts_data.append(post_data)
+        if already_existing_digest_records_dt_updated_count:
+            logger.info(f'Few outdated sources found in database without dates, fixed for {already_existing_digest_records_dt_updated_count} sources')
         return filtered_posts_data
 
 
