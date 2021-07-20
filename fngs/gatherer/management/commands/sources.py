@@ -132,6 +132,9 @@ class BasicParsingModule(metaclass=ABCMeta):
         if FiltrationType.SPECIFIC in self.filters:
             keywords_to_check += keywords['specific']
         for post_data in posts_data:
+            if not post_data.title:
+                logger.error(f'Empty title for URL {post_data.url}')
+                continue
             matched = False
             for keyword in keywords_to_check:
                 if self._find_keyword_in_title(keyword, post_data.title):
@@ -787,6 +790,9 @@ class PingvinusRuParsingModule(BasicParsingModule):
         for title, date_str, url in zip(titles_texts, dates_texts, urls):
             dt = datetime.datetime.strptime(date_str, '%d.%m.%Y')
             dt = dt.replace(tzinfo=dateutil.tz.gettz('Europe/Moscow'))
+            if not title:
+                logger.error(f'Empty title for URL {url}')
+                continue
             post_data = PostData(dt, title, self.projects, url, None)
             posts.append(post_data)
         return posts
@@ -2145,6 +2151,11 @@ class ThreeHundredSixtyDegreeDbProgrammingParsingModule(SimpleRssBasicParsingMod
         FiltrationType.SPECIFIC,
     )
 
+    item_tag_name = 'entry'
+
+    def rss_items_root(self):
+        return self.rss_data_root
+
 
 class FourSysopsParsingModule(SimpleRssBasicParsingModule):
 
@@ -2284,6 +2295,11 @@ class CloudComputingBigDataHpcCodeinstinctParsingModule(SimpleRssBasicParsingMod
     filters = (
         FiltrationType.SPECIFIC,
     )
+    item_tag_name = 'entry'
+    pubdate_tag_name = 'published'
+
+    def rss_items_root(self):
+        return self.rss_data_root
 
 
 class ClusteringForMereMortalsParsingModule(SimpleRssBasicParsingModule):
