@@ -68,9 +68,7 @@ class Command(BaseCommand):
             short_post_data_str = f'{post_data.dt} "{post_data.title}" ({post_data.url})'
             similar_records = DigestRecord.objects.filter(url=post_data.url)  # TODO: Replace check for duplicates before and with "get"
             if similar_records:
-                print(f'!!! Similar found for {short_post_data_str}')
                 if not similar_records[0].dt:
-                    print(f'->>>> Fixing date')
                     similar_records[0].dt = post_data.dt
                     logger.debug(f'{short_post_data_str} already exists in database, but without date, fix it')
                     already_existing_digest_records_dt_updated_count += 1
