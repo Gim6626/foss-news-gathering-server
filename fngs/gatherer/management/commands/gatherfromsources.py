@@ -10,7 +10,7 @@ import os
 import yaml
 
 from .sources import *
-from .logger import logger, init_logger
+from .logger import logger
 
 
 SCRIPT_DIRECTORY = os.path.dirname(os.path.realpath(__file__))
@@ -98,7 +98,8 @@ class Command(BaseCommand):
         logger.info(f'Finished saving to database for source "{posts_data_one.source_name}", added {added_digest_records_count} digest record(s), {already_existing_digest_records_count} already existed, dates filled for {already_existing_digest_records_dt_updated_count} existing record(s)')
 
     def _init_globals(self, **options):
-        init_logger(options['debug'])
+        if options['debug']:
+            logger.console_handler.setLevel(logging.DEBUG)
         global days_count
         days_count = options['DAYS_COUNT']
         global parsing_modules_names

@@ -1,27 +1,69 @@
 import logging
 import os
 import sys
+from colorama import Fore, Style
 
 SCRIPT_DIRECTORY = os.path.dirname(os.path.realpath(__file__))
 
-logger = logging.getLogger(__name__)
+
+class Formatter(logging.Formatter):
+
+    def __init__(self, fmt=None):
+        if fmt is None:
+            fmt = self._colorized_fmt()
+        logging.Formatter.__init__(self, fmt)
+
+    def _colorized_fmt(self, color=Fore.RESET):
+        return f'{color}[%(asctime)s] %(levelname)s:{Style.RESET_ALL} %(message)s'
+
+    def format(self, record):
+        # Save the original format configured by the user
+        # when the logger formatter was instantiated
+        format_orig = self._style._fmt
+
+        # Replace the original format with one customized by logging level
+        if record.levelno == logging.DEBUG:
+            color = Fore.CYAN
+        elif record.levelno == logging.INFO:
+            color = Fore.RESET
+        elif record.levelno == logging.WARNING:
+            color = Fore.YELLOW
+        elif record.levelno == logging.ERROR:
+            color = Fore.RED
+        elif record.levelno == logging.CRITICAL:
+            color = Fore.MAGENTA
+        else:
+            color = Fore.WHITE
+        self._style._fmt = self._colorized_fmt(color)
+
+        # Call the original formatter class to do the grunt work
+        result = logging.Formatter.format(self, record)
+
+        # Restore the original format configured by the user
+        self._style._fmt = format_orig
+
+        return result
 
 
-def init_logger(debug: bool):
-    global logger
-    logger.setLevel(logging.DEBUG)
-    logging.getLogger('requests').setLevel(logging.WARNING)
+class Logger(logging.Logger):
 
-    logging_formatter = logging.Formatter('[%(asctime)s] %(levelname)s: %(message)s')
+    def __init__(self):
+        super().__init__('fngs')
 
-    # TODO: Replace with TimedRotatingFileHandler
-    file_handler = logging.FileHandler(os.path.join(SCRIPT_DIRECTORY,
-                                                    'gatherfromsources.log'))
-    file_handler.setFormatter(logging_formatter)
-    file_handler.setLevel(logging.DEBUG)
-    logger.addHandler(file_handler)
+        logging_formatter = Formatter()
 
-    console_handler = logging.StreamHandler(sys.stderr)
-    console_handler.setFormatter(logging_formatter)
-    console_handler.setLevel(logging.INFO if not debug else logging.DEBUG)
-    logger.addHandler(console_handler)
+        self.file_handler = logging.FileHandler(os.path.join(SCRIPT_DIRECTORY,
+                                                        'gatherfromsources.log'))
+        self.file_handler.setFormatter(logging_formatter)
+        self.file_handler.setLevel(logging.DEBUG)
+        self.addHandler(self.file_handler)
+
+        self.console_handler = logging.StreamHandler(sys.stderr)
+        self.console_handler.setFormatter(logging_formatter)
+        self.console_handler.setLevel(logging.INFO)
+        self.addHandler(self.console_handler)
+
+        logging.getLogger('requests').setLevel(logging.WARNING)
+
+
+logger = Logger()
