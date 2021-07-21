@@ -18,6 +18,7 @@ class DigestRecordCategory(Enum):
     UNKNOWN = 'unknown'
     NEWS = 'news'
     ARTICLES = 'articles'
+    VIDEOS = 'videos'
     RELEASES = 'releases'
     OTHER = 'other'
 
