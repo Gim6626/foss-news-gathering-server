@@ -1309,6 +1309,15 @@ class IstioBlogAndNewsParsingModule(SimpleRssBasicParsingModule):
     rss_url = 'https://istio.io/feed.xml'
     language = Language.ENGLISH
 
+    def _parse(self):
+        posts_data: List[PostData] = super()._parse()
+        posts_data_with_fixed_urls = []
+        for p in posts_data:
+            if not re.fullmatch(r'^https://.*', p.url):
+                p.url = f'https://istio.io{p.url}'
+            posts_data_with_fixed_urls.append(p)
+        return posts_data_with_fixed_urls
+
 
 class ProgrammingKubernetesParsingModule(SimpleRssBasicParsingModule):
 
