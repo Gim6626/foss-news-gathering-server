@@ -803,7 +803,7 @@ class PingvinusRuParsingModule(BasicParsingModule):
             if not title:
                 logger.error(f'Empty title for URL {url}')
                 continue
-            post_data = PostData(dt, title, self.projects, url, None)
+            post_data = PostData(dt, title, url, None)
             posts.append(post_data)
         return posts
 
