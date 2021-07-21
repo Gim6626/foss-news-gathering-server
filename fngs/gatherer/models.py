@@ -39,12 +39,12 @@ class DigestRecordSubcategory(Enum):
     EVENTS = 'events'
     INTROS = 'intros'
     OPENING = 'opening'
-    NEWS = 'news'  # TODO: Remove after prod migration
+    NEWS = 'news'  # Obsolete, should not be used
     ORG = 'org'
     DIY = 'diy'
     LAW = 'law'
     KnD = 'knd'
-    SYSTEM = 'system'
+    SYSTEM = 'system'  # Obsolete, should not be used
     SPECIAL = 'special'
     EDUCATION = 'education'
     DATABASES = 'db'
