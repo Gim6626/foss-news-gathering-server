@@ -9,6 +9,7 @@ import traceback
 import datetime
 import dateutil
 from copy import copy
+import pytz
 
 from gatherer.models import *
 from .logger import logger
@@ -116,10 +117,13 @@ class BasicParsingModule(metaclass=ABCMeta):
 
     def _filter_out(self, source_posts_data: List[PostData], days_count: int):
         actual_posts_data = self._filter_out_old(source_posts_data, days_count)
-        ignored_len = len(source_posts_data) - len(actual_posts_data)
-        if ignored_len:
-            logger.info(f'{len(source_posts_data) - len(actual_posts_data)} posts ignored as too old')
+        outdated_len = len(source_posts_data) - len(actual_posts_data)
+        if outdated_len:
+            logger.info(f'{len(source_posts_data) - len(actual_posts_data)}/{len(source_posts_data)} posts ignored for "{self.source_name}" as too old')
         filtered_posts_data = self._filter_out_by_keywords(actual_posts_data)
+        nonactual_len = len(actual_posts_data) - len(filtered_posts_data)
+        if nonactual_len:
+            logger.info(f'{len(source_posts_data) - len(actual_posts_data)}/{len(source_posts_data)} posts ignored for "{self.source_name}" as not passed keywords filters')
         return filtered_posts_data
 
     def _filter_out_by_keywords(self, posts_data: List[PostData]):
@@ -183,6 +187,12 @@ class RssBasicParsingModule(BasicParsingModule):
     def __init__(self):
         self.rss_data_root = None
 
+    def _preprocess_xml(self, text: str):
+        return text
+
+    def _preprocess_date_str(self, date_str: str):
+        return date_str
+
     def _parse(self):
         posts_data: List[PostData] = []
         response = requests.get(self.rss_url,
@@ -190,7 +200,7 @@ class RssBasicParsingModule(BasicParsingModule):
         if response.status_code != 200:
             logger.error(f'"{self.source_name}" returned status code {response.status_code}')
             return posts_data
-        self.rss_data_root = ET.fromstring(response.text)
+        self.rss_data_root = ET.fromstring(self._preprocess_xml(response.text))
         for rss_data_elem in self.rss_items_root():
             if self.item_tag_name in rss_data_elem.tag:
                 dt = None
@@ -205,8 +215,11 @@ class RssBasicParsingModule(BasicParsingModule):
                             continue
                         title = text.strip()
                     elif self.pubdate_tag_name in tag:
-                        text = text.replace('PDT', 'UTC-07')
-                        dt = dateutil.parser.parse(self._date_from_russian_to_english(text))
+                        text = self._preprocess_date_str(text)
+                        text = self._date_from_russian_to_english(text) # TODO: Extract such filter to specific classes
+                        dt: datetime.datetime = dateutil.parser.parse(text)
+                        if dt.tzinfo is None:
+                            dt = dt.replace(tzinfo=pytz.UTC)
                     elif self.link_tag_name in tag:
                         if text:
                             url = text
@@ -1438,6 +1451,9 @@ class FlossWeeklyVideoParsingModule(SimpleRssBasicParsingModule):
         FiltrationType.SPECIFIC,
     )
 
+    def _preprocess_date_str(self, date_str: str):
+        return super()._preprocess_date_str(date_str.replace('PDT', 'UTC-07'))
+
 
 class LobstersNodejsNodeJsProgrammingParsingModule(SimpleRssBasicParsingModule):
 
@@ -2348,6 +2364,9 @@ class CommandLineFanaticParsingModule(SimpleRssBasicParsingModule):
         FiltrationType.SPECIFIC,
     )
 
+    def _preprocess_date_str(self, date_str: str):
+        return super()._preprocess_date_str(date_str.replace('- 0700', 'UTC-07'));
+
 
 class DevcurryParsingModule(SimpleRssBasicParsingModule):
 
@@ -2355,6 +2374,8 @@ class DevcurryParsingModule(SimpleRssBasicParsingModule):
     projects = (
         os_friday_project,
     )
+    # TODO: Fix
+    disabled = True
     rss_url = 'http://www.devcurry.com/feeds/posts/default/'
     language = Language.ENGLISH
     filtration_needed = True
@@ -2397,6 +2418,8 @@ class FelipeOliveiraParsingModule(SimpleRssBasicParsingModule):
     projects = (
         os_friday_project,
     )
+    # TODO: Fix
+    disabled = True
     rss_url = 'http://feeds.feedburner.com/GeeksAreTotallyIn'
     language = Language.ENGLISH
     filtration_needed = True
@@ -2411,6 +2434,8 @@ class FromRavikanthSBlogParsingModule(SimpleRssBasicParsingModule):
     projects = (
         os_friday_project,
     )
+    # TODO: Fix
+    disabled = True
     rss_url = 'http://feeds.feedburner.com/RavikanthChaganti'
     language = Language.ENGLISH
     filtration_needed = True
@@ -2621,6 +2646,8 @@ class MaartenBalliauwBlogParsingModule(SimpleRssBasicParsingModule):
     projects = (
         os_friday_project,
     )
+    # TODO: Fix
+    disabled = True
     rss_url = 'http://feeds2.feedburner.com/maartenballiauw'
     language = Language.ENGLISH
     filtration_needed = True
@@ -2655,6 +2682,11 @@ class MartinFowlerParsingModule(SimpleRssBasicParsingModule):
     filters = (
         FiltrationType.SPECIFIC,
     )
+    item_tag_name = 'entry'
+    pubdate_tag_name = 'updated'
+
+    def rss_items_root(self):
+        return self.rss_data_root
 
 
 class MaxTrinidadThePowershellFrontParsingModule(SimpleRssBasicParsingModule):
@@ -2677,6 +2709,8 @@ class MethodOfFailedByTimHeuerParsingModule(SimpleRssBasicParsingModule):
     projects = (
         os_friday_project,
     )
+    # TODO: Fix
+    disabled = True
     rss_url = 'http://feeds.timheuer.com/timheuer'
     language = Language.ENGLISH
     filtration_needed = True
@@ -2697,6 +2731,11 @@ class MichaelCrumpParsingModule(SimpleRssBasicParsingModule):
     filters = (
         FiltrationType.SPECIFIC,
     )
+    item_tag_name = 'entry'
+    pubdate_tag_name = 'published'
+
+    def rss_items_root(self):
+        return self.rss_data_root
 
 
 class NewsParsingModule(SimpleRssBasicParsingModule):
@@ -2733,6 +2772,8 @@ class PrecisionComputingParsingModule(SimpleRssBasicParsingModule):
     projects = (
         os_friday_project,
     )
+    # TODO: Fix
+    disabled = True
     rss_url = 'http://www.leeholmes.com/blog/feed/atom/'
     language = Language.ENGLISH
     filtration_needed = True
@@ -2753,6 +2794,11 @@ class PublisherSRoundUpParsingModule(SimpleRssBasicParsingModule):
     filters = (
         FiltrationType.SPECIFIC,
     )
+    item_tag_name = 'entry'
+    pubdate_tag_name = 'published'
+
+    def rss_items_root(self):
+        return self.rss_data_root
 
 
 class RandsInReposeParsingModule(SimpleRssBasicParsingModule):
@@ -2761,6 +2807,8 @@ class RandsInReposeParsingModule(SimpleRssBasicParsingModule):
     projects = (
         os_friday_project,
     )
+    # TODO: Fix
+    disabled = True
     rss_url = 'http://www.randsinrepose.com/index.xml'
     language = Language.ENGLISH
     filtration_needed = True
@@ -2852,6 +2900,9 @@ class SecretgeekParsingModule(SimpleRssBasicParsingModule):
         FiltrationType.SPECIFIC,
     )
 
+    def _preprocess_xml(self, text: str):
+        return super()._preprocess_xml(text.replace('ï»¿', ''))
+
 
 class ShawnWildermuthSBlogParsingModule(SimpleRssBasicParsingModule):
 
@@ -2915,7 +2966,7 @@ class TechgenixNewsParsingModule(SimpleRssBasicParsingModule):
     projects = (
         os_friday_project,
     )
-    rss_url = 'http://www.techgenix.com/news/feed/'
+    rss_url = 'https://techgenix.com/feed/'
     language = Language.ENGLISH
     filtration_needed = True
     filters = (
@@ -2949,6 +3000,12 @@ class TheArtOfSimplicityParsingModule(SimpleRssBasicParsingModule):
     filters = (
         FiltrationType.SPECIFIC,
     )
+    item_tag_name = 'entry'
+    pubdate_tag_name = 'published'
+    description_tag_name = 'content'
+
+    def rss_items_root(self):
+        return self.rss_data_root
 
 
 class TheExptaBlogParsingModule(SimpleRssBasicParsingModule):
@@ -2957,6 +3014,8 @@ class TheExptaBlogParsingModule(SimpleRssBasicParsingModule):
     projects = (
         os_friday_project,
     )
+    # TODO: Fix
+    disabled = True
     rss_url = 'http://www.expta.com/feeds/posts/default'
     language = Language.ENGLISH
     filtration_needed = True
@@ -2977,6 +3036,12 @@ class TheMicrosoftPlatformParsingModule(SimpleRssBasicParsingModule):
     filters = (
         FiltrationType.SPECIFIC,
     )
+    item_tag_name = 'entry'
+    pubdate_tag_name = 'published'
+    description_tag_name = 'content'
+
+    def rss_items_root(self):
+        return self.rss_data_root
 
 
 class ThinkingInSoftwareParsingModule(SimpleRssBasicParsingModule):
@@ -2991,6 +3056,12 @@ class ThinkingInSoftwareParsingModule(SimpleRssBasicParsingModule):
     filters = (
         FiltrationType.SPECIFIC,
     )
+    item_tag_name = 'entry'
+    pubdate_tag_name = 'published'
+    description_tag_name = 'content'
+
+    def rss_items_root(self):
+        return self.rss_data_root
 
 
 class VirtualisationManagementBlogParsingModule(SimpleRssBasicParsingModule):
@@ -3051,6 +3122,8 @@ class WindowsServerDivisionWeblogParsingModule(SimpleRssBasicParsingModule):
     projects = (
         os_friday_project,
     )
+    # TODO: Fix
+    disabled = True
     rss_url = 'http://blogs.technet.com/b/windowsserver/rss.aspx'
     language = Language.ENGLISH
     filtration_needed = True
@@ -3085,6 +3158,12 @@ class YouVeBeenHaackedParsingModule(SimpleRssBasicParsingModule):
     filters = (
         FiltrationType.SPECIFIC,
     )
+    item_tag_name = 'entry'
+    pubdate_tag_name = 'published'
+    description_tag_name = 'content'
+
+    def rss_items_root(self):
+        return self.rss_data_root
 
 
 class AlexanderBindyuBlogParsingModule(SimpleRssBasicParsingModule):
@@ -3122,7 +3201,7 @@ class AndreyOnNetParsingModule(SimpleRssBasicParsingModule):
         os_friday_project,
     )
     rss_url = 'http://feeds.moveax.ru/devdotnet'
-    language = Language.ENGLISH
+    language = Language.RUSSIAN
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -3141,6 +3220,12 @@ class MyInformationResourceBlogMirNetParsingModule(SimpleRssBasicParsingModule):
     filters = (
         FiltrationType.SPECIFIC,
     )
+    item_tag_name = 'entry'
+    pubdate_tag_name = 'published'
+    description_tag_name = 'content'
+
+    def rss_items_root(self):
+        return self.rss_data_root
 
 
 class EternalArrivalParsingModule(SimpleRssBasicParsingModule):
@@ -3169,4 +3254,3 @@ class Rss20TaggedMerkleTreesAndRelatedSimilarDataStructuresNotBusinessScamNewsPa
     filters = (
         FiltrationType.SPECIFIC,
     )
-
