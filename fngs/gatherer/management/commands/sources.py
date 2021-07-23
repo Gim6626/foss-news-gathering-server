@@ -3180,6 +3180,9 @@ class AlexanderBindyuBlogParsingModule(SimpleRssBasicParsingModule):
         FiltrationType.SPECIFIC,
     )
 
+    def _preprocess_date_str(self, date_str: str):
+        return super()._preprocess_date_str(date_str.replace('PST', 'UTC-08'))
+
 
 class ScottHanselmanSBlogParsingModule(SimpleRssBasicParsingModule):
 
