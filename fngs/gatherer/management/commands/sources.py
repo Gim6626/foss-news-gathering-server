@@ -231,7 +231,10 @@ class RssBasicParsingModule(BasicParsingModule):
                         brief = text
                 url = self.process_url(url)
                 if not url:
-                    logger.error('Empty URL')
+                    if title:
+                        logger.error(f'Empty URL for title "{title}" for source "{self.source_name}"')
+                    else:
+                        logger.error(f'Empty URL and empty title for source "{self.source_name}"')
                     continue
                 post_data = PostData(dt, title, url, brief)
                 posts_data.append(post_data)
