@@ -1,10 +1,14 @@
+import re
+
 from rest_framework import (
     permissions,
     viewsets,
+    mixins,
+    status,
 )
 from gatherer.serializers import *
 from rest_framework.viewsets import GenericViewSet
-from rest_framework import mixins
+from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
 from gatherer.filters import *
 
@@ -72,3 +76,24 @@ class ProjectViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
+
+
+class KeywordViewSet(viewsets.ModelViewSet):
+    permission_classes = [permissions.IsAuthenticated]
+    queryset = Keyword.objects.all()
+    serializer_class = KeywordSerializer
+
+
+class GuessCategoryView(mixins.ListModelMixin, GenericViewSet):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def list(self, request, *args, **kwargs):
+        title = request.query_params.get('title', None)
+        keywords = Keyword.objects.all()
+        matched_keywords_by_category = {}
+        for keyword in keywords:
+            if re.search(rf'\b{re.escape(keyword.name)}\b', title, re.IGNORECASE):
+                if keyword.category not in matched_keywords_by_category:
+                    matched_keywords_by_category[keyword.category] = []
+                matched_keywords_by_category[keyword.category].append(keyword.name)
+        return Response({'title': title, 'matches': matched_keywords_by_category}, status=status.HTTP_200_OK)

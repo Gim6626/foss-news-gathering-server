@@ -55,3 +55,15 @@ class ProjectSerializer(serializers.ModelSerializer):
             'name',
             'records',
         ]
+
+
+class KeywordSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Keyword
+        fields = [
+            'id',
+            'name',
+            'category',
+            'is_generic',
+        ]

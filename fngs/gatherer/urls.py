@@ -17,5 +17,7 @@ router.register('digest-records-duplicates-detailed', DigestRecordDuplicateDetai
 router.register('similar-digest-records', SimilarDigestRecordsViewSet, basename='similar_digest_records')
 router.register('duplicates-by-digest-record', DuplicatesByDigestRecordsViewSet, basename='duplicates_by_digest_record')
 router.register('projects', ProjectViewSet, basename='projects')
+router.register('keywords', KeywordViewSet, basename='keywords')
+router.register('guess-category', GuessCategoryView, basename='guess_category')
 
 urlpatterns += router.urls
