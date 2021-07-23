@@ -17,7 +17,6 @@ SCRIPT_DIRECTORY = os.path.dirname(os.path.realpath(__file__))
 
 parsing_modules_names = []
 days_count = None
-keywords = {}
 
 
 class Command(BaseCommand):
@@ -109,9 +108,6 @@ class Command(BaseCommand):
                     logger.error(f'Invalid parsing module type "{m}", available are: {PARSING_MODULES_TYPES}')
                     sys.exit(2)
             parsing_modules_names = [ParsingModuleType(m) for m in options['MODULE'].split(',')]
-        global keywords
-        with open(os.path.join(SCRIPT_DIRECTORY, 'keywords.yaml'), 'r') as fin:
-            keywords = yaml.safe_load(fin)
 
 
 class ParsingModuleFactory:

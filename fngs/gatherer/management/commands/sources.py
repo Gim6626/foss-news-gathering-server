@@ -13,7 +13,6 @@ import pytz
 
 from gatherer.models import *
 from .logger import logger
-from .keywords import keywords
 
 
 foss_news_project = Project.objects.get(name='FOSS News')
@@ -103,8 +102,7 @@ class BasicParsingModule(metaclass=ABCMeta):
 
     def _fill_keywords(self, posts_data: List[PostData]):
         keywords_to_check = []
-        keywords_to_check += keywords['generic']
-        keywords_to_check += keywords['specific']
+        keywords_to_check += [k.name for k in Keyword.objects.all()]
         for post_data in posts_data:
             for keyword in keywords_to_check:
                 if keyword in post_data.keywords:
@@ -132,9 +130,9 @@ class BasicParsingModule(metaclass=ABCMeta):
         filtered_posts_data: List[PostData] = []
         keywords_to_check = []
         if FiltrationType.GENERIC in self.filters:
-            keywords_to_check += keywords['generic']
+            keywords_to_check += [k.name for k in Keyword.objects.filter(is_generic=True)]
         if FiltrationType.SPECIFIC in self.filters:
-            keywords_to_check += keywords['specific']
+            keywords_to_check += [k.name for k in Keyword.objects.filter(is_generic=False)]
         for post_data in posts_data:
             if not post_data.title:
                 logger.error(f'Empty title for URL {post_data.url}')
