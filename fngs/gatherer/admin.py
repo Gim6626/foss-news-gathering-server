@@ -68,6 +68,10 @@ class KeywordAdmin(admin.ModelAdmin):
         'is_generic',
     )
 
+    search_fields = (
+        'name',
+    )
+
 
 admin.site.register(DigestRecord, DigestRecordAdmin)
 admin.site.register(DigestRecordDuplicate, DigestRecordDuplicateAdmin)
