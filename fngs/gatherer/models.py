@@ -149,7 +149,7 @@ class DigestRecordDuplicate(models.Model):
 
 class Project(models.Model):
 
-    name = models.CharField(verbose_name='Название', max_length=64)
+    name = models.CharField(verbose_name='Name', max_length=64)
 
     class Meta:
         verbose_name = 'Project'
