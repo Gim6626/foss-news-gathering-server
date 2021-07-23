@@ -745,6 +745,15 @@ class YouTubeComBasicParsingModule(RssBasicParsingModule):
         return f'https://www.youtube.com/feeds/videos.xml?channel_id={self.channel_id}'
 
 
+class YouTubePlaylistBasicParsingModule(YouTubeComBasicParsingModule):
+
+    playlist_id = None
+
+    @property
+    def rss_url(self):
+        return f'https://www.youtube.com/feeds/videos.xml?playlist_id={self.playlist_id}'
+
+
 class YouTubeComAlekseySamoilovParsingModule(YouTubeComBasicParsingModule):
 
     source_name = f'YouTubeComAlekseySamoilov'
@@ -1959,14 +1968,13 @@ class AwsArchitectureBlogParsingModule(SimpleRssBasicParsingModule):
     )
 
 
-class HeptioUploadsOnYoutubeParsingModule(SimpleRssBasicParsingModule):
+class HeptioUploadsOnYoutubeParsingModule(YouTubePlaylistBasicParsingModule):
 
     source_name = 'HeptioUploadsOnYoutube'
     projects = (
         os_friday_project,
     )
-    # TODO: Fix
-    rss_url = 'https://www.youtube.com/playlist?list=UUjQU5ZI2mHswy7OOsii_URg'
+    playlist_id = 'UUjQU5ZI2mHswy7OOsii_URg'
     language = Language.ENGLISH
     filtration_needed = True
     filters = (
@@ -1974,14 +1982,13 @@ class HeptioUploadsOnYoutubeParsingModule(SimpleRssBasicParsingModule):
     )
 
 
-class AlexEllisOpenfaasCommunityAwesomenessOnYoutubeParsingModule(SimpleRssBasicParsingModule):
+class AlexEllisOpenfaasCommunityAwesomenessOnYoutubeParsingModule(YouTubePlaylistBasicParsingModule):
 
     source_name = 'AlexEllisOpenfaasCommunityAwesomenessOnYoutube'
     projects = (
         os_friday_project,
     )
-    # TODO: Fix
-    rss_url = 'https://www.youtube.com/playlist?list=PLlIapFDp305Cw4Mu13Oq--AEk0G0WXPO-'
+    playlist_id = 'PLlIapFDp305Cw4Mu13Oq--AEk0G0WXPO-'
     language = Language.ENGLISH
     filtration_needed = True
     filters = (
@@ -1989,14 +1996,13 @@ class AlexEllisOpenfaasCommunityAwesomenessOnYoutubeParsingModule(SimpleRssBasic
     )
 
 
-class VmwareCloudNativeAppsUploadsOnYoutubeParsingModule(SimpleRssBasicParsingModule):
+class VmwareCloudNativeAppsUploadsOnYoutubeParsingModule(YouTubePlaylistBasicParsingModule):
 
     source_name = 'VmwareCloudNativeAppsUploadsOnYoutube'
     projects = (
         os_friday_project,
     )
-    # TODO: Fix
-    rss_url = 'https://www.youtube.com/playlist?list=UUdkGV51Nu0unDNT58bHt9bg'
+    playlist_id = 'UUdkGV51Nu0unDNT58bHt9bg'
     language = Language.ENGLISH
     filtration_needed = True
     filters = (
@@ -2019,14 +2025,13 @@ class D2IqParsingModule(SimpleRssBasicParsingModule):
     )
 
 
-class TigeraUploadsOnYoutubeParsingModule(SimpleRssBasicParsingModule):
+class TigeraUploadsOnYoutubeParsingModule(YouTubePlaylistBasicParsingModule):
 
     source_name = 'TigeraUploadsOnYoutube'
     projects = (
         os_friday_project,
     )
-    # TODO: Fix
-    rss_url = 'https://www.youtube.com/playlist?list=UU8uN3yhpeBeerGNwDiQbcgw'
+    playlist_id = 'UU8uN3yhpeBeerGNwDiQbcgw'
     language = Language.ENGLISH
     filtration_needed = True
     filters = (
@@ -2034,36 +2039,33 @@ class TigeraUploadsOnYoutubeParsingModule(SimpleRssBasicParsingModule):
     )
 
 
-class CncfCloudNativeComputingFoundationUploadsOnYoutubeParsingModule(SimpleRssBasicParsingModule):
+class CncfCloudNativeComputingFoundationUploadsOnYoutubeParsingModule(YouTubePlaylistBasicParsingModule):
 
     source_name = 'CncfCloudNativeComputingFoundationUploadsOnYoutube'
     projects = (
         os_friday_project,
     )
-    # TODO: Fix
-    rss_url = 'https://www.youtube.com/playlist?list=UUvqbFHwN-nwalWPjPUKpvTA'
+    playlist_id = 'UUvqbFHwN-nwalWPjPUKpvTA'
     language = Language.ENGLISH
 
 
-class CephUploadsOnYoutubeParsingModule(SimpleRssBasicParsingModule):
+class CephUploadsOnYoutubeParsingModule(YouTubePlaylistBasicParsingModule):
 
     source_name = 'CephUploadsOnYoutube'
     projects = (
         os_friday_project,
     )
-    # TODO: Fix
-    rss_url = 'https://www.youtube.com/playlist?list=UUno-Fry25FJ7B4RycCxOtfw'
+    playlist_id = 'UUno-Fry25FJ7B4RycCxOtfw'
     language = Language.ENGLISH
 
 
-class RookRookPresentationsOnYoutubeParsingModule(SimpleRssBasicParsingModule):
+class RookRookPresentationsOnYoutubeParsingModule(YouTubePlaylistBasicParsingModule):
 
     source_name = 'RookRookPresentationsOnYoutube'
     projects = (
         os_friday_project,
     )
-    # TODO: Fix
-    rss_url = 'https://www.youtube.com/playlist?list=PLP0uDo-ZFnQOCpYx1_uVCrx_bmyq7tdKr'
+    playlist_id = 'PLP0uDo-ZFnQOCpYx1_uVCrx_bmyq7tdKr'
     language = Language.ENGLISH
     filtration_needed = True
     filters = (
@@ -2082,14 +2084,13 @@ class DockerParsingModule(SimpleRssBasicParsingModule):
     language = Language.ENGLISH
 
 
-class RookUploadsOnYoutubeParsingModule(SimpleRssBasicParsingModule):
+class RookUploadsOnYoutubeParsingModule(YouTubePlaylistBasicParsingModule):
 
     source_name = 'RookUploadsOnYoutube'
     projects = (
         os_friday_project,
     )
-    # TODO: Fix
-    rss_url = 'https://www.youtube.com/playlist?list=UUa7kFUSGO4NNSJV8MJVlJAA'
+    playlist_id = 'UUa7kFUSGO4NNSJV8MJVlJAA'
     language = Language.ENGLISH
     filtration_needed = True
     filters = (
@@ -2107,14 +2108,13 @@ class CncfCloudNativeComputingFoundationParsingModule(YouTubeComBasicParsingModu
     language = Language.ENGLISH
 
 
-class WeaveworksIncWeaveOnlineUserGroupsOnYoutubeParsingModule(SimpleRssBasicParsingModule):
+class WeaveworksIncWeaveOnlineUserGroupsOnYoutubeParsingModule(YouTubePlaylistBasicParsingModule):
 
     source_name = 'WeaveworksIncWeaveOnlineUserGroupsOnYoutube'
     projects = (
         os_friday_project,
     )
-    # TODO: Fix
-    rss_url = 'https://www.youtube.com/playlist?list=PL9lTuCFNLaD0wEsbqf6IrGCWvZIAIo9cW'
+    playlist_id = 'PL9lTuCFNLaD0wEsbqf6IrGCWvZIAIo9cW'
     language = Language.ENGLISH
     filtration_needed = True
     filters = (
@@ -2122,25 +2122,23 @@ class WeaveworksIncWeaveOnlineUserGroupsOnYoutubeParsingModule(SimpleRssBasicPar
     )
 
 
-class KubernautsIoUploadsOnYoutubeParsingModule(SimpleRssBasicParsingModule):
+class KubernautsIoUploadsOnYoutubeParsingModule(YouTubePlaylistBasicParsingModule):
 
     source_name = 'KubernautsIoUploadsOnYoutube'
     projects = (
         os_friday_project,
     )
-    # TODO: Fix
-    rss_url = 'https://www.youtube.com/playlist?list=UU5NDQ4F0JPQozyqnh1mghHQ'
+    playlist_id = 'UU5NDQ4F0JPQozyqnh1mghHQ'
     language = Language.ENGLISH
 
 
-class AlexEllisUploadsOnYoutubeParsingModule(SimpleRssBasicParsingModule):
+class AlexEllisUploadsOnYoutubeParsingModule(YouTubePlaylistBasicParsingModule):
 
     source_name = 'AlexEllisUploadsOnYoutube'
     projects = (
         os_friday_project,
     )
-    # TODO: Fix
-    rss_url = 'https://www.youtube.com/playlist?list=UUJsK5Zbq0dyFZUBtMTHzxjQ'
+    playlist_id = 'UUJsK5Zbq0dyFZUBtMTHzxjQ'
     language = Language.ENGLISH
     filtration_needed = True
     filters = (
@@ -2148,14 +2146,13 @@ class AlexEllisUploadsOnYoutubeParsingModule(SimpleRssBasicParsingModule):
     )
 
 
-class CephCephTestingWeeklyOnYoutubeParsingModule(SimpleRssBasicParsingModule):
+class CephCephTestingWeeklyOnYoutubeParsingModule(YouTubePlaylistBasicParsingModule):
 
     source_name = 'CephCephTestingWeeklyOnYoutube'
     projects = (
         os_friday_project,
     )
-    # TODO: Fix
-    rss_url = 'https://www.youtube.com/playlist?list=PLrBUGiINAakMV7gKMQjFvcWL3PeY0y0lq'
+    playlist_id = 'PLrBUGiINAakMV7gKMQjFvcWL3PeY0y0lq'
     language = Language.ENGLISH
 
 
