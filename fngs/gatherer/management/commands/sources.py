@@ -541,7 +541,8 @@ class CbrOnlineComParsingModule(SimpleRssBasicParsingModule):
     projects = (
         foss_news_project,
     )
-    rss_url = 'https://www.cbronline.com/rss'
+    # rss_url = 'https://www.cbronline.com/rss'
+    rss_url = 'https://techmonitor.ai/rss'
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
