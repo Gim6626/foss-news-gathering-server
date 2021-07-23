@@ -55,6 +55,21 @@ class ProjectAdmin(admin.ModelAdmin):
     )
 
 
+class KeywordAdmin(admin.ModelAdmin):
+
+    readonly_fields = (
+        'id',
+    )
+
+    list_display = (
+        'id',
+        'name',
+        'category',
+        'is_generic',
+    )
+
+
 admin.site.register(DigestRecord, DigestRecordAdmin)
 admin.site.register(DigestRecordDuplicate, DigestRecordDuplicateAdmin)
 admin.site.register(Project, ProjectAdmin)
+admin.site.register(Keyword, KeywordAdmin)

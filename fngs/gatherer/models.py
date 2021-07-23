@@ -157,3 +157,23 @@ class Project(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Keyword(models.Model):
+
+    name = models.CharField(verbose_name='Name', max_length=64)
+    category = models.CharField(verbose_name='Category',
+                                choices=DigestRecordSubcategory.choices(),
+                                max_length=15,
+                                null=True,
+                                blank=True)
+    is_generic = models.BooleanField(verbose_name='Is generic',
+                                     null=True,
+                                     blank=True)
+
+    class Meta:
+        verbose_name = 'Keyword'
+        verbose_name_plural = 'Keywords'
+
+    def __str__(self):
+        return f'{self.name} ({self.category}, {"GENERIC" if self.is_generic else "NON-GENERIC"})'
