@@ -227,6 +227,12 @@ class RssBasicParsingModule(BasicParsingModule):
                             logger.error(f'Could not find URL for "{title}" feed record')
                     elif self.description_tag_name in tag:
                         brief = text
+                    elif 'group' in tag:
+                        for rss_data_subsubelem in rss_data_subelem:
+                            subtag = rss_data_subsubelem.tag
+                            if self.description_tag_name in subtag:
+                                subtext = rss_data_subsubelem.text
+                                brief = subtext
                 url = self.process_url(url)
                 if not url:
                     if title:
@@ -1048,6 +1054,7 @@ class PrometheusBlogParsingModule(SimpleRssBasicParsingModule):
     language = Language.ENGLISH
     item_tag_name = 'entry'
     pubdate_tag_name = 'published'
+    description_tag_name = 'content'
 
     def rss_items_root(self):
         return self.rss_data_root

@@ -86,7 +86,8 @@ class Command(BaseCommand):
                                                    if not post_data.filtered
                                                    else DigestRecordState.FILTERED.name,
                                              keywords=';'.join(post_data.keywords),
-                                             language=posts_data_one.language.name)
+                                             language=posts_data_one.language.name,
+                                             description=post_data.brief)
                 digest_record.save()
                 digest_record.projects.set(posts_data_one.projects)
                 digest_record.save()
