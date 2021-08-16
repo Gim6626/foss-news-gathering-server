@@ -181,6 +181,7 @@ class RssBasicParsingModule(BasicParsingModule):
     pubdate_tag_name = None
     link_tag_name = None
     description_tag_name = None
+    no_description = False
 
     def __init__(self):
         self.rss_data_root = None
@@ -198,7 +199,10 @@ class RssBasicParsingModule(BasicParsingModule):
         if response.status_code != 200:
             logger.error(f'"{self.source_name}" returned status code {response.status_code}')
             return posts_data
+        else:
+            logger.debug(f'Successfully fetched RSS for "{self.source_name}"')
         self.rss_data_root = ET.fromstring(self._preprocess_xml(response.text))
+        no_description_at_all = True
         for rss_data_elem in self.rss_items_root():
             if self.item_tag_name in rss_data_elem.tag:
                 dt = None
@@ -227,12 +231,14 @@ class RssBasicParsingModule(BasicParsingModule):
                             logger.error(f'Could not find URL for "{title}" feed record')
                     elif self.description_tag_name in tag:
                         brief = text
+                        no_description_at_all = False
                     elif 'group' in tag:
                         for rss_data_subsubelem in rss_data_subelem:
                             subtag = rss_data_subsubelem.tag
                             if self.description_tag_name in subtag:
                                 subtext = rss_data_subsubelem.text
                                 brief = subtext
+                                no_description_at_all = False
                 url = self.process_url(url)
                 if not url:
                     if title:
@@ -242,6 +248,8 @@ class RssBasicParsingModule(BasicParsingModule):
                     continue
                 post_data = PostData(dt, title, url, brief)
                 posts_data.append(post_data)
+        if posts_data and no_description_at_all and not self.no_description:
+            logger.error(f'No descriptions at all in {self.source_name} source feed')
         return posts_data
 
     def _date_from_russian_to_english(self,
@@ -790,6 +798,7 @@ class AstraLinuxRuParsingModule(SimpleRssBasicParsingModule):
     )
     rss_url = 'https://astralinux.ru/rss'
     language = Language.RUSSIAN
+    no_description = True
 
 
 class BaseAltRuParsingModule(SimpleRssBasicParsingModule):
@@ -978,6 +987,7 @@ class AmbassadorApiGatewayParsingModule(SimpleRssBasicParsingModule):
     projects = (
         os_friday_project,
     )
+    description_tag_name = 'content'
     rss_url = 'https://blog.getambassador.io/feed'
     language = Language.ENGLISH
     filtration_needed = True
@@ -1156,6 +1166,7 @@ class LastWeekInKubernetesDevelopmentParsingModule(SimpleRssBasicParsingModule):
     language = Language.ENGLISH
     item_tag_name = 'entry'
     pubdate_tag_name = 'published'
+    description_tag_name = 'content'
 
     def rss_items_root(self):
         return self.rss_data_root
@@ -1183,6 +1194,7 @@ class EnvoyProxyParsingModule(SimpleRssBasicParsingModule):
     filters = (
         FiltrationType.SPECIFIC,
     )
+    description_tag_name = 'content'
 
 
 class TheNewStackAnalystsParsingModule(SimpleRssBasicParsingModule):
@@ -1358,6 +1370,7 @@ class ProgrammingKubernetesParsingModule(SimpleRssBasicParsingModule):
     )
     rss_url = 'https://medium.com/feed/programming-kubernetes'
     language = Language.ENGLISH
+    description_tag_name = 'content'
 
 
 class KubernetesPodcastFromGoogleParsingModule(SimpleRssBasicParsingModule):
@@ -1402,6 +1415,12 @@ class RecentQuestionsOpenSourceStackExchangeParsingModule(SimpleRssBasicParsingM
     )
     rss_url = 'https://opensource.stackexchange.com/feeds'
     language = Language.ENGLISH
+    description_tag_name = 'summary'
+    item_tag_name = 'entry'
+    pubdate_tag_name = 'published'
+
+    def rss_items_root(self):
+        return self.rss_data_root
 
 
 class LxerLinuxNewsParsingModule(SimpleRssBasicParsingModule):
@@ -1525,6 +1544,7 @@ class MicrosoftOpenSourceStoriesParsingModule(SimpleRssBasicParsingModule):
     )
     rss_url = 'https://medium.com/feed/microsoft-open-source-stories'
     language = Language.ENGLISH
+    description_tag_name = 'content'
 
 
 class LobstersUnixNixParsingModule(SimpleRssBasicParsingModule):
@@ -1550,6 +1570,7 @@ class AmericanExpressTechnologyParsingModule(SimpleRssBasicParsingModule):
     filters = (
         FiltrationType.SPECIFIC,
     )
+    description_tag_name = 'content'
 
     def rss_items_root(self):
         return self.rss_data_root
@@ -1565,6 +1586,7 @@ class NewestOpenSourceQuestionsFeedParsingModule(SimpleRssBasicParsingModule):
     language = Language.ENGLISH
     item_tag_name = 'entry'
     pubdate_tag_name = 'published'
+    description_tag_name = 'summary'
 
     def rss_items_root(self):
         return self.rss_data_root
@@ -1630,6 +1652,12 @@ class LinuxUprisingBlogParsingModule(SimpleRssBasicParsingModule):
     )
     rss_url = 'https://feeds.feedburner.com/LinuxUprising'
     language = Language.ENGLISH
+    item_tag_name = 'entry'
+    pubdate_tag_name = 'published'
+    description_tag_name = 'content'
+
+    def rss_items_root(self):
+        return self.rss_data_root
 
 
 class EaglemanBlogParsingModule(SimpleRssBasicParsingModule):
@@ -1832,6 +1860,7 @@ class ThoughtworksInsightsParsingModule(SimpleRssBasicParsingModule):
     filters = (
         FiltrationType.SPECIFIC,
     )
+    description_tag_name = 'summary'
 
     item_tag_name = 'entry'
 
@@ -1916,6 +1945,7 @@ class PerformanceIsAFeatureParsingModule(SimpleRssBasicParsingModule):
 
     item_tag_name = 'entry'
     pubdate_tag_name = 'updated'
+    description_tag_name = 'content'
 
     def rss_items_root(self):
         return self.rss_data_root
@@ -2191,6 +2221,7 @@ class ThreeHundredSixtyDegreeDbProgrammingParsingModule(SimpleRssBasicParsingMod
     filters = (
         FiltrationType.SPECIFIC,
     )
+    description_tag_name = 'content'
 
     item_tag_name = 'entry'
 
@@ -2338,6 +2369,7 @@ class CloudComputingBigDataHpcCodeinstinctParsingModule(SimpleRssBasicParsingMod
     )
     item_tag_name = 'entry'
     pubdate_tag_name = 'published'
+    description_tag_name = 'content'
 
     def rss_items_root(self):
         return self.rss_data_root
@@ -2402,6 +2434,7 @@ class DonTBeIffyParsingModule(SimpleRssBasicParsingModule):
     filters = (
         FiltrationType.SPECIFIC,
     )
+    description_tag_name = 'content'
 
 
 class ElegantCodeParsingModule(SimpleRssBasicParsingModule):
@@ -2518,6 +2551,7 @@ class GunnarPeipmanSAspNetBlogParsingModule(SimpleRssBasicParsingModule):
     filters = (
         FiltrationType.SPECIFIC,
     )
+    description_tag_name = 'content'
 
 
 class HanselminutesParsingModule(SimpleRssBasicParsingModule):
@@ -2588,6 +2622,7 @@ class IcosmogeekParsingModule(SimpleRssBasicParsingModule):
     filters = (
         FiltrationType.SPECIFIC,
     )
+    description_tag_name = 'content'
 
 
 class InDepthFeaturesParsingModule(SimpleRssBasicParsingModule):
@@ -2690,6 +2725,7 @@ class MartinFowlerParsingModule(SimpleRssBasicParsingModule):
     )
     item_tag_name = 'entry'
     pubdate_tag_name = 'updated'
+    description_tag_name = 'content'
 
     def rss_items_root(self):
         return self.rss_data_root
@@ -2739,6 +2775,7 @@ class MichaelCrumpParsingModule(SimpleRssBasicParsingModule):
     )
     item_tag_name = 'entry'
     pubdate_tag_name = 'published'
+    description_tag_name = 'content'
 
     def rss_items_root(self):
         return self.rss_data_root
@@ -2802,6 +2839,7 @@ class PublisherSRoundUpParsingModule(SimpleRssBasicParsingModule):
     )
     item_tag_name = 'entry'
     pubdate_tag_name = 'published'
+    description_tag_name = 'content'
 
     def rss_items_root(self):
         return self.rss_data_root
@@ -2922,6 +2960,12 @@ class ShawnWildermuthSBlogParsingModule(SimpleRssBasicParsingModule):
     filters = (
         FiltrationType.SPECIFIC,
     )
+    item_tag_name = 'entry'
+    pubdate_tag_name = 'updated'
+    description_tag_name = 'content'
+
+    def rss_items_root(self):
+        return self.rss_data_root
 
 
 class SimpleTalkRssFeedParsingModule(SimpleRssBasicParsingModule):
