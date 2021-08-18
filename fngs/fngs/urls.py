@@ -19,12 +19,14 @@ from django.urls import path, include
 import gatherer.urls
 import search.urls
 import osfriday.urls
+import tbot.urls
 
 api_prefix = 'api/v1/'
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path(api_prefix, include(gatherer.urls)),
+    path(api_prefix, include(tbot.urls)),
     path('', include(search.urls)),
     path('', include(osfriday.urls)),
 ]

@@ -1,7 +1,6 @@
 import re
 
 from rest_framework import (
-    permissions,
     viewsets,
     mixins,
     status,
@@ -11,28 +10,29 @@ from rest_framework.viewsets import GenericViewSet
 from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
 from gatherer.filters import *
+from common.permissions import *
 
 
 class DigestRecordViewSet(viewsets.ModelViewSet):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAdminUser]
     queryset = DigestRecord.objects.all().order_by('dt')
     serializer_class = DigestRecordSerializer
 
 
 class NewDigestRecordViewSet(viewsets.ModelViewSet):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAdminUser]
     queryset = DigestRecord.objects.filter(state='UNKNOWN')
     serializer_class = DigestRecordSerializer
 
 
 class NewFossNwesDigestRecordViewSet(viewsets.ModelViewSet):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAdminUser | TelegramBotReadOnlyPermission]
     queryset = DigestRecord.objects.filter(state='UNKNOWN', projects__in=(Project.objects.filter(name='FOSS News')))
     serializer_class = DigestRecordSerializer
 
 
 class SpecificDigestRecordsViewSet(GenericViewSet, mixins.ListModelMixin):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAdminUser]
     model = DigestRecord
     serializer_class = DigestRecordSerializer
     queryset = DigestRecord.objects.all()
@@ -41,13 +41,13 @@ class SpecificDigestRecordsViewSet(GenericViewSet, mixins.ListModelMixin):
 
 
 class DigestRecordDuplicateViewSet(viewsets.ModelViewSet):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAdminUser]
     queryset = DigestRecordDuplicate.objects.all()
     serializer_class = DigestRecordDuplicateSerializer
 
 
 class DigestRecordDuplicateDetailedViewSet(viewsets.ModelViewSet):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAdminUser]
     queryset = DigestRecordDuplicate.objects.all()
     serializer_class = DigestRecordDuplicateDetailedSerializer
     filter_class = CurrentDigestRecordsDuplicatesFilter
@@ -55,7 +55,7 @@ class DigestRecordDuplicateDetailedViewSet(viewsets.ModelViewSet):
 
 
 class SimilarDigestRecordsViewSet(GenericViewSet, mixins.ListModelMixin):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAdminUser]
     model = DigestRecord
     serializer_class = DigestRecordSerializer
     queryset = DigestRecord.objects.filter(state='IN_DIGEST')
@@ -64,7 +64,7 @@ class SimilarDigestRecordsViewSet(GenericViewSet, mixins.ListModelMixin):
 
 
 class DuplicatesByDigestRecordsViewSet(GenericViewSet, mixins.ListModelMixin):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAdminUser]
     model = DigestRecordDuplicate
     serializer_class = DigestRecordDuplicateDetailedSerializer
     queryset = DigestRecordDuplicate.objects.all()
@@ -73,19 +73,19 @@ class DuplicatesByDigestRecordsViewSet(GenericViewSet, mixins.ListModelMixin):
 
 
 class ProjectViewSet(viewsets.ModelViewSet):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAdminUser]
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
 
 
 class KeywordViewSet(viewsets.ModelViewSet):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAdminUser]
     queryset = Keyword.objects.all()
     serializer_class = KeywordSerializer
 
 
 class GuessCategoryView(mixins.ListModelMixin, GenericViewSet):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAdminUser | TelegramBotReadOnlyPermission]
 
     def list(self, request, *args, **kwargs):
         title = request.query_params.get('title', None)

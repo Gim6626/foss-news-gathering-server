@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'django_filters',
     'gatherer',
     'search',
+    'tbot',
 ]
 
 MIDDLEWARE = [
