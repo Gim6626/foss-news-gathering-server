@@ -1,3 +1,4 @@
+import random
 from rest_framework import (
     viewsets,
     permissions,
@@ -31,9 +32,9 @@ class TelegramBotDigestRecordCategorizationAttemptDetailedViewSet(mixins.ListMod
     serializer_class = TelegramBotDigestRecordCategorizationAttemptDetailedSerializer
 
 
-class TelegramBotNotCategorizedFossNewsDigestRecordsViewSet(mixins.ListModelMixin,
-                                                            mixins.RetrieveModelMixin,
-                                                            viewsets.GenericViewSet):
+class TelegramBotOneRandomNotCategorizedFossNewsDigestRecordViewSet(mixins.ListModelMixin,
+                                                                    mixins.RetrieveModelMixin,
+                                                                    viewsets.GenericViewSet):
     permission_classes = [permissions.IsAdminUser | TelegramBotFullPermission]
     serializer_class = DigestRecordSerializer
 
@@ -47,4 +48,5 @@ class TelegramBotNotCategorizedFossNewsDigestRecordsViewSet(mixins.ListModelMixi
             return []
         categorized_by_this_user_digest_records_attempts = TelegramBotDigestRecordCategorizationAttempt.objects.filter(telegram_bot_user=tbot_user)
         not_categorized_by_this_user_digest_records = DigestRecord.objects.filter(state='UNKNOWN', projects__in=(Project.objects.filter(name='FOSS News'))).exclude(pk__in=[a.digest_record.pk for a in categorized_by_this_user_digest_records_attempts]).order_by('-dt')
-        return not_categorized_by_this_user_digest_records
+        random_record = random.choice(not_categorized_by_this_user_digest_records)
+        return [random_record]
