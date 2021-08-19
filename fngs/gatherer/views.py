@@ -25,7 +25,7 @@ class NewDigestRecordViewSet(viewsets.ModelViewSet):
     serializer_class = DigestRecordSerializer
 
 
-class NewFossNwesDigestRecordViewSet(viewsets.ModelViewSet):
+class NewFossNewsDigestRecordViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAdminUser | TelegramBotReadOnlyPermission]
     queryset = DigestRecord.objects.filter(state='UNKNOWN', projects__in=(Project.objects.filter(name='FOSS News')))
     serializer_class = DigestRecordSerializer
