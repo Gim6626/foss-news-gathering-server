@@ -97,3 +97,34 @@ class GuessCategoryView(mixins.ListModelMixin, GenericViewSet):
                     matched_keywords_by_category[keyword.category] = []
                 matched_keywords_by_category[keyword.category].append(keyword.name)
         return Response({'title': title, 'matches': matched_keywords_by_category}, status=status.HTTP_200_OK)
+
+
+class SimilarRecordsInPreviousDigest(mixins.ListModelMixin, GenericViewSet):
+    permission_classes = [permissions.IsAdminUser | TelegramBotReadOnlyPermission]
+
+    def list(self, request, *args, **kwargs):
+        current_digest_number_str = request.query_params.get('current-digest-number', None)
+        if not current_digest_number_str:
+            return Response({'error': '"current-digest-number" option is required'},
+                            status=status.HTTP_400_BAD_REQUEST)
+        if not current_digest_number_str.isdigit():
+            return Response({'error': '"current-digest-number" option should be integer'},
+                            status=status.HTTP_400_BAD_REQUEST)
+        current_digest_number = int(current_digest_number_str)
+
+        keywords_str = request.query_params.get('keywords', None)
+        if not keywords_str:
+            return Response({'error': '"keywords" option is required'},
+                            status=status.HTTP_400_BAD_REQUEST)
+        keywords = keywords_str.split(',')
+
+        similar_records_in_previous_digest = []
+        for keyword in keywords:
+            records = DigestRecord.objects.filter(digest_number=current_digest_number - 1, state='IN_DIGEST')
+            for r in records:
+                if keyword in r.title:
+                    similar_records_in_previous_digest.append(r)
+        similar_records_in_previous_digest_titles = [r.title for r in similar_records_in_previous_digest]
+
+        return Response({'similar_records_in_previous_digest': similar_records_in_previous_digest_titles},
+                        status=status.HTTP_200_OK)
