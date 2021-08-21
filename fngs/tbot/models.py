@@ -12,6 +12,10 @@ class TelegramBotUser(models.Model):
                                 blank=True,
                                 null=True)
 
+    class Meta:
+        verbose_name = 'Telegram Bot User'
+        verbose_name_plural = 'Telegram Bot Users'
+
     def __str__(self):
         return f'{self.username} (#{self.tid})'
 
@@ -43,3 +47,7 @@ class TelegramBotDigestRecordCategorizationAttempt(models.Model):
                                              max_length=15,
                                              null=True,
                                              blank=True)
+
+    class Meta:
+        verbose_name = 'Telegram Bot Digest Record Categorization Attempt'
+        verbose_name_plural = 'Telegram Bot Digest Record Categorization Attempts'
