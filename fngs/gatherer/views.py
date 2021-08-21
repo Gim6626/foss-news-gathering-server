@@ -124,7 +124,15 @@ class SimilarRecordsInPreviousDigest(mixins.ListModelMixin, GenericViewSet):
             for r in records:
                 if keyword in r.title:
                     similar_records_in_previous_digest.append(r)
-        similar_records_in_previous_digest_titles = [r.title for r in similar_records_in_previous_digest]
+        similar_records_in_previous_digest_titles = [
+            {
+                'title': r.title,
+                'is_main': r.is_main,
+                'category': r.category,
+                'subcategory': r.subcategory,
+            }
+            for r in similar_records_in_previous_digest
+        ]
 
         return Response({'similar_records_in_previous_digest': similar_records_in_previous_digest_titles},
                         status=status.HTTP_200_OK)
