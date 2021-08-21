@@ -5,7 +5,8 @@ from gatherer.models import *
 
 class TelegramBotUser(models.Model):
 
-    tid = models.IntegerField(verbose_name='Telegram User ID')
+    tid = models.IntegerField(verbose_name='Telegram User ID',
+                              unique=True)
     username = models.CharField(verbose_name='Telegram Username',
                                 max_length=256,
                                 blank=True,
