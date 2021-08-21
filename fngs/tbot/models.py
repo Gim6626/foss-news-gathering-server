@@ -7,7 +7,9 @@ class TelegramBotUser(models.Model):
 
     tid = models.IntegerField(verbose_name='Telegram User ID')
     username = models.CharField(verbose_name='Telegram Username',
-                                max_length=256)
+                                max_length=256,
+                                blank=True,
+                                null=True)
 
     def __str__(self):
         return f'{self.username} (#{self.tid})'
