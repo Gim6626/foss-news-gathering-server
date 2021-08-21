@@ -126,6 +126,7 @@ class SimilarRecordsInPreviousDigest(mixins.ListModelMixin, GenericViewSet):
                     similar_records_in_previous_digest.append(r)
         similar_records_in_previous_digest_titles = [
             {
+                # TODO: Use serializer
                 'title': r.title,
                 'is_main': r.is_main,
                 'category': r.category,
