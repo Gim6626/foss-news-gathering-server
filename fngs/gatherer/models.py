@@ -143,6 +143,10 @@ class DigestRecordDuplicate(models.Model):
                                             related_name='duplicates',
                                             )
 
+    class Meta:
+        verbose_name = 'Digest Record Duplicate'
+        verbose_name_plural = 'Digest Records Duplicates'
+
     def digest_records_titles(self):
         return f'{", ".join([dr.title for dr in self.digest_records.all()])}'
 
