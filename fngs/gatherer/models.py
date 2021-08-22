@@ -203,3 +203,19 @@ class DigestRecordsSource(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class DigestIssue(models.Model):
+
+    number = models.IntegerField(verbose_name='Номер дайджеста',
+                                 unique=True)
+    habr_url = models.CharField(verbose_name='Ссылка на Хабр',
+                                unique=True,
+                                max_length=128)
+
+    class Meta:
+        verbose_name = 'Выпуск дайджеста'
+        verbose_name_plural = 'Выпуски дайджеста'
+
+    def __str__(self):
+        return f'#{self.number} {self.habr_url}'
