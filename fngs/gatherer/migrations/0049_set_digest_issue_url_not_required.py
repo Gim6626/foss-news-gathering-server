@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('gatherer', '0047_fill_title_keywords'),
+        ('gatherer', '0048_fill_title_keywords'),
     ]
 
     operations = [
