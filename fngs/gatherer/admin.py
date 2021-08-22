@@ -25,6 +25,9 @@ class DigestRecordAdmin(admin.ModelAdmin):
         'projects_names',
         'title_keywords_names',
     )
+    filter_horizontal = (
+        'title_keywords',
+    )
     search_fields = (
         'title',
         'url',
