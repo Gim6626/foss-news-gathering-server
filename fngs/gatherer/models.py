@@ -93,9 +93,13 @@ class DigestRecord(models.Model):
                              max_length=15,
                              null=True,
                              blank=True)
-    digest_number = models.IntegerField(verbose_name='Digest Number',
+    digest_number = models.IntegerField(verbose_name='Digest Number',  # Obsolete, should not be used
                                         null=True,
                                         blank=True)
+    digest_issue = models.ForeignKey(to='DigestIssue',
+                                     on_delete=models.PROTECT,
+                                     null=True,
+                                     blank=True)
     is_main = models.BooleanField(verbose_name='Is main post',
                                   null=True,
                                   blank=True)
