@@ -13,7 +13,7 @@ class DigestRecordSerializer(serializers.ModelSerializer):
             'title',
             'url',
             'state',
-            'digest_number',
+            'digest_issue',
             'is_main',
             'category',
             'subcategory',
