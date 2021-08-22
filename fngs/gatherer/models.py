@@ -222,7 +222,9 @@ class DigestIssue(models.Model):
                                  unique=True)
     habr_url = models.CharField(verbose_name='Link to Habr',
                                 unique=True,
-                                max_length=128)
+                                max_length=128,
+                                blank=True,
+                                null=True)
 
     class Meta:
         verbose_name = 'Digest Issue'
