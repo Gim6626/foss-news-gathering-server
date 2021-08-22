@@ -113,10 +113,14 @@ class DigestRecord(models.Model):
                                    max_length=15,
                                    null=True,
                                    blank=True)
-    keywords = models.CharField(verbose_name='Keywords',
+    keywords = models.CharField(verbose_name='Keywords',  # Obsolete, should not be used
                                 max_length=1024,
                                 null=True,
                                 blank=True)
+    title_keywords = models.ManyToManyField(to='Keyword',
+                                            blank=True,
+                                            verbose_name='Title Keywords',
+                                            related_name='records')
     projects = models.ManyToManyField(to='Project',
                                       blank=True,
                                       verbose_name='Projects',
@@ -132,6 +136,9 @@ class DigestRecord(models.Model):
 
     def projects_names(self):
         return f'{", ".join([p.name for p in self.projects.all()])}'
+
+    def title_keywords_names(self):
+        return f'{", ".join([k.name for k in self.title_keywords.all()])}'
 
     class Meta:
         verbose_name = 'Digest Record'

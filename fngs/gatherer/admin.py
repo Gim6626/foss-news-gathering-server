@@ -20,10 +20,10 @@ class DigestRecordAdmin(admin.ModelAdmin):
         'is_main',
         'category',
         'subcategory',
-        'keywords',
         'language',
         'duplicates',
         'projects_names',
+        'title_keywords_names',
     )
     search_fields = (
         'title',
