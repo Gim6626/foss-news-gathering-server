@@ -207,15 +207,15 @@ class DigestRecordsSource(models.Model):
 
 class DigestIssue(models.Model):
 
-    number = models.IntegerField(verbose_name='Номер дайджеста',
+    number = models.IntegerField(verbose_name='Issue Number',
                                  unique=True)
-    habr_url = models.CharField(verbose_name='Ссылка на Хабр',
+    habr_url = models.CharField(verbose_name='Link to Habr',
                                 unique=True,
                                 max_length=128)
 
     class Meta:
-        verbose_name = 'Выпуск дайджеста'
-        verbose_name_plural = 'Выпуски дайджеста'
+        verbose_name = 'Digest Issue'
+        verbose_name_plural = 'Digest Issues'
 
     def __str__(self):
         return f'#{self.number} {self.habr_url}'
