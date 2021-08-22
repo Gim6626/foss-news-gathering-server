@@ -10,6 +10,7 @@ class DigestRecordAdmin(admin.ModelAdmin):
     list_display = (
         'id',
         'dt',
+        'source',
         'gather_dt',
         'title',
         'url',
@@ -73,7 +74,25 @@ class KeywordAdmin(admin.ModelAdmin):
     )
 
 
+class DigestRecordsSourceAdmin(admin.ModelAdmin):
+
+    readonly_fields = (
+        'id',
+    )
+
+    list_display = (
+        'id',
+        'name',
+        'enabled',
+    )
+
+    search_fields = (
+        'name',
+    )
+
+
 admin.site.register(DigestRecord, DigestRecordAdmin)
 admin.site.register(DigestRecordDuplicate, DigestRecordDuplicateAdmin)
 admin.site.register(Project, ProjectAdmin)
 admin.site.register(Keyword, KeywordAdmin)
+admin.site.register(DigestRecordsSource, DigestRecordsSourceAdmin)

@@ -74,6 +74,10 @@ class DigestRecord(models.Model):
     dt = models.DateTimeField(verbose_name='Date&time',
                               null=True,
                               blank=True)
+    source = models.ForeignKey(to='DigestRecordsSource',
+                               on_delete=models.PROTECT,
+                               blank=True,
+                               null=True)
     gather_dt = models.DateTimeField(verbose_name='Gather Date&time',
                                      null=True,
                                      blank=True)
@@ -184,3 +188,18 @@ class Keyword(models.Model):
 
     def __str__(self):
         return f'{self.name} ({self.category}, {"GENERIC" if self.is_generic else "NON-GENERIC"})'
+
+
+class DigestRecordsSource(models.Model):
+
+    name = models.CharField(verbose_name='Name',
+                            max_length=128,
+                            unique=True)
+    enabled = models.BooleanField(verbose_name='Enabled')
+
+    class Meta:
+        verbose_name = 'Digest Records Source'
+        verbose_name_plural = 'Digest Records Sources'
+
+    def __str__(self):
+        return self.name

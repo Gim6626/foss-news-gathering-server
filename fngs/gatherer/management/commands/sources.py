@@ -75,10 +75,9 @@ class BasicParsingModule(metaclass=ABCMeta):
     filtration_needed = False
     filters = []
     language: Language = None
-    disabled = False
 
     def parse(self, days_count: int) -> List[PostData]:
-        if self.disabled:
+        if not DigestRecordsSource.objects.get(name=self.source_name).enabled:  # TODO: Check existence
             logger.warning(f'"{self.source_name}" is disabled')
             return []
         try:
@@ -780,6 +779,59 @@ class YouTubeComAlekseySamoilovParsingModule(YouTubeComBasicParsingModule):
     language = Language.RUSSIAN
 
 
+class PlafonAtYouTubeParsingModule(YouTubeComBasicParsingModule):
+    source_name = f'PlafonAtYouTube'
+    projects = (
+        foss_news_project,
+    )
+    channel_id = 'UCf7pLsR7lko69y8ySTpoKxg'
+    language = Language.RUSSIAN
+
+
+class TheLinuxExperimentAtYouTubeParsingModule(YouTubeComBasicParsingModule):
+    source_name = f'TheLinuxExperimentAtYouTube'
+    projects = (
+        foss_news_project,
+    )
+    channel_id = 'UC5UAwBUum7CPN5buc-_N1Fw'
+    language = Language.ENGLISH
+
+
+class NikolayIvanovichAtYouTubeParsingModule(YouTubeComBasicParsingModule):
+    source_name = f'NikolayIvanovichAtYouTube'
+    projects = (
+        foss_news_project,
+    )
+    channel_id = 'UCevW4vL1SJKvKQYGBTf21mA'
+    language = Language.RUSSIAN
+
+
+class SwitchedToLinuxAtYouTubeParsingModule(YouTubeComBasicParsingModule):
+    source_name = f'SwitchedToLinuxAtYouTube'
+    projects = (
+        foss_news_project,
+    )
+    channel_id = 'UCoryWpk4QVYKFCJul9KBdyw'
+    language = Language.ENGLISH
+
+
+class LearnLinuxTVAtYouTubeParsingModule(YouTubeComBasicParsingModule):
+    source_name = f'LearnLinuxTVAtYouTube'
+    projects = (
+        foss_news_project,
+    )
+    channel_id = 'UCxQKHvKbmSzGMvUrVtJYnUA'
+    language = Language.ENGLISH
+
+class DmitryRobionekAtYouTubeParsingModule(YouTubeComBasicParsingModule):
+    source_name = f'DmitryRobionekAtYouTube'
+    projects = (
+        foss_news_project,
+    )
+    channel_id = 'UCtQ4NntQMEHZLKQu52BSpwg'
+    language = Language.RUSSIAN
+
+
 class LosstRuParsingModule(SimpleRssBasicParsingModule):
 
     source_name = 'LosstRu'
@@ -1002,8 +1054,6 @@ class WeaveworksParsingModule(SimpleRssBasicParsingModule):
     projects = (
         os_friday_project,
     )
-    # TODO: Fix
-    disabled = True
     rss_url = 'https://www.weave.works/feed.xml'
     language = Language.ENGLISH
     filtration_needed = True
@@ -1217,8 +1267,6 @@ class TigeraParsingModule(SimpleRssBasicParsingModule):
     projects = (
         os_friday_project,
     )
-    # TODO: Fix
-    disabled = True
     rss_url = 'https://blog.tigera.io/feed'
     language = Language.ENGLISH
     filtration_needed = True
@@ -1233,8 +1281,6 @@ class TwistlockParsingModule(SimpleRssBasicParsingModule):
     projects = (
         os_friday_project,
     )
-    # TODO: Fix
-    disabled = True
     rss_url = 'https://www.twistlock.com/feed/'
     language = Language.ENGLISH
     filtration_needed = True
@@ -1321,8 +1367,6 @@ class D2IqBlogParsingModule(SimpleRssBasicParsingModule):
     projects = (
         os_friday_project,
     )
-    # TODO: Fix
-    disabled = True
     rss_url = 'http://mesosphere.io/blog/atom.xml'
     language = Language.ENGLISH
     filtration_needed = True
@@ -1337,8 +1381,6 @@ class PodctlEnterpriseKubernetesParsingModule(SimpleRssBasicParsingModule):
     projects = (
         os_friday_project,
     )
-    # TODO: Fix
-    disabled = True
     rss_url = 'https://www.buzzsprout.com/110399.rss'
     language = Language.ENGLISH
 
@@ -1598,8 +1640,6 @@ class TeejeetechParsingModule(SimpleRssBasicParsingModule):
     projects = (
         os_friday_project,
     )
-    # TODO: Fix
-    disabled = True
     rss_url = 'http://teejeetech.blogspot.com/feeds/posts/default'
     language = Language.ENGLISH
     filtration_needed = True
@@ -1614,8 +1654,6 @@ class FreedomPenguinParsingModule(SimpleRssBasicParsingModule):
     projects = (
         os_friday_project,
     )
-    # TODO: Fix
-    disabled = True
     rss_url = 'http://feeds.feedburner.com/FreedomPenguin'
     language = Language.ENGLISH
 
@@ -1666,8 +1704,6 @@ class EaglemanBlogParsingModule(SimpleRssBasicParsingModule):
     projects = (
         os_friday_project,
     )
-    # TODO: Fix
-    disabled = True
     rss_url = 'http://www.eagleman.com/blog?format=feed&type=rss'
     language = Language.ENGLISH
     filtration_needed = True
@@ -1760,10 +1796,9 @@ class LobstersSecurityNetsecAppsecAndInfosecParsingModule(SimpleRssBasicParsingM
     )
 
 
-class BlogParsingModule(SimpleRssBasicParsingModule):
+class SamJarManParsingModule(SimpleRssBasicParsingModule):
 
-    # TODO: Fix name
-    source_name = 'Blog'
+    source_name = 'SamJarMan'
     projects = (
         os_friday_project,
     )
@@ -1803,10 +1838,9 @@ class LobstersDevopsDevopsParsingModule(SimpleRssBasicParsingModule):
     )
 
 
-class RssParsingModule(SimpleRssBasicParsingModule):
+class DevRelWeeklyParsingModule(SimpleRssBasicParsingModule):
 
-    # TODO: Fix name
-    source_name = 'Rss'
+    source_name = 'DevRelWeekly'
     projects = (
         os_friday_project,
     )
@@ -1824,8 +1858,6 @@ class AzureAdvocatesContentWrapUpParsingModule(SimpleRssBasicParsingModule):
     projects = (
         os_friday_project,
     )
-    # TODO: Investigate, loads too long
-    disabled = True
     rss_url = 'https://www.onazure.today/feed.xml'
     language = Language.ENGLISH
     filtration_needed = True
@@ -2412,8 +2444,6 @@ class DevcurryParsingModule(SimpleRssBasicParsingModule):
     projects = (
         os_friday_project,
     )
-    # TODO: Fix
-    disabled = True
     rss_url = 'http://www.devcurry.com/feeds/posts/default/'
     language = Language.ENGLISH
     filtration_needed = True
@@ -2457,8 +2487,6 @@ class FelipeOliveiraParsingModule(SimpleRssBasicParsingModule):
     projects = (
         os_friday_project,
     )
-    # TODO: Fix
-    disabled = True
     rss_url = 'http://feeds.feedburner.com/GeeksAreTotallyIn'
     language = Language.ENGLISH
     filtration_needed = True
@@ -2473,8 +2501,6 @@ class FromRavikanthSBlogParsingModule(SimpleRssBasicParsingModule):
     projects = (
         os_friday_project,
     )
-    # TODO: Fix
-    disabled = True
     rss_url = 'http://feeds.feedburner.com/RavikanthChaganti'
     language = Language.ENGLISH
     filtration_needed = True
@@ -2687,8 +2713,6 @@ class MaartenBalliauwBlogParsingModule(SimpleRssBasicParsingModule):
     projects = (
         os_friday_project,
     )
-    # TODO: Fix
-    disabled = True
     rss_url = 'http://feeds2.feedburner.com/maartenballiauw'
     language = Language.ENGLISH
     filtration_needed = True
@@ -2751,8 +2775,6 @@ class MethodOfFailedByTimHeuerParsingModule(SimpleRssBasicParsingModule):
     projects = (
         os_friday_project,
     )
-    # TODO: Fix
-    disabled = True
     rss_url = 'http://feeds.timheuer.com/timheuer'
     language = Language.ENGLISH
     filtration_needed = True
@@ -2815,8 +2837,6 @@ class PrecisionComputingParsingModule(SimpleRssBasicParsingModule):
     projects = (
         os_friday_project,
     )
-    # TODO: Fix
-    disabled = True
     rss_url = 'http://www.leeholmes.com/blog/feed/atom/'
     language = Language.ENGLISH
     filtration_needed = True
@@ -2851,8 +2871,6 @@ class RandsInReposeParsingModule(SimpleRssBasicParsingModule):
     projects = (
         os_friday_project,
     )
-    # TODO: Fix
-    disabled = True
     rss_url = 'http://www.randsinrepose.com/index.xml'
     language = Language.ENGLISH
     filtration_needed = True
@@ -3064,8 +3082,6 @@ class TheExptaBlogParsingModule(SimpleRssBasicParsingModule):
     projects = (
         os_friday_project,
     )
-    # TODO: Fix
-    disabled = True
     rss_url = 'http://www.expta.com/feeds/posts/default'
     language = Language.ENGLISH
     filtration_needed = True
@@ -3172,8 +3188,6 @@ class WindowsServerDivisionWeblogParsingModule(SimpleRssBasicParsingModule):
     projects = (
         os_friday_project,
     )
-    # TODO: Fix
-    disabled = True
     rss_url = 'http://blogs.technet.com/b/windowsserver/rss.aspx'
     language = Language.ENGLISH
     filtration_needed = True
