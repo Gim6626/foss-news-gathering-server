@@ -194,6 +194,10 @@ class Keyword(models.Model):
                                      blank=True)
 
     class Meta:
+        unique_together = (
+            'name',
+            'category',
+        )
         verbose_name = 'Keyword'
         verbose_name_plural = 'Keywords'
 
