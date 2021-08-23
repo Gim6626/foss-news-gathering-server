@@ -153,6 +153,11 @@ class DigestRecordDuplicate(models.Model):
     digest_number = models.IntegerField(verbose_name='Digest Number',
                                         null=True,
                                         blank=True)
+    digest_issue = models.ForeignKey(to='DigestIssue',
+                                     verbose_name='Digest Issue',
+                                     on_delete=models.PROTECT,
+                                     null=True,
+                                     blank=True)
     digest_records = models.ManyToManyField(to=DigestRecord,
                                             verbose_name='Digest Record',
                                             related_name='duplicates',

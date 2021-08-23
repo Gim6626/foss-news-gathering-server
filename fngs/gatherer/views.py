@@ -25,16 +25,16 @@ class NewDigestRecordViewSet(viewsets.ModelViewSet):
     serializer_class = DigestRecordSerializer
 
 
-class NewFossNewsDigestRecordViewSet(viewsets.ModelViewSet):
+class NewFossNewsDigestRecordViewSet(GenericViewSet, mixins.ListModelMixin):
     permission_classes = [permissions.IsAdminUser | TelegramBotReadOnlyPermission]
     queryset = DigestRecord.objects.filter(state='UNKNOWN', projects__in=(Project.objects.filter(name='FOSS News')))
-    serializer_class = DigestRecordSerializer
+    serializer_class = DigestRecordDetailedSerializer
 
 
 class SpecificDigestRecordsViewSet(GenericViewSet, mixins.ListModelMixin):
     permission_classes = [permissions.IsAdminUser]
     model = DigestRecord
-    serializer_class = DigestRecordSerializer
+    serializer_class = DigestRecordDetailedSerializer
     queryset = DigestRecord.objects.all()
     filter_class = SpecificDigestRecordsFilter
     filter_backends = [DjangoFilterBackend]

@@ -3,46 +3,46 @@ from gatherer.models import *
 
 
 class SpecificDigestRecordsFilter(filters.FilterSet):
-    digest_number = filters.NumberFilter(method='digest_filter')
+    digest_issue = filters.NumberFilter(method='digest_filter')
 
     class Meta:
         model = DigestRecord
         fields = [
-            'digest_number',
+            'digest_issue',
         ]
 
     def digest_filter(self, queryset, name, value):
-        return queryset.filter(digest_number=value)
+        return queryset.filter(digest_issue=value)
 
 
 class CurrentDigestRecordsDuplicatesFilter(filters.FilterSet):
-    digest_number = filters.NumberFilter(method='digest_filter')
+    digest_issue = filters.NumberFilter(method='digest_filter')
 
     class Meta:
         model = DigestRecordDuplicate
         fields = [
-            'digest_number',
+            'digest_issue',
         ]
 
     def digest_filter(self, queryset, name, value):
-        return queryset.filter(digest_number=value)
+        return queryset.filter(digest_issue=value)
 
 
 class SimilarDigestRecordsFilter(filters.FilterSet):
-    digest_number = filters.NumberFilter(method='digest_filter')
+    digest_issue = filters.NumberFilter(method='digest_filter')
     category = filters.CharFilter(method='category_filter')
     subcategory = filters.CharFilter(method='subcategory_filter')
 
     class Meta:
         model = DigestRecord
         fields = [
-            'digest_number',
+            'digest_issue',
             'category',
             'subcategory'
         ]
 
     def digest_filter(self, queryset, name, value):
-        return queryset.filter(digest_number=value)
+        return queryset.filter(digest_issue=value)
 
     def category_filter(self, queryset, name, value):
         return queryset.filter(category=value)

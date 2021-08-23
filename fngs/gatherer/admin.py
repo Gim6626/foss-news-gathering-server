@@ -41,10 +41,14 @@ class DigestRecordDuplicateAdmin(admin.ModelAdmin):
     list_display = (
         'id',
         'digest_number',
+        'digest_issue',
         'digest_records_titles',
     )
     filter_horizontal = (
         'digest_records',
+    )
+    autocomplete_fields = (
+        'digest_issue',
     )
 
 

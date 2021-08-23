@@ -17,7 +17,28 @@ class DigestRecordSerializer(serializers.ModelSerializer):
             'is_main',
             'category',
             'subcategory',
-            'keywords',
+            'title_keywords',
+            'projects',
+            'language',
+        ]
+
+
+class DigestRecordDetailedSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DigestRecord
+        depth = 1
+        fields = [
+            'id',
+            'dt',
+            'gather_dt',
+            'title',
+            'url',
+            'state',
+            'digest_issue',
+            'is_main',
+            'category',
+            'subcategory',
+            'title_keywords',
             'projects',
             'language',
         ]
@@ -29,7 +50,7 @@ class DigestRecordDuplicateSerializer(serializers.ModelSerializer):
         model = DigestRecordDuplicate
         fields = [
             'id',
-            'digest_number',
+            'digest_issue',
             'digest_records',
         ]
 
@@ -41,7 +62,7 @@ class DigestRecordDuplicateDetailedSerializer(serializers.ModelSerializer):
         depth = 1
         fields = [
             'id',
-            'digest_number',
+            'digest_issue',
             'digest_records',
         ]
 
