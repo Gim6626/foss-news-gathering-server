@@ -9,7 +9,6 @@ import sys
 import os
 import yaml
 
-from gatherer.models import DigestRecordsSource
 
 from .sources import *
 from .logger import logger
@@ -81,6 +80,15 @@ class Command(BaseCommand):
                 continue
             else:
                 logger.debug(f'Adding {short_post_data_str} to database')
+                all_matched_keywords = []
+                for keyword_name in post_data.keywords:
+                    matched_keywords_for_one = Keyword.objects.filter(name=keyword_name)
+                    if len(matched_keywords_for_one) == 0:
+                        logger.error(f'Failed to find keywords with name "{keyword_name}" in database')
+                    elif len(matched_keywords_for_one) > 1:
+                        logger.error(f'More than one keyword with name "{keyword_name}" in database')
+                    else:
+                        all_matched_keywords.append(matched_keywords_for_one[0])
                 digest_record = DigestRecord(dt=post_data.dt,
                                              source=source,
                                              gather_dt=datetime.datetime.now(tz=dateutil.tz.tzlocal()),
@@ -89,11 +97,12 @@ class Command(BaseCommand):
                                              state=DigestRecordState.UNKNOWN.name
                                                    if not post_data.filtered
                                                    else DigestRecordState.FILTERED.name,
-                                             keywords=';'.join(post_data.keywords),
                                              language=posts_data_one.language.name,
                                              description=post_data.brief)
                 digest_record.save()
                 digest_record.projects.set(posts_data_one.projects)
+                if all_matched_keywords:
+                    digest_record.title_keywords.set(all_matched_keywords)
                 digest_record.save()
                 added_digest_records_count += 1
                 logger.debug(f'Added {short_post_data_str} to database')
