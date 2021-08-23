@@ -17,6 +17,7 @@ from .logger import logger
 
 foss_news_project = Project.objects.get(name='FOSS News')
 os_friday_project = Project.objects.get(name='OS Friday')
+FOSS_NEWS_REGEXP = r'^FOSS News №\d+.*дайджест материалов о свободном и открытом ПО за.*$'
 
 
 def shorten_text(s: str, max_length: int = 20):
@@ -672,7 +673,18 @@ class HabrComNewsParsingModule(HabrComBasicParsingModule):
         return f'https://habr.com/ru/rss/news/'
 
 
-class HabrComOpenSourceParsingModule(HabrComBasicParsingModule):
+class FilterFossNewsItselfMixin:
+
+    def filter_foss_news_itself(self, posts_data: List[PostData]):
+        for post_data in posts_data:
+            if re.fullmatch(FOSS_NEWS_REGEXP, post_data.title):
+                logger.warning(f'Filtered "{post_data.title}" as it is our digest itself')
+                post_data.filtered = True
+        return posts_data
+
+
+class HabrComOpenSourceParsingModule(HabrComBasicParsingModule,
+                                     FilterFossNewsItselfMixin):
 
     source_name = f'HabrComOpenSource'
     projects = (
@@ -680,6 +692,11 @@ class HabrComOpenSourceParsingModule(HabrComBasicParsingModule):
     )
     hub_code = 'open_source'
     language = Language.RUSSIAN
+
+    def _parse(self):
+        posts_data: List[PostData] = super()._parse()
+        filtered_posts_data = self.filter_foss_news_itself(posts_data)
+        return filtered_posts_data
 
 
 class HabrComLinuxParsingModule(HabrComBasicParsingModule):
@@ -702,7 +719,8 @@ class HabrComLinuxDevParsingModule(HabrComBasicParsingModule):
     language = Language.RUSSIAN
 
 
-class HabrComNixParsingModule(HabrComBasicParsingModule):
+class HabrComNixParsingModule(HabrComBasicParsingModule,
+                              FilterFossNewsItselfMixin):
 
     source_name = f'HabrComNix'
     projects = (
@@ -710,6 +728,11 @@ class HabrComNixParsingModule(HabrComBasicParsingModule):
     )
     hub_code = 'nix'
     language = Language.RUSSIAN
+
+    def _parse(self):
+        posts_data: List[PostData] = super()._parse()
+        filtered_posts_data = self.filter_foss_news_itself(posts_data)
+        return filtered_posts_data
 
 
 class HabrComDevOpsParsingModule(HabrComBasicParsingModule):
