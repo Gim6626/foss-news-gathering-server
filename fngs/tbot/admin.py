@@ -37,6 +37,9 @@ class TelegramBotDigestRecordCategorizationAttemptAdmin(admin.ModelAdmin):
         'estimated_category',
         'estimated_subcategory',
     )
+    autocomplete_fields = (
+        'digest_record',
+    )
 
 admin.site.register(TelegramBotUser, TelegramBotUserAdmin)
 admin.site.register(TelegramBotDigestRecordCategorizationAttempt, TelegramBotDigestRecordCategorizationAttemptAdmin)
