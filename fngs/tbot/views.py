@@ -40,6 +40,8 @@ class TelegramBotOneRandomNotCategorizedFossNewsDigestRecordViewSet(mixins.ListM
     permission_classes = [permissions.IsAdminUser | TelegramBotFullPermission]
     serializer_class = DigestRecordSerializer
 
+    ENOUGH_TBOT_USERS_DIGEST_RECORD_ESTIMATIONS = 3
+
     def get_queryset(self):
         tbot_user_id = self.request.query_params.get('tbot-user-id', None)
         if tbot_user_id is None:
@@ -50,8 +52,18 @@ class TelegramBotOneRandomNotCategorizedFossNewsDigestRecordViewSet(mixins.ListM
             return []
         categorized_by_this_user_digest_records_attempts = TelegramBotDigestRecordCategorizationAttempt.objects.filter(telegram_bot_user=tbot_user)
         not_categorized_by_this_user_digest_records = DigestRecord.objects.filter(state='UNKNOWN', projects__in=(Project.objects.filter(name='FOSS News'))).exclude(pk__in=[a.digest_record.pk for a in categorized_by_this_user_digest_records_attempts]).order_by('-dt')
-        if not_categorized_by_this_user_digest_records:
-            random_record = random.choice(not_categorized_by_this_user_digest_records)
+        attempts_per_digest_record = {}
+        for attempt in TelegramBotDigestRecordCategorizationAttempt.objects.all():
+            if attempt.digest_record.id in attempts_per_digest_record:
+                attempts_per_digest_record[attempt.digest_record.id] += 1
+            else:
+                attempts_per_digest_record[attempt.digest_record.id] = 1
+        digest_records_with_enough_attempts = [drid
+                                               for drid, attempts in attempts_per_digest_record.items()
+                                               if attempts >= self.ENOUGH_TBOT_USERS_DIGEST_RECORD_ESTIMATIONS]
+        not_categorized_by_this_user_digest_records_but_still_actual = not_categorized_by_this_user_digest_records.exclude(pk__in=digest_records_with_enough_attempts)
+        if not_categorized_by_this_user_digest_records_but_still_actual:
+            random_record = random.choice(not_categorized_by_this_user_digest_records_but_still_actual)
             return [random_record]
         else:
             return []
