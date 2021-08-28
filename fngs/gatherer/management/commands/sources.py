@@ -3344,3 +3344,14 @@ class Rss20TaggedMerkleTreesAndRelatedSimilarDataStructuresNotBusinessScamNewsPa
     filters = (
         FiltrationType.SPECIFIC,
     )
+
+
+class WeeklyOsmParsingModule(SimpleRssBasicParsingModule):
+
+    source_name = 'WeeklyOsm'
+    projects = (
+        foss_news_project,
+    )
+    rss_url = 'https://weeklyosm.eu/ru/feed'
+    language = Language.RUSSIAN
+    filtration_needed = False
