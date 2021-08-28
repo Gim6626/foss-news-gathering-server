@@ -11,6 +11,7 @@ from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
 from gatherer.filters import *
 from common.permissions import *
+from tbot.models import *
 
 
 class DigestRecordViewSet(viewsets.ModelViewSet):
@@ -29,6 +30,26 @@ class NewFossNewsDigestRecordViewSet(GenericViewSet, mixins.ListModelMixin):
     permission_classes = [permissions.IsAdminUser | TelegramBotReadOnlyPermission]
     queryset = DigestRecord.objects.filter(state='UNKNOWN', projects__in=(Project.objects.filter(name='FOSS News')))
     serializer_class = DigestRecordDetailedSerializer
+
+
+class OneNewFossNewsDigestRecordViewSet(GenericViewSet, mixins.ListModelMixin):
+    permission_classes = [permissions.IsAdminUser]
+    serializer_class = DigestRecordDetailedSerializer
+
+    def get_queryset(self):
+        queryset = DigestRecord.objects.filter(state='UNKNOWN', projects__in=(Project.objects.filter(name='FOSS News'))).order_by('dt')
+        if queryset:
+            return [queryset[0]]
+        else:
+            return []
+
+
+class NotCategorizedDigestRecordsCountViewSet(mixins.ListModelMixin, GenericViewSet):
+    permission_classes = [permissions.IsAdminUser]
+
+    def list(self, request, *args, **kwargs):
+        count = len(DigestRecord.objects.filter(state='UNKNOWN', projects__in=(Project.objects.filter(name='FOSS News'))))
+        return Response({'count': count}, status=status.HTTP_200_OK)
 
 
 class SpecificDigestRecordsViewSet(GenericViewSet, mixins.ListModelMixin):
@@ -136,4 +157,33 @@ class SimilarRecordsInPreviousDigest(mixins.ListModelMixin, GenericViewSet):
         ]
 
         return Response({'similar_records_in_previous_digest': similar_records_in_previous_digest_titles},
+                        status=status.HTTP_200_OK)
+
+
+class DigestRecordsCategorizedByTbotViewSet(mixins.ListModelMixin, GenericViewSet):
+    permission_classes = [permissions.IsAdminUser]
+
+    def list(self, request, *args, **kwargs):
+        unknown_state_digest_records = DigestRecord.objects.filter(state='UNKNOWN')
+        tbot_categorizations_attempts_for_unknown_records = TelegramBotDigestRecordCategorizationAttempt.objects.filter(digest_record__in=unknown_state_digest_records)
+        categorizations_data_by_digest_record = {}
+        for categorization_attempt in tbot_categorizations_attempts_for_unknown_records:
+            digest_record_id = categorization_attempt.digest_record.id
+            if digest_record_id not in categorizations_data_by_digest_record:
+                categorizations_data_by_digest_record[digest_record_id] = {
+                    # TODO: Use serializer
+                    'dt': categorization_attempt.digest_record.dt,
+                    'title': categorization_attempt.digest_record.title,
+                    'url': categorization_attempt.digest_record.url,
+                    'digest_issue': categorization_attempt.digest_record.digest_issue,
+                    'is_main': categorization_attempt.digest_record.is_main,
+                    'category': categorization_attempt.digest_record.category,
+                    'subcategory': categorization_attempt.digest_record.subcategory,
+                    'title_keywords': [k.name for k in categorization_attempt.digest_record.title_keywords.all()],
+                    'estimations': {
+                        'state': [],
+                    },
+                }
+            categorizations_data_by_digest_record[digest_record_id]['estimations']['state'].append(categorization_attempt.estimated_state)
+        return Response(categorizations_data_by_digest_record,
                         status=status.HTTP_200_OK)

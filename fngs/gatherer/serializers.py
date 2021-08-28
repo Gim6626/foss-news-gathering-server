@@ -41,6 +41,7 @@ class DigestRecordDetailedSerializer(serializers.ModelSerializer):
             'title_keywords',
             'projects',
             'language',
+            'tbot_estimations',
         ]
 
 

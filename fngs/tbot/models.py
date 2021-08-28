@@ -27,6 +27,7 @@ class TelegramBotDigestRecordCategorizationAttempt(models.Model):
                                           verbose_name='Telegram Bot User',
                                           on_delete=models.PROTECT)
     digest_record = models.ForeignKey(to=DigestRecord,
+                                      related_name='tbot_estimations',
                                       verbose_name='Digest Record under Categorization',
                                       on_delete=models.PROTECT)
     estimated_state = models.CharField(verbose_name='Estimated State',
