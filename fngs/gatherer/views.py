@@ -173,6 +173,7 @@ class DigestRecordsCategorizedByTbotViewSet(mixins.ListModelMixin, GenericViewSe
                 categorizations_data_by_digest_record[digest_record_id] = {
                     # TODO: Use serializer
                     'dt': categorization_attempt.digest_record.dt,
+                    'source': categorization_attempt.digest_record.source.name,
                     'title': categorization_attempt.digest_record.title,
                     'url': categorization_attempt.digest_record.url,
                     'digest_issue': categorization_attempt.digest_record.digest_issue,
