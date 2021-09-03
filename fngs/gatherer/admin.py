@@ -1,3 +1,5 @@
+import datetime
+
 from django.contrib import admin
 
 from gatherer.models import *
@@ -53,6 +55,16 @@ class DigestRecordDuplicateAdmin(admin.ModelAdmin):
     autocomplete_fields = (
         'digest_issue',
     )
+
+    def get_field_queryset(self, db, db_field, request):
+        if db_field.name == 'digest_records':
+            foss_news_project = Project.objects.filter(name='FOSS News')
+            queryset = DigestRecord.objects.filter(projects__in=(foss_news_project),
+                                                   state=DigestRecordState.IN_DIGEST.name,
+                                                   dt__gt=datetime.datetime.now() - datetime.timedelta(30))
+            return queryset
+        else:
+            super().get_field_queryset(db, db_field, request)
 
 
 class ProjectAdmin(admin.ModelAdmin):
