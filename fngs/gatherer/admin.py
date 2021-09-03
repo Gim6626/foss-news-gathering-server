@@ -61,7 +61,7 @@ class DigestRecordDuplicateAdmin(admin.ModelAdmin):
             foss_news_project = Project.objects.filter(name='FOSS News')
             queryset = DigestRecord.objects.filter(projects__in=(foss_news_project),
                                                    state=DigestRecordState.IN_DIGEST.name,
-                                                   dt__gt=datetime.datetime.now() - datetime.timedelta(30))
+                                                   gather_dt__gt=datetime.datetime.now() - datetime.timedelta(14))
             return queryset
         else:
             super().get_field_queryset(db, db_field, request)
