@@ -32,6 +32,9 @@ class DigestRecordAdmin(admin.ModelAdmin):
         'title',
         'url',
     )
+    autocomplete_fields = (
+        'digest_issue',
+    )
 
 
 class DigestRecordDuplicateAdmin(admin.ModelAdmin):
