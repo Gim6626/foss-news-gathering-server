@@ -27,7 +27,7 @@ class DigestRecordSerializer(serializers.ModelSerializer):
 class DigestRecordDetailedSerializer(serializers.ModelSerializer):
     class Meta:
         model = DigestRecord
-        depth = 1
+        depth = 2
         fields = [
             'id',
             'dt',
