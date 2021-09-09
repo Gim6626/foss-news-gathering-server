@@ -181,10 +181,12 @@ class DigestRecordsCategorizedByTbotViewSet(mixins.ListModelMixin, GenericViewSe
                     'category': categorization_attempt.digest_record.category,
                     'subcategory': categorization_attempt.digest_record.subcategory,
                     'title_keywords': [k.name for k in categorization_attempt.digest_record.title_keywords.all()],
-                    'estimations': {
-                        'state': [],
-                    },
+                    'estimations': [],
                 }
-            categorizations_data_by_digest_record[digest_record_id]['estimations']['state'].append(categorization_attempt.estimated_state)
+            estimation_data = {
+                'user': categorization_attempt.telegram_bot_user.username,
+                'state': categorization_attempt.estimated_state,
+            }
+            categorizations_data_by_digest_record[digest_record_id]['estimations'].append(estimation_data)
         return Response(categorizations_data_by_digest_record,
                         status=status.HTTP_200_OK)
