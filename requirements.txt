@@ -9,3 +9,4 @@ lxml
 requests
 colorama
 psycopg2-binary==2.8.6
+gunicorn

@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 import gatherer.urls
 import search.urls
@@ -30,3 +31,4 @@ urlpatterns = [
     path('', include(search.urls)),
     path('', include(osfriday.urls)),
 ]
+urlpatterns += staticfiles_urlpatterns()
