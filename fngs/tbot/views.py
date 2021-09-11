@@ -38,7 +38,7 @@ class TelegramBotOneRandomNotCategorizedFossNewsDigestRecordViewSet(mixins.ListM
                                                                     mixins.RetrieveModelMixin,
                                                                     viewsets.GenericViewSet):
     permission_classes = [permissions.IsAdminUser | TelegramBotFullPermission]
-    serializer_class = DigestRecordSerializer
+    serializer_class = DigestRecordDetailedSerializer
 
     ENOUGH_TBOT_USERS_DIGEST_RECORD_ESTIMATIONS = 3
 
