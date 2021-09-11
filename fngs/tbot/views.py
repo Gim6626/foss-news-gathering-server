@@ -34,16 +34,11 @@ class TelegramBotDigestRecordCategorizationAttemptDetailedViewSet(mixins.ListMod
     serializer_class = TelegramBotDigestRecordCategorizationAttemptDetailedSerializer
 
 
-class TelegramBotOneRandomNotCategorizedFossNewsDigestRecordViewSet(mixins.ListModelMixin,
-                                                                    mixins.RetrieveModelMixin,
-                                                                    viewsets.GenericViewSet):
-    permission_classes = [permissions.IsAdminUser | TelegramBotFullPermission]
-    serializer_class = DigestRecordDetailedSerializer
+class NotCategorizedFossNewsDigestRecordsMixin:
 
     ENOUGH_TBOT_USERS_DIGEST_RECORD_ESTIMATIONS = 3
 
-    def get_queryset(self):
-        tbot_user_id = self.request.query_params.get('tbot-user-id', None)
+    def not_categorized_records(self, tbot_user_id):
         if tbot_user_id is None:
             return []
         try:
@@ -62,11 +57,38 @@ class TelegramBotOneRandomNotCategorizedFossNewsDigestRecordViewSet(mixins.ListM
                                                for drid, attempts in attempts_per_digest_record.items()
                                                if attempts >= self.ENOUGH_TBOT_USERS_DIGEST_RECORD_ESTIMATIONS]
         not_categorized_by_this_user_digest_records_but_still_actual = not_categorized_by_this_user_digest_records.exclude(pk__in=digest_records_with_enough_attempts)
+        return not_categorized_by_this_user_digest_records_but_still_actual
+
+
+class TelegramBotOneRandomNotCategorizedFossNewsDigestRecordViewSet(mixins.ListModelMixin,
+                                                                    mixins.RetrieveModelMixin,
+                                                                    viewsets.GenericViewSet,
+                                                                    NotCategorizedFossNewsDigestRecordsMixin):
+    permission_classes = [permissions.IsAdminUser | TelegramBotFullPermission]
+    serializer_class = DigestRecordDetailedSerializer
+
+    def get_queryset(self):
+        tbot_user_id = self.request.query_params.get('tbot-user-id', None)
+        not_categorized_by_this_user_digest_records_but_still_actual = self.not_categorized_records(tbot_user_id)
         if not_categorized_by_this_user_digest_records_but_still_actual:
             random_record = random.choice(not_categorized_by_this_user_digest_records_but_still_actual)
             return [random_record]
         else:
             return []
+
+
+class TelegramBotNotCategorizedFossNewsDigestRecordsCountViewSet(mixins.ListModelMixin,
+                                                                 viewsets.GenericViewSet,
+                                                                 NotCategorizedFossNewsDigestRecordsMixin):
+    permission_classes = [permissions.IsAdminUser | TelegramBotFullPermission]
+
+    def list(self, request, *args, **kwargs):
+        tbot_user_id = request.query_params.get('tbot-user-id', None)
+        not_categorized_by_this_user_digest_records_but_still_actual = self.not_categorized_records(tbot_user_id)
+        if not_categorized_by_this_user_digest_records_but_still_actual:
+            return Response({'count': not_categorized_by_this_user_digest_records_but_still_actual.count()}, status=status.HTTP_200_OK)
+        else:
+            return Response({}, status=status.HTTP_404_NOT_FOUND)
 
 
 class TelegramBotUserByTidViewSet(mixins.ListModelMixin,
