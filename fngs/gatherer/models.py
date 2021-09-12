@@ -63,6 +63,7 @@ class DigestRecordSubcategory(Enum):
     USER = 'user'
     GAMES = 'games'
     HARDWARE = 'hardware'
+    MESSENGERS = 'messengers'
     MISC = 'misc'
 
     @classmethod
