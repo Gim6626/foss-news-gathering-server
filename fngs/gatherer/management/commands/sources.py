@@ -17,7 +17,7 @@ from .logger import logger
 
 foss_news_project = Project.objects.get(name='FOSS News')
 os_friday_project = Project.objects.get(name='OS Friday')
-FOSS_NEWS_REGEXP = r'^FOSS News №\d+.*дайджест материалов о свободном и открытом ПО за.*$'
+FOSS_NEWS_REGEXP = r'^FOSS News №\d+.*$'
 
 
 def shorten_text(s: str, max_length: int = 20):
