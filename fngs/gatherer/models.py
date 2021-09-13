@@ -217,10 +217,28 @@ class DigestRecordsSource(models.Model):
                             max_length=128,
                             unique=True)
     enabled = models.BooleanField(verbose_name='Enabled')
+    data_url = models.CharField(verbose_name='Data URL',
+                                max_length=512,
+                                unique=True,
+                                null=True,
+                                blank=True)
+    projects = models.ManyToManyField(to='Project',
+                                      blank=True,
+                                      verbose_name='Projects',
+                                      related_name='sources',
+                                      null=True)
+    language = models.CharField(verbose_name='Language',
+                                choices=Language.choices(),
+                                max_length=15,
+                                null=True,
+                                blank=True)
 
     class Meta:
         verbose_name = 'Digest Records Source'
         verbose_name_plural = 'Digest Records Sources'
+
+    def projects_names(self):
+        return f'{", ".join([p.name for p in self.projects.all()])}'
 
     def __str__(self):
         return self.name

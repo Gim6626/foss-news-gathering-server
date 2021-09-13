@@ -89,12 +89,23 @@ class DigestSourceException(Exception):
 
 class BasicParsingModule(metaclass=ABCMeta):
 
-    source_name = None
+    data_url = None
     projects: Tuple[Project] = ()
     warning = None
     filtration_needed = False
     filters = []
     language: Language = None
+
+    @property
+    def source_name(self):
+        return self.__class__.__name__.replace('ParsingModule', '')
+
+    @property
+    def data_url(self):
+        return DigestRecordsSource.objects.get(name=self.source_name).data_url
+
+    def language(self):
+        return DigestRecordsSource.objects.get(name=self.source_name).language
 
     def parse(self, days_count: int) -> ParsingResult:
         if not DigestRecordsSource.objects.get(name=self.source_name).enabled:  # TODO: Check existence
@@ -197,7 +208,6 @@ class BasicParsingModule(metaclass=ABCMeta):
 
 class RssBasicParsingModule(BasicParsingModule):
 
-    rss_url = None
     item_tag_name = None
     title_tag_name = None
     pubdate_tag_name = None
@@ -216,7 +226,7 @@ class RssBasicParsingModule(BasicParsingModule):
 
     def _parse(self):
         posts_data: List[PostData] = []
-        response = requests.get(self.rss_url,
+        response = requests.get(self.data_url,
                                 headers={'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114 Safari/537.36'})
         if response.status_code != 200:
             raise DigestSourceException(f'"{self.source_name}" returned status code {response.status_code}')
@@ -326,133 +336,64 @@ class SimpleRssBasicParsingModule(RssBasicParsingModule):
 
 
 class OpenNetRuParsingModule(SimpleRssBasicParsingModule):
-
-    source_name = "OpenNetRu"
-    projects = (
-        foss_news_project,
-    )
-    rss_url = 'https://www.opennet.ru/opennews/opennews_all_utf.rss'
-    language = Language.RUSSIAN
+    pass
 
 
 class LinuxComParsingModule(SimpleRssBasicParsingModule):
-
-    source_name = "LinuxCom"
-    projects = (
-        foss_news_project,
-        os_friday_project,
-    )
-    rss_url = 'https://www.linux.com/topic/feed/'
-    language = Language.ENGLISH
+    pass
 
 
 class OpenSourceComParsingModule(SimpleRssBasicParsingModule):
-    # NOTE: Provider provides RSS feed for less than week, more regular check is needed
-
-    source_name = 'OpenSourceCom'
-    projects = (
-        foss_news_project,
-        os_friday_project
-    )
-    rss_url = 'https://opensource.com/feed'
-    language = Language.ENGLISH
+    pass
 
 
 class ItsFossComParsingModule(SimpleRssBasicParsingModule):
-
-    source_name = 'ItsFossCom'
-    projects = (
-        foss_news_project,
-    )
-    rss_url = 'https://itsfoss.com/all-blog-posts/feed/'
-    language = Language.ENGLISH
+    pass
 
 
 class LinuxOrgRuParsingModule(SimpleRssBasicParsingModule):
-
-    source_name = 'LinuxOrgRu'
-    projects = (
-        foss_news_project,
-    )
-    rss_url = 'https://www.linux.org.ru/section-rss.jsp?section=1'
-    language = Language.RUSSIAN
+    pass
 
 
 class AnalyticsIndiaMagComParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'AnalyticsIndiaMagCom'
-    projects = (
-        foss_news_project,
-    )
-    rss_url = 'https://analyticsindiamag.com/feed/'
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
         FiltrationType.GENERIC,
     )
-    language = Language.ENGLISH
 
 
 class ArsTechnicaComParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'ArsTechnicaCom'
-    projects = (
-        foss_news_project,
-    )
-    rss_url = 'https://arstechnica.com/feed/'
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
     )
-    language = Language.ENGLISH
 
 
 class HackadayComParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'HackadayCom'
-    projects = (
-        foss_news_project,
-    )
-    rss_url = 'https://hackaday.com/feed/'
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
     )
-    language = Language.ENGLISH
 
 
 class JaxenterComParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'JaxenterCom'
-    projects = (
-        foss_news_project,
-    )
-    rss_url = 'https://jaxenter.com/rss'
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
     )
-    language = Language.ENGLISH
 
 
 class LinuxInsiderComParsingModule(SimpleRssBasicParsingModule):
-
-    source_name = 'LinuxInsiderCom'
-    projects = (
-        foss_news_project,
-    )
-    rss_url = 'https://linuxinsider.com/rss-feed'
-    language = Language.ENGLISH
+    pass
 
 
 class MashableComParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'MashableCom'
-    projects = (
-        foss_news_project,
-    )
-    rss_url = 'https://mashable.com/rss/'
-    filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
     )
@@ -461,215 +402,118 @@ class MashableComParsingModule(SimpleRssBasicParsingModule):
 
 class SdTimesComParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'SdTimesCom'
-    projects = (
-        foss_news_project,
-    )
-    rss_url = 'https://sdtimes.com/feed/'
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
     )
-    language = Language.ENGLISH
 
 
 class SecurityBoulevardComParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'SecurityBoulevardCom'
-    projects = (
-        foss_news_project,
-    )
-    rss_url = 'https://securityboulevard.com/feed/'
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
     )
-    language = Language.ENGLISH
 
 
 class SiliconAngleComParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'SiliconAngleCom'
-    projects = (
-        foss_news_project,
-    )
-    rss_url = 'https://siliconangle.com/feed/'
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
     )
-    language = Language.ENGLISH
 
 
 class TechCrunchComParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'TechCrunchCom'
-    projects = (
-        foss_news_project,
-    )
-    rss_url = 'https://techcrunch.com/feed/'
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
     )
-    language = Language.ENGLISH
 
 
 class TechNodeComParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'TechNodeCom'
-    projects = (
-        foss_news_project,
-    )
-    rss_url = 'https://technode.com/feed/'
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
     )
-    language = Language.ENGLISH
 
 
 class TheNextWebComParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'TheNextWebCom'
-    projects = (
-        foss_news_project,
-    )
-    rss_url = 'https://thenextweb.com/feed/'
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
     )
-    language = Language.ENGLISH
 
 
 class VentureBeatComParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'VentureBeatCom'
-    projects = (
-        foss_news_project,
-    )
-    rss_url = 'https://venturebeat.com/feed/'
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
     )
-    language = Language.ENGLISH
 
 
 class ThreeDPrintingMediaNetworkParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'ThreeDPrintingMediaNetwork'
-    projects = (
-        foss_news_project,
-    )
-    rss_url = 'https://www.3dprintingmedia.network/feed/'
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
     )
-    language = Language.ENGLISH
 
 
 class CbrOnlineComParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'CbrOnlineCom'
-    projects = (
-        foss_news_project,
-    )
-    # rss_url = 'https://www.cbronline.com/rss'
-    rss_url = 'https://techmonitor.ai/rss'
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
     )
-    language = Language.ENGLISH
 
 
 class HelpNetSecurityComParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'HelpNetSecurityCom'
-    projects = (
-        foss_news_project,
-    )
-    rss_url = 'https://www.helpnetsecurity.com/feed/'
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
     )
-    language = Language.ENGLISH
 
 
 class SecuritySalesComParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'SecuritySalesCom'
-    projects = (
-        foss_news_project,
-    )
-    rss_url = 'https://www.securitysales.com/feed/'
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
     )
-    language = Language.ENGLISH
 
 
 class TechRadarComParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'TechRadarCom'
-    projects = (
-        foss_news_project,
-    )
-    rss_url = 'https://www.techradar.com/rss'
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
     )
-    language = Language.ENGLISH
 
 
 class TfirIoParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'TfirIo'
-    projects = (
-        foss_news_project,
-    )
-    rss_url = 'https://www.tfir.io/feed/'
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
     )
-    language = Language.ENGLISH
 
 
 class ZdNetComLinuxParsingModule(SimpleRssBasicParsingModule):
     # TODO: Think about parsing other sections
-    source_name = 'ZdNetComLinux'
-    projects = (
-        foss_news_project,
-    )
-    rss_url = 'https://www.zdnet.com/topic/linux/rss.xml'
-    language = Language.ENGLISH
+    pass
 
 
 class LinuxFoundationOrgParsingModule(SimpleRssBasicParsingModule):
-
-    source_name = 'LinuxFoundationOrg'
-    projects = (
-        foss_news_project,
-    )
-    rss_url = 'https://linuxfoundation.org/rss'
-    language = Language.ENGLISH
+    pass
 
 
 class HabrComBasicParsingModule(SimpleRssBasicParsingModule):
-
-    source_name = None
-    hub_code = None
-
-    @property
-    def rss_url(self):
-        return f'https://habr.com/ru/rss/hub/{self.hub_code}/all/?fl=ru'
 
     def process_url(self, url: str):
         return re.sub('/\?utm_campaign=.*&utm_source=habrahabr&utm_medium=rss',
@@ -679,19 +523,10 @@ class HabrComBasicParsingModule(SimpleRssBasicParsingModule):
 
 class HabrComNewsParsingModule(HabrComBasicParsingModule):
 
-    source_name = 'HabrComNews'
-    projects = (
-        foss_news_project,
-    )
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
     )
-    language = Language.RUSSIAN
-
-    @property
-    def rss_url(self):
-        return f'https://habr.com/ru/rss/news/'
 
 
 class FilterFossNewsItselfMixin:
@@ -707,13 +542,6 @@ class FilterFossNewsItselfMixin:
 class HabrComOpenSourceParsingModule(HabrComBasicParsingModule,
                                      FilterFossNewsItselfMixin):
 
-    source_name = f'HabrComOpenSource'
-    projects = (
-        foss_news_project,
-    )
-    hub_code = 'open_source'
-    language = Language.RUSSIAN
-
     def _parse(self):
         posts_data: List[PostData] = super()._parse()
         filtered_posts_data = self.filter_foss_news_itself(posts_data)
@@ -721,34 +549,15 @@ class HabrComOpenSourceParsingModule(HabrComBasicParsingModule,
 
 
 class HabrComLinuxParsingModule(HabrComBasicParsingModule):
-
-    source_name = f'HabrComLinux'
-    projects = (
-        foss_news_project,
-    )
-    hub_code = 'linux'
-    language = Language.RUSSIAN
+    pass
 
 
 class HabrComLinuxDevParsingModule(HabrComBasicParsingModule):
-
-    source_name = f'HabrComLinuxDev'
-    projects = (
-        foss_news_project,
-    )
-    hub_code = 'linux_dev'
-    language = Language.RUSSIAN
+    pass
 
 
 class HabrComNixParsingModule(HabrComBasicParsingModule,
                               FilterFossNewsItselfMixin):
-
-    source_name = f'HabrComNix'
-    projects = (
-        foss_news_project,
-    )
-    hub_code = 'nix'
-    language = Language.RUSSIAN
 
     def _parse(self):
         posts_data: List[PostData] = super()._parse()
@@ -757,39 +566,19 @@ class HabrComNixParsingModule(HabrComBasicParsingModule,
 
 
 class HabrComDevOpsParsingModule(HabrComBasicParsingModule):
-
-    source_name = f'HabrComDevOps'
-    projects = (
-        foss_news_project,
-    )
-    hub_code = 'devops'
-    language = Language.RUSSIAN
+    pass
 
 
 class HabrComSysAdmParsingModule(HabrComBasicParsingModule):
-
-    source_name = f'HabrComSysAdm'
-    projects = (
-        foss_news_project,
-    )
-    hub_code = 'sys_admin'
-    language = Language.RUSSIAN
+    pass
 
 
 class HabrComGitParsingModule(HabrComBasicParsingModule):
-
-    source_name = f'HabrComGit'
-    projects = (
-        foss_news_project,
-    )
-    hub_code = 'git'
-    language = Language.RUSSIAN
+    pass
 
 
 class YouTubeComBasicParsingModule(RssBasicParsingModule):
 
-    source_name = None
-    channel_id = None
     item_tag_name = 'entry'
     title_tag_name = 'title'
     pubdate_tag_name = 'published'
@@ -799,126 +588,53 @@ class YouTubeComBasicParsingModule(RssBasicParsingModule):
     def rss_items_root(self):
         return self.rss_data_root
 
-    @property
-    def rss_url(self):
-        return f'https://www.youtube.com/feeds/videos.xml?channel_id={self.channel_id}'
-
-
-class YouTubePlaylistBasicParsingModule(YouTubeComBasicParsingModule):
-
-    playlist_id = None
-
-    @property
-    def rss_url(self):
-        return f'https://www.youtube.com/feeds/videos.xml?playlist_id={self.playlist_id}'
-
 
 class YouTubeComAlekseySamoilovParsingModule(YouTubeComBasicParsingModule):
-
-    source_name = f'YouTubeComAlekseySamoilov'
-    projects = (
-        foss_news_project,
-    )
-    channel_id = 'UC3kAbMcYr-JEMSb2xX4OdpA'
-    language = Language.RUSSIAN
+    pass
 
 
 class PlafonAtYouTubeParsingModule(YouTubeComBasicParsingModule):
-    source_name = f'PlafonAtYouTube'
-    projects = (
-        foss_news_project,
-    )
-    channel_id = 'UCf7pLsR7lko69y8ySTpoKxg'
-    language = Language.RUSSIAN
+    pass
 
 
 class TheLinuxExperimentAtYouTubeParsingModule(YouTubeComBasicParsingModule):
-    source_name = f'TheLinuxExperimentAtYouTube'
-    projects = (
-        foss_news_project,
-    )
-    channel_id = 'UC5UAwBUum7CPN5buc-_N1Fw'
-    language = Language.ENGLISH
+    pass
 
 
 class NikolayIvanovichAtYouTubeParsingModule(YouTubeComBasicParsingModule):
-    source_name = f'NikolayIvanovichAtYouTube'
-    projects = (
-        foss_news_project,
-    )
-    channel_id = 'UCevW4vL1SJKvKQYGBTf21mA'
-    language = Language.RUSSIAN
+    pass
 
 
 class SwitchedToLinuxAtYouTubeParsingModule(YouTubeComBasicParsingModule):
-    source_name = f'SwitchedToLinuxAtYouTube'
-    projects = (
-        foss_news_project,
-    )
-    channel_id = 'UCoryWpk4QVYKFCJul9KBdyw'
-    language = Language.ENGLISH
+    pass
 
 
 class LearnLinuxTVAtYouTubeParsingModule(YouTubeComBasicParsingModule):
-    source_name = f'LearnLinuxTVAtYouTube'
-    projects = (
-        foss_news_project,
-    )
-    channel_id = 'UCxQKHvKbmSzGMvUrVtJYnUA'
-    language = Language.ENGLISH
+    pass
+
 
 class DmitryRobionekAtYouTubeParsingModule(YouTubeComBasicParsingModule):
-    source_name = f'DmitryRobionekAtYouTube'
-    projects = (
-        foss_news_project,
-    )
-    channel_id = 'UCtQ4NntQMEHZLKQu52BSpwg'
-    language = Language.RUSSIAN
+    pass
 
 
 class LosstRuParsingModule(SimpleRssBasicParsingModule):
-
-    source_name = 'LosstRu'
-    projects = (
-        foss_news_project,
-    )
-    rss_url = 'https://losst.ru/rss'
-    language = Language.RUSSIAN
+    pass
 
 
 class AstraLinuxRuParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'AstraLinuxRu'
-    projects = (
-        foss_news_project,
-    )
-    rss_url = 'https://astralinux.ru/rss'
-    language = Language.RUSSIAN
     no_description = True
 
 
 class BaseAltRuParsingModule(SimpleRssBasicParsingModule):
-
-    source_name = 'BaseAltRu'
-    projects = (
-        foss_news_project,
-    )
-    rss_url = 'https://www.basealt.ru/feed.rss'
-    language = Language.RUSSIAN
+    pass
 
 
 class PingvinusRuParsingModule(BasicParsingModule):
 
-    source_name = 'PingvinusRu'
-    projects = (
-        foss_news_project,
-    )
-    site_url = 'https://pingvinus.ru'
-    language = Language.RUSSIAN
-
     def __init__(self):
         super().__init__()
-        self.news_page_url = f'{self.site_url}/news'
+        self.news_page_url = f'{self.data_url}/news'
 
     def _parse(self):
         response = requests.get(self.news_page_url)
@@ -932,7 +648,7 @@ class PingvinusRuParsingModule(BasicParsingModule):
         rel_urls = tree.xpath('//div[@class="newsdateblock"]//h2/a[contains(@href, "/news/")]/@href')
         titles_texts = [title_block.text for title_block in titles_blocks]
         dates_texts = [date_block.text for date_block in dates_blocks]
-        urls = [f'{self.site_url}{rel_url}' for rel_url in rel_urls]
+        urls = [f'{self.data_url}{rel_url}' for rel_url in rel_urls]
         posts = []
         for title, date_str, url in zip(titles_texts, dates_texts, urls):
             dt = datetime.datetime.strptime(date_str, '%d.%m.%Y')
@@ -956,33 +672,15 @@ class RedditRssBasicParsingModule(SimpleRssBasicParsingModule):
 
 
 class OpenSourceOnRedditParsingModule(RedditRssBasicParsingModule):
-
-    source_name = 'OpenSourceOnReddit'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://www.reddit.com/r/opensource/.rss'
-    language = Language.ENGLISH
+    pass
 
 
 class LinuxGnuLinuxFreeSoftwareParsingModule(RedditRssBasicParsingModule):
-
-    source_name = 'LinuxGnuLinuxFreeSoftware'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://www.reddit.com/r/linux/.rss'
-    language = Language.ENGLISH
+    pass
 
 
 class ContainerJournalParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'ContainerJournal'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://containerjournal.com/feed/'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -990,23 +688,11 @@ class ContainerJournalParsingModule(SimpleRssBasicParsingModule):
 
 
 class BlogCloudNativeComputingFoundationParsingModule(SimpleRssBasicParsingModule):
-
-    source_name = 'BlogCloudNativeComputingFoundation'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'https://cncf.io/blog/feed'
-    language = Language.ENGLISH
+    pass
 
 
 class KubedexComParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'KubedexCom'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'https://kubedex.com/feed/'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -1015,12 +701,6 @@ class KubedexComParsingModule(SimpleRssBasicParsingModule):
 
 class CiliumBlogParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'CiliumBlog'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'https://cilium.io/blog/rss.xml'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -1028,23 +708,11 @@ class CiliumBlogParsingModule(SimpleRssBasicParsingModule):
 
 
 class EngineeringDockerBlogParsingModule(SimpleRssBasicParsingModule):
-
-    source_name = 'EngineeringDockerBlog'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'https://blog.docker.com/category/engineering/feed/'
-    language = Language.ENGLISH
+    pass
 
 
 class BlogSysdigParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'BlogSysdig'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'https://sysdig.com/blog/feed/'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -1053,12 +721,6 @@ class BlogSysdigParsingModule(SimpleRssBasicParsingModule):
 
 class CodefreshParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'Codefresh'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://blog.codefresh.io/rss/'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -1067,12 +729,6 @@ class CodefreshParsingModule(SimpleRssBasicParsingModule):
 
 class AquaBlogParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'AquaBlog'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://blog.aquasec.com/rss.xml'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -1081,13 +737,7 @@ class AquaBlogParsingModule(SimpleRssBasicParsingModule):
 
 class AmbassadorApiGatewayParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'AmbassadorApiGateway'
-    projects = (
-        os_friday_project,
-    )
     description_tag_name = 'content'
-    rss_url = 'https://blog.getambassador.io/feed'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -1096,12 +746,6 @@ class AmbassadorApiGatewayParsingModule(SimpleRssBasicParsingModule):
 
 class WeaveworksParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'Weaveworks'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'https://www.weave.works/feed.xml'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -1110,12 +754,6 @@ class WeaveworksParsingModule(SimpleRssBasicParsingModule):
 
 class KubeweeklyArchiveFeedParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'KubeweeklyArchiveFeed'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'https://us10.campaign-archive.com/feed?u=3885586f8f1175194017967d6&id=11c1b8bcb2'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -1124,12 +762,6 @@ class KubeweeklyArchiveFeedParsingModule(SimpleRssBasicParsingModule):
 
 class LachlanEvensonParsingModule(YouTubeComBasicParsingModule):
 
-    source_name = 'LachlanEvenson'
-    projects = (
-        os_friday_project,
-    )
-    channel_id = 'UCC5NsnXM2lE6kKfJKdQgsRQ'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -1138,12 +770,6 @@ class LachlanEvensonParsingModule(YouTubeComBasicParsingModule):
 
 class SoftwareDefinedTalkParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'SoftwareDefinedTalk'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://feeds.feedburner.com/DrunkAndRetiredcomPodcast'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -1152,12 +778,6 @@ class SoftwareDefinedTalkParsingModule(SimpleRssBasicParsingModule):
 
 class PrometheusBlogParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'PrometheusBlog'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://prometheus.io/blog/feed.xml'
-    language = Language.ENGLISH
     item_tag_name = 'entry'
     pubdate_tag_name = 'published'
     description_tag_name = 'content'
@@ -1168,12 +788,6 @@ class PrometheusBlogParsingModule(SimpleRssBasicParsingModule):
 
 class SysdigParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'Sysdig'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'https://sysdig.com/feed/'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -1182,12 +796,6 @@ class SysdigParsingModule(SimpleRssBasicParsingModule):
 
 class InnovateEverywhereOnRancherLabsParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'InnovateEverywhereOnRancherLabs'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://rancher.com/feed/'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -1196,12 +804,6 @@ class InnovateEverywhereOnRancherLabsParsingModule(SimpleRssBasicParsingModule):
 
 class TheNewStackPodcastParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'TheNewStackPodcast'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'https://feeds.simplecast.com/IgzWks06'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -1209,23 +811,11 @@ class TheNewStackPodcastParsingModule(SimpleRssBasicParsingModule):
 
 
 class KubernetesOnMediumParsingModule(SimpleRssBasicParsingModule):
-
-    source_name = 'KubernetesOnMedium'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'https://medium.com/feed/tag/kubernetes'
-    language = Language.ENGLISH
+    pass
 
 
 class RamblingsFromJessieParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'RamblingsFromJessie'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'https://blog.jessfraz.com/index.xml'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -1233,33 +823,15 @@ class RamblingsFromJessieParsingModule(SimpleRssBasicParsingModule):
 
 
 class DiscussKubernetesLatestTopicsParsingModule(SimpleRssBasicParsingModule):
-
-    source_name = 'DiscussKubernetesLatestTopics'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'https://discuss.kubernetes.io/latest.rss'
-    language = Language.ENGLISH
+    pass
 
 
 class ProjectCalicoParsingModule(SimpleRssBasicParsingModule):
-
-    source_name = 'ProjectCalico'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://www.projectcalico.org/feed/'
-    language = Language.ENGLISH
+    pass
 
 
 class LastWeekInKubernetesDevelopmentParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'LastWeekInKubernetesDevelopment'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://lwkd.info/feed.xml'
-    language = Language.ENGLISH
     item_tag_name = 'entry'
     pubdate_tag_name = 'published'
     description_tag_name = 'content'
@@ -1269,23 +841,11 @@ class LastWeekInKubernetesDevelopmentParsingModule(SimpleRssBasicParsingModule):
 
 
 class KubernetesParsingModule(RedditRssBasicParsingModule):
-
-    source_name = 'Kubernetes'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'https://www.reddit.com/r/kubernetes/.rss'
-    language = Language.ENGLISH
+    pass
 
 
 class EnvoyProxyParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'EnvoyProxy'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'https://blog.envoyproxy.io/feed'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -1295,12 +855,6 @@ class EnvoyProxyParsingModule(SimpleRssBasicParsingModule):
 
 class TheNewStackAnalystsParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'TheNewStackAnalysts'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://feeds.soundcloud.com/users/soundcloud:users:94518611/sounds.rss'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -1309,12 +863,6 @@ class TheNewStackAnalystsParsingModule(SimpleRssBasicParsingModule):
 
 class TigeraParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'Tigera'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'https://blog.tigera.io/feed'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -1323,12 +871,6 @@ class TigeraParsingModule(SimpleRssBasicParsingModule):
 
 class TwistlockParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'Twistlock'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'https://www.twistlock.com/feed/'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -1337,12 +879,6 @@ class TwistlockParsingModule(SimpleRssBasicParsingModule):
 
 class BlogOnRancherLabsParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'BlogOnRancherLabs'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'https://rancher.com/blog/index.xml'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -1351,12 +887,6 @@ class BlogOnRancherLabsParsingModule(SimpleRssBasicParsingModule):
 
 class TheNewStackParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'TheNewStack'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://thenewstack.io/feed/'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -1365,12 +895,6 @@ class TheNewStackParsingModule(SimpleRssBasicParsingModule):
 
 class KonghqParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'Konghq'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'https://konghq.com/feed/'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -1378,43 +902,19 @@ class KonghqParsingModule(SimpleRssBasicParsingModule):
 
 
 class DockerOnMediumParsingModule(SimpleRssBasicParsingModule):
-
-    source_name = 'DockerOnMedium'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'https://medium.com/feed/tag/docker'
-    language = Language.ENGLISH
+    pass
 
 
 class DockerBlogParsingModule(SimpleRssBasicParsingModule):
-
-    source_name = 'DockerBlog'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://blog.docker.io/feed/'
-    language = Language.ENGLISH
+    pass
 
 
 class DiscussKubernetesLatestPostsParsingModule(SimpleRssBasicParsingModule):
-
-    source_name = 'DiscussKubernetesLatestPosts'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'https://discuss.kubernetes.io/posts.rss'
-    language = Language.ENGLISH
+    pass
 
 
 class D2IqBlogParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'D2IqBlog'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://mesosphere.io/blog/atom.xml'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -1422,23 +922,10 @@ class D2IqBlogParsingModule(SimpleRssBasicParsingModule):
 
 
 class PodctlEnterpriseKubernetesParsingModule(SimpleRssBasicParsingModule):
-
-    source_name = 'PodctlEnterpriseKubernetes'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'https://www.buzzsprout.com/110399.rss'
-    language = Language.ENGLISH
+    pass
 
 
 class IstioBlogAndNewsParsingModule(SimpleRssBasicParsingModule):
-
-    source_name = 'IstioBlogAndNews'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'https://istio.io/feed.xml'
-    language = Language.ENGLISH
 
     def _parse(self):
         posts_data: List[PostData] = super()._parse()
@@ -1452,43 +939,19 @@ class IstioBlogAndNewsParsingModule(SimpleRssBasicParsingModule):
 
 class ProgrammingKubernetesParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'ProgrammingKubernetes'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'https://medium.com/feed/programming-kubernetes'
-    language = Language.ENGLISH
     description_tag_name = 'content'
 
 
 class KubernetesPodcastFromGoogleParsingModule(SimpleRssBasicParsingModule):
-
-    source_name = 'KubernetesPodcastFromGoogle'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'https://kubernetespodcast.com/feeds/audio.xml'
-    language = Language.ENGLISH
+    pass
 
 
 class CloudNativeComputingFoundationParsingModule(SimpleRssBasicParsingModule):
-
-    source_name = 'CloudNativeComputingFoundation'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'https://www.cncf.io/feed'
-    language = Language.ENGLISH
+    pass
 
 
 class BlogOnStackroxSecurityBuiltInParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'BlogOnStackroxSecurityBuiltIn'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'https://www.stackrox.com/post/index.xml'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -1497,12 +960,6 @@ class BlogOnStackroxSecurityBuiltInParsingModule(SimpleRssBasicParsingModule):
 
 class RecentQuestionsOpenSourceStackExchangeParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'RecentQuestionsOpenSourceStackExchange'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'https://opensource.stackexchange.com/feeds'
-    language = Language.ENGLISH
     description_tag_name = 'summary'
     item_tag_name = 'entry'
     pubdate_tag_name = 'published'
@@ -1513,12 +970,6 @@ class RecentQuestionsOpenSourceStackExchangeParsingModule(SimpleRssBasicParsingM
 
 class LxerLinuxNewsParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'LxerLinuxNews'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://lxer.com/module/newswire/headlines.rss'
-    language = Language.ENGLISH
     pubdate_tag_name = 'date'
 
     def rss_items_root(self):
@@ -1527,12 +978,6 @@ class LxerLinuxNewsParsingModule(SimpleRssBasicParsingModule):
 
 class NativecloudDevParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'NativecloudDev'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'https://blog.nativecloud.dev/rss/'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -1541,12 +986,6 @@ class NativecloudDevParsingModule(SimpleRssBasicParsingModule):
 
 class LinuxlinksParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'Linuxlinks'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'https://www.linuxlinks.com/feed/'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -1554,23 +993,11 @@ class LinuxlinksParsingModule(SimpleRssBasicParsingModule):
 
 
 class LobstersJavaJavaProgrammingParsingModule(SimpleRssBasicParsingModule):
-
-    source_name = 'LobstersJavaJavaProgramming'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'https://lobste.rs/t/java.rss'
-    language = Language.ENGLISH
+    pass
 
 
 class FlossWeeklyVideoParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'FlossWeeklyVideo'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://feeds.twit.tv/floss_video_hd.xml'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -1581,33 +1008,15 @@ class FlossWeeklyVideoParsingModule(SimpleRssBasicParsingModule):
 
 
 class LobstersNodejsNodeJsProgrammingParsingModule(SimpleRssBasicParsingModule):
-
-    source_name = 'LobstersNodejsNodeJsProgramming'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'https://lobste.rs/t/nodejs.rss'
-    language = Language.ENGLISH
+    pass
 
 
 class OpenSourceOnMediumParsingModule(SimpleRssBasicParsingModule):
-
-    source_name = 'OpenSourceOnMedium'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'https://medium.com/feed/tag/open-source'
-    language = Language.ENGLISH
+    pass
 
 
 class BlogOnSmallstepParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'BlogOnSmallstep'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'https://smallstep.com/blog/index.xml'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -1615,44 +1024,20 @@ class BlogOnSmallstepParsingModule(SimpleRssBasicParsingModule):
 
 
 class LinuxNotesFromDarkduckParsingModule(SimpleRssBasicParsingModule):
-
-    source_name = 'LinuxNotesFromDarkduck'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://feeds.feedburner.com/LinuxNotesFromDarkduck'
-    language = Language.ENGLISH
+    pass
 
 
 class MicrosoftOpenSourceStoriesParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'MicrosoftOpenSourceStories'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'https://medium.com/feed/microsoft-open-source-stories'
-    language = Language.ENGLISH
     description_tag_name = 'content'
 
 
 class LobstersUnixNixParsingModule(SimpleRssBasicParsingModule):
-
-    source_name = 'LobstersUnixNix'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'https://lobste.rs/t/unix.rss'
-    language = Language.ENGLISH
+    pass
 
 
 class AmericanExpressTechnologyParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'AmericanExpressTechnology'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://americanexpress.io/feed.xml'
-    language = Language.ENGLISH
     item_tag_name = 'entry'
     filtration_needed = True
     filters = (
@@ -1666,12 +1051,6 @@ class AmericanExpressTechnologyParsingModule(SimpleRssBasicParsingModule):
 
 class NewestOpenSourceQuestionsFeedParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'NewestOpenSourceQuestionsFeed'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'https://stackoverflow.com/feeds/tag?tagnames=open-source&sort=newest'
-    language = Language.ENGLISH
     item_tag_name = 'entry'
     pubdate_tag_name = 'published'
     description_tag_name = 'summary'
@@ -1682,12 +1061,6 @@ class NewestOpenSourceQuestionsFeedParsingModule(SimpleRssBasicParsingModule):
 
 class TeejeetechParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'Teejeetech'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://teejeetech.blogspot.com/feeds/posts/default'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -1695,33 +1068,15 @@ class TeejeetechParsingModule(SimpleRssBasicParsingModule):
 
 
 class FreedomPenguinParsingModule(SimpleRssBasicParsingModule):
-
-    source_name = 'FreedomPenguin'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://feeds.feedburner.com/FreedomPenguin'
-    language = Language.ENGLISH
+    pass
 
 
 class LobstersLinuxLinuxParsingModule(SimpleRssBasicParsingModule):
-
-    source_name = 'LobstersLinuxLinux'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'https://lobste.rs/t/linux.rss'
-    language = Language.ENGLISH
+    pass
 
 
 class CrunchToolsParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'CrunchTools'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://crunchtools.com/feed/'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -1730,12 +1085,6 @@ class CrunchToolsParsingModule(SimpleRssBasicParsingModule):
 
 class LinuxUprisingBlogParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'LinuxUprisingBlog'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'https://feeds.feedburner.com/LinuxUprising'
-    language = Language.ENGLISH
     item_tag_name = 'entry'
     pubdate_tag_name = 'published'
     description_tag_name = 'content'
@@ -1746,12 +1095,6 @@ class LinuxUprisingBlogParsingModule(SimpleRssBasicParsingModule):
 
 class EaglemanBlogParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'EaglemanBlog'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://www.eagleman.com/blog?format=feed&type=rss'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -1760,12 +1103,6 @@ class EaglemanBlogParsingModule(SimpleRssBasicParsingModule):
 
 class DbakevlarParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'Dbakevlar'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'https://dbakevlar.com/feed/'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -1774,12 +1111,6 @@ class DbakevlarParsingModule(SimpleRssBasicParsingModule):
 
 class EngblogRuParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'EngblogRu'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://feeds.feedburner.com/engblogru'
-    language = Language.RUSSIAN
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -1788,12 +1119,6 @@ class EngblogRuParsingModule(SimpleRssBasicParsingModule):
 
 class LobstersDotnetCFNetProgrammingParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'LobstersDotnetCFNetProgramming'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'https://lobste.rs/t/dotnet.rss'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -1802,12 +1127,6 @@ class LobstersDotnetCFNetProgrammingParsingModule(SimpleRssBasicParsingModule):
 
 class LobstersWebWebDevelopmentAndNewsParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'LobstersWebWebDevelopmentAndNews'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'https://lobste.rs/t/web.rss'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -1816,12 +1135,6 @@ class LobstersWebWebDevelopmentAndNewsParsingModule(SimpleRssBasicParsingModule)
 
 class MorningDewByAlvinAshcraftParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'MorningDewByAlvinAshcraft'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://feeds2.feedburner.com/alvinashcraft'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -1830,12 +1143,6 @@ class MorningDewByAlvinAshcraftParsingModule(SimpleRssBasicParsingModule):
 
 class LobstersSecurityNetsecAppsecAndInfosecParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'LobstersSecurityNetsecAppsecAndInfosec'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'https://lobste.rs/t/security.rss'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -1844,12 +1151,6 @@ class LobstersSecurityNetsecAppsecAndInfosecParsingModule(SimpleRssBasicParsingM
 
 class SamJarManParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'SamJarMan'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'https://www.samjarman.co.nz/blog?format=RSS'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -1858,12 +1159,6 @@ class SamJarManParsingModule(SimpleRssBasicParsingModule):
 
 class LobstersDistributedDistributedSystemsParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'LobstersDistributedDistributedSystems'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'https://lobste.rs/t/distributed.rss'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -1872,12 +1167,6 @@ class LobstersDistributedDistributedSystemsParsingModule(SimpleRssBasicParsingMo
 
 class LobstersDevopsDevopsParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'LobstersDevopsDevops'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'https://lobste.rs/t/devops.rss'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -1886,12 +1175,6 @@ class LobstersDevopsDevopsParsingModule(SimpleRssBasicParsingModule):
 
 class DevRelWeeklyParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'DevRelWeekly'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://devrelweekly.com/issues.rss'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -1900,12 +1183,6 @@ class DevRelWeeklyParsingModule(SimpleRssBasicParsingModule):
 
 class AzureAdvocatesContentWrapUpParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'AzureAdvocatesContentWrapUp'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'https://www.onazure.today/feed.xml'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -1914,12 +1191,6 @@ class AzureAdvocatesContentWrapUpParsingModule(SimpleRssBasicParsingModule):
 
 class FlantBlogParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'FlantBlog'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'https://blog.flant.com/feed/'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -1928,12 +1199,6 @@ class FlantBlogParsingModule(SimpleRssBasicParsingModule):
 
 class ThoughtworksInsightsParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'ThoughtworksInsights'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://www.thoughtworks.com/rss/insights.xml'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -1947,23 +1212,11 @@ class ThoughtworksInsightsParsingModule(SimpleRssBasicParsingModule):
 
 
 class LobstersOsdevOperatingSystemDesignAndDevelopmentWhenNoSpecificOsTagExistsParsingModule(SimpleRssBasicParsingModule):
-
-    source_name = 'LobstersOsdevOperatingSystemDesignAndDevelopmentWhenNoSpecificOsTagExists'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'https://lobste.rs/t/osdev.rss'
-    language = Language.ENGLISH
+    pass
 
 
 class MicrosoftDevradioParsingModule(YouTubeComBasicParsingModule):
 
-    source_name = 'MicrosoftDevradio'
-    projects = (
-        os_friday_project,
-    )
-    channel_id = 'UCYjPVPCNwQyfbQEKlJ4ChHg'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -1972,12 +1225,6 @@ class MicrosoftDevradioParsingModule(YouTubeComBasicParsingModule):
 
 class NewBlogArticlesInMicrosoftTechCommunityParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'NewBlogArticlesInMicrosoftTechCommunity'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'https://techcommunity.microsoft.com/gxcuf89792/rss/Community?interaction.style=blog'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -1985,23 +1232,11 @@ class NewBlogArticlesInMicrosoftTechCommunityParsingModule(SimpleRssBasicParsing
 
 
 class FosslifeParsingModule(SimpleRssBasicParsingModule):
-
-    source_name = 'Fosslife'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'https://www.fosslife.org/rss.xml'
-    language = Language.ENGLISH
+    pass
 
 
 class AzureInfohubRssAzureParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'AzureInfohubRssAzure'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'https://azureinfohub.azurewebsites.net/Feed?serviceTitle=Azure'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -2010,12 +1245,6 @@ class AzureInfohubRssAzureParsingModule(SimpleRssBasicParsingModule):
 
 class PerformanceIsAFeatureParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'PerformanceIsAFeature'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://mattwarren.org/atom.xml'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -2031,12 +1260,6 @@ class PerformanceIsAFeatureParsingModule(SimpleRssBasicParsingModule):
 
 class LobstersWasmWebassemblyParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'LobstersWasmWebassembly'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'https://lobste.rs/t/wasm.rss'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -2045,12 +1268,6 @@ class LobstersWasmWebassemblyParsingModule(SimpleRssBasicParsingModule):
 
 class TheCommunityRoundtableParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'TheCommunityRoundtable'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'https://communityroundtable.com/feed/'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -2059,12 +1276,6 @@ class TheCommunityRoundtableParsingModule(SimpleRssBasicParsingModule):
 
 class Rss20TaggedMobileMobileAppWebDevelopmentParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'Rss20TaggedMobileMobileAppWebDevelopment'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'https://lobste.rs/t/mobile.rss'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -2073,54 +1284,30 @@ class Rss20TaggedMobileMobileAppWebDevelopmentParsingModule(SimpleRssBasicParsin
 
 class AwsArchitectureBlogParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'AwsArchitectureBlog'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://www.awsarchitectureblog.com/atom.xml'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
     )
 
 
-class HeptioUploadsOnYoutubeParsingModule(YouTubePlaylistBasicParsingModule):
+class HeptioUploadsOnYoutubeParsingModule(YouTubeComBasicParsingModule):
 
-    source_name = 'HeptioUploadsOnYoutube'
-    projects = (
-        os_friday_project,
-    )
-    playlist_id = 'UUjQU5ZI2mHswy7OOsii_URg'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
     )
 
 
-class AlexEllisOpenfaasCommunityAwesomenessOnYoutubeParsingModule(YouTubePlaylistBasicParsingModule):
+class AlexEllisOpenfaasCommunityAwesomenessOnYoutubeParsingModule(YouTubeComBasicParsingModule):
 
-    source_name = 'AlexEllisOpenfaasCommunityAwesomenessOnYoutube'
-    projects = (
-        os_friday_project,
-    )
-    playlist_id = 'PLlIapFDp305Cw4Mu13Oq--AEk0G0WXPO-'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
     )
 
 
-class VmwareCloudNativeAppsUploadsOnYoutubeParsingModule(YouTubePlaylistBasicParsingModule):
+class VmwareCloudNativeAppsUploadsOnYoutubeParsingModule(YouTubeComBasicParsingModule):
 
-    source_name = 'VmwareCloudNativeAppsUploadsOnYoutube'
-    projects = (
-        os_friday_project,
-    )
-    playlist_id = 'UUdkGV51Nu0unDNT58bHt9bg'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -2129,61 +1316,30 @@ class VmwareCloudNativeAppsUploadsOnYoutubeParsingModule(YouTubePlaylistBasicPar
 
 class D2IqParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'D2Iq'
-    projects = (
-        os_friday_project,
-    )
-    # TODO: Fix
-    rss_url = 'https://www.youtube.com/feeds/videos.xml?channel_id=UCxwCmgwyM7xtHaRULN6-dxg'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
     )
 
 
-class TigeraUploadsOnYoutubeParsingModule(YouTubePlaylistBasicParsingModule):
+class TigeraUploadsOnYoutubeParsingModule(YouTubeComBasicParsingModule):
 
-    source_name = 'TigeraUploadsOnYoutube'
-    projects = (
-        os_friday_project,
-    )
-    playlist_id = 'UU8uN3yhpeBeerGNwDiQbcgw'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
     )
 
 
-class CncfCloudNativeComputingFoundationUploadsOnYoutubeParsingModule(YouTubePlaylistBasicParsingModule):
-
-    source_name = 'CncfCloudNativeComputingFoundationUploadsOnYoutube'
-    projects = (
-        os_friday_project,
-    )
-    playlist_id = 'UUvqbFHwN-nwalWPjPUKpvTA'
-    language = Language.ENGLISH
+class CncfCloudNativeComputingFoundationUploadsOnYoutubeParsingModule(YouTubeComBasicParsingModule):
+    pass
 
 
-class CephUploadsOnYoutubeParsingModule(YouTubePlaylistBasicParsingModule):
-
-    source_name = 'CephUploadsOnYoutube'
-    projects = (
-        os_friday_project,
-    )
-    playlist_id = 'UUno-Fry25FJ7B4RycCxOtfw'
-    language = Language.ENGLISH
+class CephUploadsOnYoutubeParsingModule(YouTubeComBasicParsingModule):
+    pass
 
 
-class RookRookPresentationsOnYoutubeParsingModule(YouTubePlaylistBasicParsingModule):
+class RookRookPresentationsOnYoutubeParsingModule(YouTubeComBasicParsingModule):
 
-    source_name = 'RookRookPresentationsOnYoutube'
-    projects = (
-        os_friday_project,
-    )
-    playlist_id = 'PLP0uDo-ZFnQOCpYx1_uVCrx_bmyq7tdKr'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -2191,24 +1347,11 @@ class RookRookPresentationsOnYoutubeParsingModule(YouTubePlaylistBasicParsingMod
 
 
 class DockerParsingModule(SimpleRssBasicParsingModule):
-
-    source_name = 'Docker'
-    projects = (
-        os_friday_project,
-    )
-    # TODO: Fix
-    rss_url = 'https://www.youtube.com/feeds/videos.xml?channel_id=UC76AVf2JkrwjxNKMuPpscHQ'
-    language = Language.ENGLISH
+    pass
 
 
-class RookUploadsOnYoutubeParsingModule(YouTubePlaylistBasicParsingModule):
+class RookUploadsOnYoutubeParsingModule(YouTubeComBasicParsingModule):
 
-    source_name = 'RookUploadsOnYoutube'
-    projects = (
-        os_friday_project,
-    )
-    playlist_id = 'UUa7kFUSGO4NNSJV8MJVlJAA'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -2216,71 +1359,35 @@ class RookUploadsOnYoutubeParsingModule(YouTubePlaylistBasicParsingModule):
 
 
 class CncfCloudNativeComputingFoundationParsingModule(YouTubeComBasicParsingModule):
-
-    source_name = 'CncfCloudNativeComputingFoundation'
-    projects = (
-        os_friday_project,
-    )
-    channel_id = 'UCvqbFHwN-nwalWPjPUKpvTA'
-    language = Language.ENGLISH
+    pass
 
 
-class WeaveworksIncWeaveOnlineUserGroupsOnYoutubeParsingModule(YouTubePlaylistBasicParsingModule):
+class WeaveworksIncWeaveOnlineUserGroupsOnYoutubeParsingModule(YouTubeComBasicParsingModule):
 
-    source_name = 'WeaveworksIncWeaveOnlineUserGroupsOnYoutube'
-    projects = (
-        os_friday_project,
-    )
-    playlist_id = 'PL9lTuCFNLaD0wEsbqf6IrGCWvZIAIo9cW'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
     )
 
 
-class KubernautsIoUploadsOnYoutubeParsingModule(YouTubePlaylistBasicParsingModule):
-
-    source_name = 'KubernautsIoUploadsOnYoutube'
-    projects = (
-        os_friday_project,
-    )
-    playlist_id = 'UU5NDQ4F0JPQozyqnh1mghHQ'
-    language = Language.ENGLISH
+class KubernautsIoUploadsOnYoutubeParsingModule(YouTubeComBasicParsingModule):
+    pass
 
 
-class AlexEllisUploadsOnYoutubeParsingModule(YouTubePlaylistBasicParsingModule):
+class AlexEllisUploadsOnYoutubeParsingModule(YouTubeComBasicParsingModule):
 
-    source_name = 'AlexEllisUploadsOnYoutube'
-    projects = (
-        os_friday_project,
-    )
-    playlist_id = 'UUJsK5Zbq0dyFZUBtMTHzxjQ'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
     )
 
 
-class CephCephTestingWeeklyOnYoutubeParsingModule(YouTubePlaylistBasicParsingModule):
-
-    source_name = 'CephCephTestingWeeklyOnYoutube'
-    projects = (
-        os_friday_project,
-    )
-    playlist_id = 'PLrBUGiINAakMV7gKMQjFvcWL3PeY0y0lq'
-    language = Language.ENGLISH
+class CephCephTestingWeeklyOnYoutubeParsingModule(YouTubeComBasicParsingModule):
+    pass
 
 
 class NetCurryRecentArticlesParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'NetCurryRecentArticles'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://feeds.feedburner.com/netCurryRecentArticles'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -2289,12 +1396,6 @@ class NetCurryRecentArticlesParsingModule(SimpleRssBasicParsingModule):
 
 class ThreeHundredSixtyDegreeDbProgrammingParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'ThreeHundredSixtyDegreeDbProgramming'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://db360.blogspot.com/feeds/posts/default'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -2309,12 +1410,6 @@ class ThreeHundredSixtyDegreeDbProgrammingParsingModule(SimpleRssBasicParsingMod
 
 class FourSysopsParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'FourSysops'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://4sysops.com/feed/'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -2323,12 +1418,6 @@ class FourSysopsParsingModule(SimpleRssBasicParsingModule):
 
 class AProgrammerWithMicrosoftToolsParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'AProgrammerWithMicrosoftTools'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://msprogrammer.serviciipeweb.ro/feed/'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -2337,12 +1426,6 @@ class AProgrammerWithMicrosoftToolsParsingModule(SimpleRssBasicParsingModule):
 
 class AarononthewebParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'Aaronontheweb'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://www.aaronstannard.com/syndication.axd'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -2351,12 +1434,6 @@ class AarononthewebParsingModule(SimpleRssBasicParsingModule):
 
 class AllanSBlogParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'AllanSBlog'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://sqlha.com/blog/feed/'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -2365,12 +1442,6 @@ class AllanSBlogParsingModule(SimpleRssBasicParsingModule):
 
 class AndyGibsonParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'AndyGibson'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://www.andygibson.net/blog/feed/'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -2379,12 +1450,6 @@ class AndyGibsonParsingModule(SimpleRssBasicParsingModule):
 
 class AntonioSBlogParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'AntonioSBlog'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://agoncal.wordpress.com/feed/'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -2393,12 +1458,6 @@ class AntonioSBlogParsingModule(SimpleRssBasicParsingModule):
 
 class ArcaneCodeParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'ArcaneCode'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://feeds.feedburner.com/ArcaneCode'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -2407,12 +1466,6 @@ class ArcaneCodeParsingModule(SimpleRssBasicParsingModule):
 
 class AugustoAlvarezParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'AugustoAlvarez'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://feeds.feedburner.com/AugustoAlvarez'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -2421,12 +1474,6 @@ class AugustoAlvarezParsingModule(SimpleRssBasicParsingModule):
 
 class Channel9ParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'Channel9'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://channel9.msdn.com/Feeds/RSS'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -2435,12 +1482,6 @@ class Channel9ParsingModule(SimpleRssBasicParsingModule):
 
 class CloudComputingBigDataHpcCodeinstinctParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'CloudComputingBigDataHpcCodeinstinct'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://www.codeinstinct.pro/feeds/posts/default'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -2455,12 +1496,6 @@ class CloudComputingBigDataHpcCodeinstinctParsingModule(SimpleRssBasicParsingMod
 
 class ClusteringForMereMortalsParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'ClusteringForMereMortals'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://clusteringformeremortals.com/feed/'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -2469,12 +1504,6 @@ class ClusteringForMereMortalsParsingModule(SimpleRssBasicParsingModule):
 
 class CommandLineFanaticParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'CommandLineFanatic'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://commandlinefanatic.com/rss.xml'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -2486,12 +1515,6 @@ class CommandLineFanaticParsingModule(SimpleRssBasicParsingModule):
 
 class DevcurryParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'Devcurry'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://www.devcurry.com/feeds/posts/default/'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -2500,12 +1523,6 @@ class DevcurryParsingModule(SimpleRssBasicParsingModule):
 
 class DonTBeIffyParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'DonTBeIffy'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://thedatafarm.com/blog/feed/'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -2515,12 +1532,6 @@ class DonTBeIffyParsingModule(SimpleRssBasicParsingModule):
 
 class ElegantCodeParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'ElegantCode'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://feeds.feedburner.com/ElegantCode'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -2529,12 +1540,6 @@ class ElegantCodeParsingModule(SimpleRssBasicParsingModule):
 
 class FelipeOliveiraParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'FelipeOliveira'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://feeds.feedburner.com/GeeksAreTotallyIn'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -2543,12 +1548,6 @@ class FelipeOliveiraParsingModule(SimpleRssBasicParsingModule):
 
 class FromRavikanthSBlogParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'FromRavikanthSBlog'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://feeds.feedburner.com/RavikanthChaganti'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -2557,12 +1556,6 @@ class FromRavikanthSBlogParsingModule(SimpleRssBasicParsingModule):
 
 class FullFeedParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'FullFeed'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://feeds.addedbytes.com/added_bytes_full'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -2571,12 +1564,6 @@ class FullFeedParsingModule(SimpleRssBasicParsingModule):
 
 class GauravmantriComParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'GauravmantriCom'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://gauravmantri.com/feed/'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -2585,12 +1572,6 @@ class GauravmantriComParsingModule(SimpleRssBasicParsingModule):
 
 class GeekSucksParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'GeekSucks'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://feeds.feedburner.com/GeekSucks'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -2599,12 +1580,6 @@ class GeekSucksParsingModule(SimpleRssBasicParsingModule):
 
 class GoodCodersCodeGreatReuseParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'GoodCodersCodeGreatReuse'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://www.catonmat.net/feed/'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -2613,12 +1588,6 @@ class GoodCodersCodeGreatReuseParsingModule(SimpleRssBasicParsingModule):
 
 class GunnarPeipmanSAspNetBlogParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'GunnarPeipmanSAspNetBlog'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://feeds.feedburner.com/gunnarpeipman'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -2628,12 +1597,6 @@ class GunnarPeipmanSAspNetBlogParsingModule(SimpleRssBasicParsingModule):
 
 class HanselminutesParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'Hanselminutes'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://feeds.feedburner.com/HanselminutesCompleteMP3'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -2642,12 +1605,6 @@ class HanselminutesParsingModule(SimpleRssBasicParsingModule):
 
 class HelpDeskGeekHelpDeskTipsForItProsParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'HelpDeskGeekHelpDeskTipsForItPros'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://feedproxy.google.com/ITHelpDeskGeek'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -2656,12 +1613,6 @@ class HelpDeskGeekHelpDeskTipsForItProsParsingModule(SimpleRssBasicParsingModule
 
 class HenrikOlssonSComputerSoftwareNotesParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'HenrikOlssonSComputerSoftwareNotes'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://holsson.wordpress.com/feed/'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -2670,12 +1621,6 @@ class HenrikOlssonSComputerSoftwareNotesParsingModule(SimpleRssBasicParsingModul
 
 class HongkiatComParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'HongkiatCom'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://www.hongkiat.com/blog/feed/'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -2684,12 +1629,6 @@ class HongkiatComParsingModule(SimpleRssBasicParsingModule):
 
 class IcosmogeekParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'Icosmogeek'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://feeds.feedburner.com/cosmogeekinfo'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -2699,12 +1638,6 @@ class IcosmogeekParsingModule(SimpleRssBasicParsingModule):
 
 class InDepthFeaturesParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'InDepthFeatures'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://redmondmag.com/rss-feeds/in-depth.aspx'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -2713,12 +1646,6 @@ class InDepthFeaturesParsingModule(SimpleRssBasicParsingModule):
 
 class JenkovComNewsParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'JenkovComNews'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://feeds2.feedburner.com/jenkov-com?format=xml'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -2727,12 +1654,6 @@ class JenkovComNewsParsingModule(SimpleRssBasicParsingModule):
 
 class JonathanGKoomeyPhDParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'JonathanGKoomeyPhD'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://www.koomey.com/rss'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -2741,12 +1662,6 @@ class JonathanGKoomeyPhDParsingModule(SimpleRssBasicParsingModule):
 
 class KScottAllenParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'KScottAllen'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://feeds.feedburner.com/OdeToCode'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -2755,12 +1670,6 @@ class KScottAllenParsingModule(SimpleRssBasicParsingModule):
 
 class MaartenBalliauwBlogParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'MaartenBalliauwBlog'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://feeds2.feedburner.com/maartenballiauw'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -2769,12 +1678,6 @@ class MaartenBalliauwBlogParsingModule(SimpleRssBasicParsingModule):
 
 class MarceloSincicMvpParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'MarceloSincicMvp'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://msincic.wordpress.com/feed/'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -2783,12 +1686,6 @@ class MarceloSincicMvpParsingModule(SimpleRssBasicParsingModule):
 
 class MartinFowlerParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'MartinFowler'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://martinfowler.com/feed.atom'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -2803,12 +1700,6 @@ class MartinFowlerParsingModule(SimpleRssBasicParsingModule):
 
 class MaxTrinidadThePowershellFrontParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'MaxTrinidadThePowershellFront'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://www.maxtblog.com/rss'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -2817,12 +1708,6 @@ class MaxTrinidadThePowershellFrontParsingModule(SimpleRssBasicParsingModule):
 
 class MethodOfFailedByTimHeuerParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'MethodOfFailedByTimHeuer'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://feeds.timheuer.com/timheuer'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -2831,12 +1716,6 @@ class MethodOfFailedByTimHeuerParsingModule(SimpleRssBasicParsingModule):
 
 class MichaelCrumpParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'MichaelCrump'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://feeds.feedburner.com/MichaelCrump'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -2851,12 +1730,6 @@ class MichaelCrumpParsingModule(SimpleRssBasicParsingModule):
 
 class NewsParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'News'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://mcpmag.com/rss-feeds/news.aspx'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -2865,12 +1738,6 @@ class NewsParsingModule(SimpleRssBasicParsingModule):
 
 class PetriItKnowledgebaseParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'PetriItKnowledgebase'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://feeds2.feedburner.com/Petri'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -2879,12 +1746,6 @@ class PetriItKnowledgebaseParsingModule(SimpleRssBasicParsingModule):
 
 class PrecisionComputingParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'PrecisionComputing'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://www.leeholmes.com/blog/feed/atom/'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -2893,12 +1754,6 @@ class PrecisionComputingParsingModule(SimpleRssBasicParsingModule):
 
 class PublisherSRoundUpParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'PublisherSRoundUp'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://wmjasco.blogspot.com/feeds/posts/default'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -2913,12 +1768,6 @@ class PublisherSRoundUpParsingModule(SimpleRssBasicParsingModule):
 
 class RandsInReposeParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'RandsInRepose'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://www.randsinrepose.com/index.xml'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -2927,12 +1776,6 @@ class RandsInReposeParsingModule(SimpleRssBasicParsingModule):
 
 class RedmondReportParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'RedmondReport'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://redmondmag.com/rss-feeds/redmond-report.aspx'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -2941,12 +1784,6 @@ class RedmondReportParsingModule(SimpleRssBasicParsingModule):
 
 class RhyousParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'Rhyous'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://www.rhyous.com/feed/'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -2955,12 +1792,6 @@ class RhyousParsingModule(SimpleRssBasicParsingModule):
 
 class RichardSeroterSArchitectureMusingsParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'RichardSeroterSArchitectureMusings'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://seroter.wordpress.com/feed/'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -2969,12 +1800,6 @@ class RichardSeroterSArchitectureMusingsParsingModule(SimpleRssBasicParsingModul
 
 class RickStrahlSWebLogParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'RickStrahlSWebLog'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://feedproxy.google.com/rickstrahl'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -2983,12 +1808,6 @@ class RickStrahlSWebLogParsingModule(SimpleRssBasicParsingModule):
 
 class SdmSoftwareParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'SdmSoftware'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://www.sdmsoftware.com/feed/'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -2997,12 +1816,6 @@ class SdmSoftwareParsingModule(SimpleRssBasicParsingModule):
 
 class SecretgeekParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'Secretgeek'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://secretgeek.net/rss.asp'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -3014,12 +1827,6 @@ class SecretgeekParsingModule(SimpleRssBasicParsingModule):
 
 class ShawnWildermuthSBlogParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'ShawnWildermuthSBlog'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://feeds.feedburner.com/ShawnWildermuth'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -3034,12 +1841,6 @@ class ShawnWildermuthSBlogParsingModule(SimpleRssBasicParsingModule):
 
 class SimpleTalkRssFeedParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'SimpleTalkRssFeed'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://www.simple-talk.com/feed/'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -3048,12 +1849,6 @@ class SimpleTalkRssFeedParsingModule(SimpleRssBasicParsingModule):
 
 class SmashingMagazineFeedParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'SmashingMagazineFeed'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://rss1.smashingmagazine.com/feed/'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -3062,12 +1857,6 @@ class SmashingMagazineFeedParsingModule(SimpleRssBasicParsingModule):
 
 class SteveSmithSBlogParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'SteveSmithSBlog'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://feeds.feedburner.com/StevenSmith'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -3076,12 +1865,6 @@ class SteveSmithSBlogParsingModule(SimpleRssBasicParsingModule):
 
 class TechgenixNewsParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'TechgenixNews'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'https://techgenix.com/feed/'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -3090,12 +1873,6 @@ class TechgenixNewsParsingModule(SimpleRssBasicParsingModule):
 
 class TecosystemsParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'Tecosystems'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://redmonk.com/sogrady/feed/rss/'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -3104,12 +1881,6 @@ class TecosystemsParsingModule(SimpleRssBasicParsingModule):
 
 class TheArtOfSimplicityParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'TheArtOfSimplicity'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://bartwullems.blogspot.com/feeds/posts/default'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -3124,12 +1895,6 @@ class TheArtOfSimplicityParsingModule(SimpleRssBasicParsingModule):
 
 class TheExptaBlogParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'TheExptaBlog'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://www.expta.com/feeds/posts/default'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -3138,12 +1903,6 @@ class TheExptaBlogParsingModule(SimpleRssBasicParsingModule):
 
 class TheMicrosoftPlatformParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'TheMicrosoftPlatform'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://microsoftplatform.blogspot.com/feeds/posts/default'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -3158,12 +1917,6 @@ class TheMicrosoftPlatformParsingModule(SimpleRssBasicParsingModule):
 
 class ThinkingInSoftwareParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'ThinkingInSoftware'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://thinkinginsoftware.blogspot.com/feeds/posts/default'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -3178,12 +1931,6 @@ class ThinkingInSoftwareParsingModule(SimpleRssBasicParsingModule):
 
 class VirtualisationManagementBlogParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'VirtualisationManagementBlog'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://virtualisationandmanagement.wordpress.com/feed/'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -3192,12 +1939,6 @@ class VirtualisationManagementBlogParsingModule(SimpleRssBasicParsingModule):
 
 class VisioGuyParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'VisioGuy'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://www.visguy.com/feed/'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -3206,12 +1947,6 @@ class VisioGuyParsingModule(SimpleRssBasicParsingModule):
 
 class WebcastsParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'Webcasts'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://redmondmag.com/rss-feeds/webcasts.aspx'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -3219,23 +1954,11 @@ class WebcastsParsingModule(SimpleRssBasicParsingModule):
 
 
 class WindowsPowershellBlogParsingModule(SimpleRssBasicParsingModule):
-
-    source_name = 'WindowsPowershellBlog'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://blogs.msdn.com/b/powershell/atom.aspx'
-    language = Language.ENGLISH
+    pass
 
 
 class WindowsServerDivisionWeblogParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'WindowsServerDivisionWeblog'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://blogs.technet.com/b/windowsserver/rss.aspx'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -3244,12 +1967,6 @@ class WindowsServerDivisionWeblogParsingModule(SimpleRssBasicParsingModule):
 
 class YouAreNotSoSmartParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'YouAreNotSoSmart'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://youarenotsosmart.com/feed/'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -3258,12 +1975,6 @@ class YouAreNotSoSmartParsingModule(SimpleRssBasicParsingModule):
 
 class YouVeBeenHaackedParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'YouVeBeenHaacked'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://feeds.haacked.com/haacked'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -3278,12 +1989,6 @@ class YouVeBeenHaackedParsingModule(SimpleRssBasicParsingModule):
 
 class AlexanderBindyuBlogParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'AlexanderBindyuBlog'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://blog.byndyu.ru/feeds/posts/default?alt=rss'
-    language = Language.RUSSIAN
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -3295,12 +2000,6 @@ class AlexanderBindyuBlogParsingModule(SimpleRssBasicParsingModule):
 
 class ScottHanselmanSBlogParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'ScottHanselmanSBlog'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://feeds.hanselman.com/ScottHanselman'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -3309,12 +2008,6 @@ class ScottHanselmanSBlogParsingModule(SimpleRssBasicParsingModule):
 
 class AndreyOnNetParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'AndreyOnNet'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://feeds.moveax.ru/devdotnet'
-    language = Language.RUSSIAN
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -3323,12 +2016,6 @@ class AndreyOnNetParsingModule(SimpleRssBasicParsingModule):
 
 class MyInformationResourceBlogMirNetParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'MyInformationResourceBlogMirNet'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'http://blog.mir.net/feeds/posts/default'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -3343,12 +2030,6 @@ class MyInformationResourceBlogMirNetParsingModule(SimpleRssBasicParsingModule):
 
 class EternalArrivalParsingModule(SimpleRssBasicParsingModule):
 
-    source_name = 'EternalArrival'
-    projects = (
-        os_friday_project,
-    )
-    rss_url = 'https://eternalarrival.com/feed/'
-    language = Language.ENGLISH
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
@@ -3361,7 +2042,7 @@ class Rss20TaggedMerkleTreesAndRelatedSimilarDataStructuresNotBusinessScamNewsPa
     projects = (
         os_friday_project,
     )
-    rss_url = 'https://lobste.rs/t/merkle-trees.rss'
+    data_url = 'https://lobste.rs/t/merkle-trees.rss'
     language = Language.ENGLISH
     filtration_needed = True
     filters = (
@@ -3370,11 +2051,4 @@ class Rss20TaggedMerkleTreesAndRelatedSimilarDataStructuresNotBusinessScamNewsPa
 
 
 class WeeklyOsmParsingModule(SimpleRssBasicParsingModule):
-
-    source_name = 'WeeklyOsm'
-    projects = (
-        foss_news_project,
-    )
-    rss_url = 'https://weeklyosm.eu/ru/feed'
-    language = Language.RUSSIAN
-    filtration_needed = False
+    pass

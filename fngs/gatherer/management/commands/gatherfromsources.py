@@ -124,10 +124,10 @@ class Command(BaseCommand):
                                              state=DigestRecordState.UNKNOWN.name
                                                    if not post_data.filtered
                                                    else DigestRecordState.FILTERED.name,
-                                             language=posts_data_one.language.name,
+                                             language=source.language,
                                              description=post_data.brief)
                 digest_record.save()
-                digest_record.projects.set(posts_data_one.projects)
+                digest_record.projects.set(source.projects.all())
                 if all_matched_keywords:
                     digest_record.title_keywords.set(all_matched_keywords)
                 digest_record.save()

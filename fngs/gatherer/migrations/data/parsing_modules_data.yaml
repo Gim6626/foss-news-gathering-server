@@ -1,0 +1,1092 @@
+AProgrammerWithMicrosoftTools:
+  data_url: http://msprogrammer.serviciipeweb.ro/feed/
+  language: ENGLISH
+  projects:
+  - OS Friday
+Aaronontheweb:
+  data_url: http://www.aaronstannard.com/syndication.axd
+  language: ENGLISH
+  projects:
+  - OS Friday
+AlexEllisOpenfaasCommunityAwesomenessOnYoutube:
+  data_url: https://www.youtube.com/feeds/videos.xml?playlist_id=PLlIapFDp305Cw4Mu13Oq--AEk0G0WXPO-
+  language: ENGLISH
+  projects:
+  - OS Friday
+AlexEllisUploadsOnYoutube:
+  data_url: https://www.youtube.com/feeds/videos.xml?playlist_id=UUJsK5Zbq0dyFZUBtMTHzxjQ
+  language: ENGLISH
+  projects:
+  - OS Friday
+AlexanderBindyuBlog:
+  data_url: http://blog.byndyu.ru/feeds/posts/default?alt=rss
+  language: RUSSIAN
+  projects:
+  - OS Friday
+AllanSBlog:
+  data_url: http://sqlha.com/blog/feed/
+  language: ENGLISH
+  projects:
+  - OS Friday
+AmbassadorApiGateway:
+  data_url: https://blog.getambassador.io/feed
+  language: ENGLISH
+  projects:
+  - OS Friday
+AmericanExpressTechnology:
+  data_url: http://americanexpress.io/feed.xml
+  language: ENGLISH
+  projects:
+  - OS Friday
+AnalyticsIndiaMagCom:
+  data_url: https://analyticsindiamag.com/feed/
+  language: ENGLISH
+  projects:
+  - FOSS News
+AndreyOnNet:
+  data_url: http://feeds.moveax.ru/devdotnet
+  language: RUSSIAN
+  projects:
+  - OS Friday
+AndyGibson:
+  data_url: http://www.andygibson.net/blog/feed/
+  language: ENGLISH
+  projects:
+  - OS Friday
+AntonioSBlog:
+  data_url: http://agoncal.wordpress.com/feed/
+  language: ENGLISH
+  projects:
+  - OS Friday
+AquaBlog:
+  data_url: http://blog.aquasec.com/rss.xml
+  language: ENGLISH
+  projects:
+  - OS Friday
+ArcaneCode:
+  data_url: http://feeds.feedburner.com/ArcaneCode
+  language: ENGLISH
+  projects:
+  - OS Friday
+ArsTechnicaCom:
+  data_url: https://arstechnica.com/feed/
+  language: ENGLISH
+  projects:
+  - FOSS News
+AstraLinuxRu:
+  data_url: https://astralinux.ru/rss
+  language: RUSSIAN
+  projects:
+  - FOSS News
+AugustoAlvarez:
+  data_url: http://feeds.feedburner.com/AugustoAlvarez
+  language: ENGLISH
+  projects:
+  - OS Friday
+AwsArchitectureBlog:
+  data_url: http://www.awsarchitectureblog.com/atom.xml
+  language: ENGLISH
+  projects:
+  - OS Friday
+AzureAdvocatesContentWrapUp:
+  data_url: https://www.onazure.today/feed.xml
+  language: ENGLISH
+  projects:
+  - OS Friday
+AzureInfohubRssAzure:
+  data_url: https://azureinfohub.azurewebsites.net/Feed?serviceTitle=Azure
+  language: ENGLISH
+  projects:
+  - OS Friday
+BaseAltRu:
+  data_url: https://www.basealt.ru/feed.rss
+  language: RUSSIAN
+  projects:
+  - FOSS News
+BlogCloudNativeComputingFoundation:
+  data_url: https://cncf.io/blog/feed
+  language: ENGLISH
+  projects:
+  - OS Friday
+BlogOnRancherLabs:
+  data_url: https://rancher.com/blog/index.xml
+  language: ENGLISH
+  projects:
+  - OS Friday
+BlogOnSmallstep:
+  data_url: https://smallstep.com/blog/index.xml
+  language: ENGLISH
+  projects:
+  - OS Friday
+BlogOnStackroxSecurityBuiltIn:
+  data_url: https://www.stackrox.com/post/index.xml
+  language: ENGLISH
+  projects:
+  - OS Friday
+BlogSysdig:
+  data_url: https://sysdig.com/blog/feed/
+  language: ENGLISH
+  projects:
+  - OS Friday
+CbrOnlineCom:
+  data_url: https://techmonitor.ai/rss
+  language: ENGLISH
+  projects:
+  - FOSS News
+CephCephTestingWeeklyOnYoutube:
+  data_url: https://www.youtube.com/feeds/videos.xml?playlist_id=PLrBUGiINAakMV7gKMQjFvcWL3PeY0y0lq
+  language: ENGLISH
+  projects:
+  - OS Friday
+CephUploadsOnYoutube:
+  data_url: https://www.youtube.com/feeds/videos.xml?playlist_id=UUno-Fry25FJ7B4RycCxOtfw
+  language: ENGLISH
+  projects:
+  - OS Friday
+Channel9:
+  data_url: http://channel9.msdn.com/Feeds/RSS
+  language: ENGLISH
+  projects:
+  - OS Friday
+CiliumBlog:
+  data_url: https://cilium.io/blog/rss.xml
+  language: ENGLISH
+  projects:
+  - OS Friday
+CloudComputingBigDataHpcCodeinstinct:
+  data_url: http://www.codeinstinct.pro/feeds/posts/default
+  language: ENGLISH
+  projects:
+  - OS Friday
+CloudNativeComputingFoundation:
+  data_url: https://www.cncf.io/feed
+  language: ENGLISH
+  projects:
+  - OS Friday
+ClusteringForMereMortals:
+  data_url: http://clusteringformeremortals.com/feed/
+  language: ENGLISH
+  projects:
+  - OS Friday
+CncfCloudNativeComputingFoundation:
+  data_url: https://www.youtube.com/feeds/videos.xml?channel_id=UCvqbFHwN-nwalWPjPUKpvTA
+  language: ENGLISH
+  projects:
+  - OS Friday
+CncfCloudNativeComputingFoundationUploadsOnYoutube:
+  data_url: https://www.youtube.com/feeds/videos.xml?playlist_id=UUvqbFHwN-nwalWPjPUKpvTA
+  language: ENGLISH
+  projects:
+  - OS Friday
+Codefresh:
+  data_url: http://blog.codefresh.io/rss/
+  language: ENGLISH
+  projects:
+  - OS Friday
+CommandLineFanatic:
+  data_url: http://commandlinefanatic.com/rss.xml
+  language: ENGLISH
+  projects:
+  - OS Friday
+ContainerJournal:
+  data_url: http://containerjournal.com/feed/
+  language: ENGLISH
+  projects:
+  - OS Friday
+CrunchTools:
+  data_url: http://crunchtools.com/feed/
+  language: ENGLISH
+  projects:
+  - OS Friday
+D2Iq:
+  data_url: https://www.youtube.com/feeds/videos.xml?channel_id=UCxwCmgwyM7xtHaRULN6-dxg
+  language: ENGLISH
+  projects:
+  - OS Friday
+D2IqBlog:
+  data_url: http://mesosphere.io/blog/atom.xml
+  language: ENGLISH
+  projects:
+  - OS Friday
+Dbakevlar:
+  data_url: https://dbakevlar.com/feed/
+  language: ENGLISH
+  projects:
+  - OS Friday
+DevRelWeekly:
+  data_url: http://devrelweekly.com/issues.rss
+  language: ENGLISH
+  projects:
+  - OS Friday
+Devcurry:
+  data_url: http://www.devcurry.com/feeds/posts/default/
+  language: ENGLISH
+  projects:
+  - OS Friday
+DiscussKubernetesLatestPosts:
+  data_url: https://discuss.kubernetes.io/posts.rss
+  language: ENGLISH
+  projects:
+  - OS Friday
+DiscussKubernetesLatestTopics:
+  data_url: https://discuss.kubernetes.io/latest.rss
+  language: ENGLISH
+  projects:
+  - OS Friday
+DmitryRobionekAtYouTube:
+  data_url: https://www.youtube.com/feeds/videos.xml?channel_id=UCtQ4NntQMEHZLKQu52BSpwg
+  language: RUSSIAN
+  projects:
+  - FOSS News
+Docker:
+  data_url: https://www.youtube.com/feeds/videos.xml?channel_id=UC76AVf2JkrwjxNKMuPpscHQ
+  language: ENGLISH
+  projects:
+  - OS Friday
+DockerBlog:
+  data_url: http://blog.docker.io/feed/
+  language: ENGLISH
+  projects:
+  - OS Friday
+DockerOnMedium:
+  data_url: https://medium.com/feed/tag/docker
+  language: ENGLISH
+  projects:
+  - OS Friday
+DonTBeIffy:
+  data_url: http://thedatafarm.com/blog/feed/
+  language: ENGLISH
+  projects:
+  - OS Friday
+EaglemanBlog:
+  data_url: http://www.eagleman.com/blog?format=feed&type=rss
+  language: ENGLISH
+  projects:
+  - OS Friday
+ElegantCode:
+  data_url: http://feeds.feedburner.com/ElegantCode
+  language: ENGLISH
+  projects:
+  - OS Friday
+EngblogRu:
+  data_url: http://feeds.feedburner.com/engblogru
+  language: RUSSIAN
+  projects:
+  - OS Friday
+EngineeringDockerBlog:
+  data_url: https://blog.docker.com/category/engineering/feed/
+  language: ENGLISH
+  projects:
+  - OS Friday
+EnvoyProxy:
+  data_url: https://blog.envoyproxy.io/feed
+  language: ENGLISH
+  projects:
+  - OS Friday
+EternalArrival:
+  data_url: https://eternalarrival.com/feed/
+  language: ENGLISH
+  projects:
+  - OS Friday
+FelipeOliveira:
+  data_url: http://feeds.feedburner.com/GeeksAreTotallyIn
+  language: ENGLISH
+  projects:
+  - OS Friday
+FlantBlog:
+  data_url: https://blog.flant.com/feed/
+  language: ENGLISH
+  projects:
+  - OS Friday
+FlossWeeklyVideo:
+  data_url: http://feeds.twit.tv/floss_video_hd.xml
+  language: ENGLISH
+  projects:
+  - OS Friday
+Fosslife:
+  data_url: https://www.fosslife.org/rss.xml
+  language: ENGLISH
+  projects:
+  - OS Friday
+FourSysops:
+  data_url: http://4sysops.com/feed/
+  language: ENGLISH
+  projects:
+  - OS Friday
+FreedomPenguin:
+  data_url: http://feeds.feedburner.com/FreedomPenguin
+  language: ENGLISH
+  projects:
+  - OS Friday
+FromRavikanthSBlog:
+  data_url: http://feeds.feedburner.com/RavikanthChaganti
+  language: ENGLISH
+  projects:
+  - OS Friday
+FullFeed:
+  data_url: http://feeds.addedbytes.com/added_bytes_full
+  language: ENGLISH
+  projects:
+  - OS Friday
+GauravmantriCom:
+  data_url: http://gauravmantri.com/feed/
+  language: ENGLISH
+  projects:
+  - OS Friday
+GeekSucks:
+  data_url: http://feeds.feedburner.com/GeekSucks
+  language: ENGLISH
+  projects:
+  - OS Friday
+GoodCodersCodeGreatReuse:
+  data_url: http://www.catonmat.net/feed/
+  language: ENGLISH
+  projects:
+  - OS Friday
+GunnarPeipmanSAspNetBlog:
+  data_url: http://feeds.feedburner.com/gunnarpeipman
+  language: ENGLISH
+  projects:
+  - OS Friday
+HabrComDevOps:
+  data_url: https://habr.com/ru/rss/hub/devops/all/?fl=ru
+  language: RUSSIAN
+  projects:
+  - FOSS News
+HabrComGit:
+  data_url: https://habr.com/ru/rss/hub/git/all/?fl=ru
+  language: RUSSIAN
+  projects:
+  - FOSS News
+HabrComLinux:
+  data_url: https://habr.com/ru/rss/hub/linux/all/?fl=ru
+  language: RUSSIAN
+  projects:
+  - FOSS News
+HabrComLinuxDev:
+  data_url: https://habr.com/ru/rss/hub/linux_dev/all/?fl=ru
+  language: RUSSIAN
+  projects:
+  - FOSS News
+HabrComNews:
+  data_url: https://habr.com/ru/rss/news/
+  language: RUSSIAN
+  projects:
+  - FOSS News
+HabrComNix:
+  data_url: https://habr.com/ru/rss/hub/nix/all/?fl=ru
+  language: RUSSIAN
+  projects:
+  - FOSS News
+HabrComOpenSource:
+  data_url: https://habr.com/ru/rss/hub/open_source/all/?fl=ru
+  language: RUSSIAN
+  projects:
+  - FOSS News
+HabrComSysAdm:
+  data_url: https://habr.com/ru/rss/hub/sys_admin/all/?fl=ru
+  language: RUSSIAN
+  projects:
+  - FOSS News
+HackadayCom:
+  data_url: https://hackaday.com/feed/
+  language: ENGLISH
+  projects:
+  - FOSS News
+Hanselminutes:
+  data_url: http://feeds.feedburner.com/HanselminutesCompleteMP3
+  language: ENGLISH
+  projects:
+  - OS Friday
+HelpDeskGeekHelpDeskTipsForItPros:
+  data_url: http://feedproxy.google.com/ITHelpDeskGeek
+  language: ENGLISH
+  projects:
+  - OS Friday
+HelpNetSecurityCom:
+  data_url: https://www.helpnetsecurity.com/feed/
+  language: ENGLISH
+  projects:
+  - FOSS News
+HenrikOlssonSComputerSoftwareNotes:
+  data_url: http://holsson.wordpress.com/feed/
+  language: ENGLISH
+  projects:
+  - OS Friday
+HeptioUploadsOnYoutube:
+  data_url: https://www.youtube.com/feeds/videos.xml?playlist_id=UUjQU5ZI2mHswy7OOsii_URg
+  language: ENGLISH
+  projects:
+  - OS Friday
+HongkiatCom:
+  data_url: http://www.hongkiat.com/blog/feed/
+  language: ENGLISH
+  projects:
+  - OS Friday
+Icosmogeek:
+  data_url: http://feeds.feedburner.com/cosmogeekinfo
+  language: ENGLISH
+  projects:
+  - OS Friday
+InDepthFeatures:
+  data_url: http://redmondmag.com/rss-feeds/in-depth.aspx
+  language: ENGLISH
+  projects:
+  - OS Friday
+InnovateEverywhereOnRancherLabs:
+  data_url: http://rancher.com/feed/
+  language: ENGLISH
+  projects:
+  - OS Friday
+IstioBlogAndNews:
+  data_url: https://istio.io/feed.xml
+  language: ENGLISH
+  projects:
+  - OS Friday
+ItsFossCom:
+  data_url: https://itsfoss.com/all-blog-posts/feed/
+  language: ENGLISH
+  projects:
+  - FOSS News
+JaxenterCom:
+  data_url: https://jaxenter.com/rss
+  language: ENGLISH
+  projects:
+  - FOSS News
+JenkovComNews:
+  data_url: http://feeds2.feedburner.com/jenkov-com?format=xml
+  language: ENGLISH
+  projects:
+  - OS Friday
+JonathanGKoomeyPhD:
+  data_url: http://www.koomey.com/rss
+  language: ENGLISH
+  projects:
+  - OS Friday
+KScottAllen:
+  data_url: http://feeds.feedburner.com/OdeToCode
+  language: ENGLISH
+  projects:
+  - OS Friday
+Konghq:
+  data_url: https://konghq.com/feed/
+  language: ENGLISH
+  projects:
+  - OS Friday
+KubedexCom:
+  data_url: https://kubedex.com/feed/
+  language: ENGLISH
+  projects:
+  - OS Friday
+KubernautsIoUploadsOnYoutube:
+  data_url: https://www.youtube.com/feeds/videos.xml?playlist_id=UU5NDQ4F0JPQozyqnh1mghHQ
+  language: ENGLISH
+  projects:
+  - OS Friday
+Kubernetes:
+  data_url: https://www.reddit.com/r/kubernetes/.rss
+  language: ENGLISH
+  projects:
+  - OS Friday
+KubernetesOnMedium:
+  data_url: https://medium.com/feed/tag/kubernetes
+  language: ENGLISH
+  projects:
+  - OS Friday
+KubernetesPodcastFromGoogle:
+  data_url: https://kubernetespodcast.com/feeds/audio.xml
+  language: ENGLISH
+  projects:
+  - OS Friday
+KubeweeklyArchiveFeed:
+  data_url: https://us10.campaign-archive.com/feed?u=3885586f8f1175194017967d6&id=11c1b8bcb2
+  language: ENGLISH
+  projects:
+  - OS Friday
+LachlanEvenson:
+  data_url: https://www.youtube.com/feeds/videos.xml?channel_id=UCC5NsnXM2lE6kKfJKdQgsRQ
+  language: ENGLISH
+  projects:
+  - OS Friday
+LastWeekInKubernetesDevelopment:
+  data_url: http://lwkd.info/feed.xml
+  language: ENGLISH
+  projects:
+  - OS Friday
+LearnLinuxTVAtYouTube:
+  data_url: https://www.youtube.com/feeds/videos.xml?channel_id=UCxQKHvKbmSzGMvUrVtJYnUA
+  language: ENGLISH
+  projects:
+  - FOSS News
+LinuxCom:
+  data_url: https://www.linux.com/topic/feed/
+  language: ENGLISH
+  projects:
+  - FOSS News
+  - OS Friday
+LinuxFoundationOrg:
+  data_url: https://linuxfoundation.org/rss
+  language: ENGLISH
+  projects:
+  - FOSS News
+LinuxGnuLinuxFreeSoftware:
+  data_url: http://www.reddit.com/r/linux/.rss
+  language: ENGLISH
+  projects:
+  - OS Friday
+LinuxInsiderCom:
+  data_url: https://linuxinsider.com/rss-feed
+  language: ENGLISH
+  projects:
+  - FOSS News
+LinuxNotesFromDarkduck:
+  data_url: http://feeds.feedburner.com/LinuxNotesFromDarkduck
+  language: ENGLISH
+  projects:
+  - OS Friday
+LinuxOrgRu:
+  data_url: https://www.linux.org.ru/section-rss.jsp?section=1
+  language: RUSSIAN
+  projects:
+  - FOSS News
+LinuxUprisingBlog:
+  data_url: https://feeds.feedburner.com/LinuxUprising
+  language: ENGLISH
+  projects:
+  - OS Friday
+Linuxlinks:
+  data_url: https://www.linuxlinks.com/feed/
+  language: ENGLISH
+  projects:
+  - OS Friday
+LobstersDevopsDevops:
+  data_url: https://lobste.rs/t/devops.rss
+  language: ENGLISH
+  projects:
+  - OS Friday
+LobstersDistributedDistributedSystems:
+  data_url: https://lobste.rs/t/distributed.rss
+  language: ENGLISH
+  projects:
+  - OS Friday
+LobstersDotnetCFNetProgramming:
+  data_url: https://lobste.rs/t/dotnet.rss
+  language: ENGLISH
+  projects:
+  - OS Friday
+LobstersJavaJavaProgramming:
+  data_url: https://lobste.rs/t/java.rss
+  language: ENGLISH
+  projects:
+  - OS Friday
+LobstersLinuxLinux:
+  data_url: https://lobste.rs/t/linux.rss
+  language: ENGLISH
+  projects:
+  - OS Friday
+LobstersNodejsNodeJsProgramming:
+  data_url: https://lobste.rs/t/nodejs.rss
+  language: ENGLISH
+  projects:
+  - OS Friday
+LobstersOsdevOperatingSystemDesignAndDevelopmentWhenNoSpecificOsTagExists:
+  data_url: https://lobste.rs/t/osdev.rss
+  language: ENGLISH
+  projects:
+  - OS Friday
+LobstersSecurityNetsecAppsecAndInfosec:
+  data_url: https://lobste.rs/t/security.rss
+  language: ENGLISH
+  projects:
+  - OS Friday
+LobstersUnixNix:
+  data_url: https://lobste.rs/t/unix.rss
+  language: ENGLISH
+  projects:
+  - OS Friday
+LobstersWasmWebassembly:
+  data_url: https://lobste.rs/t/wasm.rss
+  language: ENGLISH
+  projects:
+  - OS Friday
+LobstersWebWebDevelopmentAndNews:
+  data_url: https://lobste.rs/t/web.rss
+  language: ENGLISH
+  projects:
+  - OS Friday
+LosstRu:
+  data_url: https://losst.ru/rss
+  language: RUSSIAN
+  projects:
+  - FOSS News
+LxerLinuxNews:
+  data_url: http://lxer.com/module/newswire/headlines.rss
+  language: ENGLISH
+  projects:
+  - OS Friday
+MaartenBalliauwBlog:
+  data_url: http://feeds2.feedburner.com/maartenballiauw
+  language: ENGLISH
+  projects:
+  - OS Friday
+MarceloSincicMvp:
+  data_url: http://msincic.wordpress.com/feed/
+  language: ENGLISH
+  projects:
+  - OS Friday
+MartinFowler:
+  data_url: http://martinfowler.com/feed.atom
+  language: ENGLISH
+  projects:
+  - OS Friday
+MashableCom:
+  data_url: https://mashable.com/rss/
+  language: ENGLISH
+  projects:
+  - FOSS News
+MaxTrinidadThePowershellFront:
+  data_url: http://www.maxtblog.com/rss
+  language: ENGLISH
+  projects:
+  - OS Friday
+MethodOfFailedByTimHeuer:
+  data_url: http://feeds.timheuer.com/timheuer
+  language: ENGLISH
+  projects:
+  - OS Friday
+MichaelCrump:
+  data_url: http://feeds.feedburner.com/MichaelCrump
+  language: ENGLISH
+  projects:
+  - OS Friday
+MicrosoftDevradio:
+  data_url: https://www.youtube.com/feeds/videos.xml?channel_id=UCYjPVPCNwQyfbQEKlJ4ChHg
+  language: ENGLISH
+  projects:
+  - OS Friday
+MicrosoftOpenSourceStories:
+  data_url: https://medium.com/feed/microsoft-open-source-stories
+  language: ENGLISH
+  projects:
+  - OS Friday
+MorningDewByAlvinAshcraft:
+  data_url: http://feeds2.feedburner.com/alvinashcraft
+  language: ENGLISH
+  projects:
+  - OS Friday
+MyInformationResourceBlogMirNet:
+  data_url: http://blog.mir.net/feeds/posts/default
+  language: ENGLISH
+  projects:
+  - OS Friday
+NativecloudDev:
+  data_url: https://blog.nativecloud.dev/rss/
+  language: ENGLISH
+  projects:
+  - OS Friday
+NetCurryRecentArticles:
+  data_url: http://feeds.feedburner.com/netCurryRecentArticles
+  language: ENGLISH
+  projects:
+  - OS Friday
+NewBlogArticlesInMicrosoftTechCommunity:
+  data_url: https://techcommunity.microsoft.com/gxcuf89792/rss/Community?interaction.style=blog
+  language: ENGLISH
+  projects:
+  - OS Friday
+NewestOpenSourceQuestionsFeed:
+  data_url: https://stackoverflow.com/feeds/tag?tagnames=open-source&sort=newest
+  language: ENGLISH
+  projects:
+  - OS Friday
+News:
+  data_url: http://mcpmag.com/rss-feeds/news.aspx
+  language: ENGLISH
+  projects:
+  - OS Friday
+NikolayIvanovichAtYouTube:
+  data_url: https://www.youtube.com/feeds/videos.xml?channel_id=UCevW4vL1SJKvKQYGBTf21mA
+  language: RUSSIAN
+  projects:
+  - FOSS News
+OpenNetRu:
+  data_url: https://www.opennet.ru/opennews/opennews_all_utf.rss
+  language: RUSSIAN
+  projects:
+  - FOSS News
+OpenSourceCom:
+  data_url: https://opensource.com/feed
+  language: ENGLISH
+  projects:
+  - FOSS News
+  - OS Friday
+OpenSourceOnMedium:
+  data_url: https://medium.com/feed/tag/open-source
+  language: ENGLISH
+  projects:
+  - OS Friday
+OpenSourceOnReddit:
+  data_url: http://www.reddit.com/r/opensource/.rss
+  language: ENGLISH
+  projects:
+  - OS Friday
+PerformanceIsAFeature:
+  data_url: http://mattwarren.org/atom.xml
+  language: ENGLISH
+  projects:
+  - OS Friday
+PetriItKnowledgebase:
+  data_url: http://feeds2.feedburner.com/Petri
+  language: ENGLISH
+  projects:
+  - OS Friday
+PingvinusRu:
+  data_url: https://pingvinus.ru
+  language: RUSSIAN
+  projects:
+  - FOSS News
+PlafonAtYouTube:
+  data_url: https://www.youtube.com/feeds/videos.xml?channel_id=UCf7pLsR7lko69y8ySTpoKxg
+  language: RUSSIAN
+  projects:
+  - FOSS News
+PodctlEnterpriseKubernetes:
+  data_url: https://www.buzzsprout.com/110399.rss
+  language: ENGLISH
+  projects:
+  - OS Friday
+PrecisionComputing:
+  data_url: http://www.leeholmes.com/blog/feed/atom/
+  language: ENGLISH
+  projects:
+  - OS Friday
+ProgrammingKubernetes:
+  data_url: https://medium.com/feed/programming-kubernetes
+  language: ENGLISH
+  projects:
+  - OS Friday
+ProjectCalico:
+  data_url: http://www.projectcalico.org/feed/
+  language: ENGLISH
+  projects:
+  - OS Friday
+PrometheusBlog:
+  data_url: http://prometheus.io/blog/feed.xml
+  language: ENGLISH
+  projects:
+  - OS Friday
+PublisherSRoundUp:
+  data_url: http://wmjasco.blogspot.com/feeds/posts/default
+  language: ENGLISH
+  projects:
+  - OS Friday
+RamblingsFromJessie:
+  data_url: https://blog.jessfraz.com/index.xml
+  language: ENGLISH
+  projects:
+  - OS Friday
+RandsInRepose:
+  data_url: http://www.randsinrepose.com/index.xml
+  language: ENGLISH
+  projects:
+  - OS Friday
+RecentQuestionsOpenSourceStackExchange:
+  data_url: https://opensource.stackexchange.com/feeds
+  language: ENGLISH
+  projects:
+  - OS Friday
+RedmondReport:
+  data_url: http://redmondmag.com/rss-feeds/redmond-report.aspx
+  language: ENGLISH
+  projects:
+  - OS Friday
+Rhyous:
+  data_url: http://www.rhyous.com/feed/
+  language: ENGLISH
+  projects:
+  - OS Friday
+RichardSeroterSArchitectureMusings:
+  data_url: http://seroter.wordpress.com/feed/
+  language: ENGLISH
+  projects:
+  - OS Friday
+RickStrahlSWebLog:
+  data_url: http://feedproxy.google.com/rickstrahl
+  language: ENGLISH
+  projects:
+  - OS Friday
+RookRookPresentationsOnYoutube:
+  data_url: https://www.youtube.com/feeds/videos.xml?playlist_id=PLP0uDo-ZFnQOCpYx1_uVCrx_bmyq7tdKr
+  language: ENGLISH
+  projects:
+  - OS Friday
+RookUploadsOnYoutube:
+  data_url: https://www.youtube.com/feeds/videos.xml?playlist_id=UUa7kFUSGO4NNSJV8MJVlJAA
+  language: ENGLISH
+  projects:
+  - OS Friday
+Rss20TaggedMobileMobileAppWebDevelopment:
+  data_url: https://lobste.rs/t/mobile.rss
+  language: ENGLISH
+  projects:
+  - OS Friday
+SamJarMan:
+  data_url: https://www.samjarman.co.nz/blog?format=RSS
+  language: ENGLISH
+  projects:
+  - OS Friday
+ScottHanselmanSBlog:
+  data_url: http://feeds.hanselman.com/ScottHanselman
+  language: ENGLISH
+  projects:
+  - OS Friday
+SdTimesCom:
+  data_url: https://sdtimes.com/feed/
+  language: ENGLISH
+  projects:
+  - FOSS News
+SdmSoftware:
+  data_url: http://www.sdmsoftware.com/feed/
+  language: ENGLISH
+  projects:
+  - OS Friday
+Secretgeek:
+  data_url: http://secretgeek.net/rss.asp
+  language: ENGLISH
+  projects:
+  - OS Friday
+SecurityBoulevardCom:
+  data_url: https://securityboulevard.com/feed/
+  language: ENGLISH
+  projects:
+  - FOSS News
+SecuritySalesCom:
+  data_url: https://www.securitysales.com/feed/
+  language: ENGLISH
+  projects:
+  - FOSS News
+ShawnWildermuthSBlog:
+  data_url: http://feeds.feedburner.com/ShawnWildermuth
+  language: ENGLISH
+  projects:
+  - OS Friday
+SiliconAngleCom:
+  data_url: https://siliconangle.com/feed/
+  language: ENGLISH
+  projects:
+  - FOSS News
+SimpleTalkRssFeed:
+  data_url: http://www.simple-talk.com/feed/
+  language: ENGLISH
+  projects:
+  - OS Friday
+SmashingMagazineFeed:
+  data_url: http://rss1.smashingmagazine.com/feed/
+  language: ENGLISH
+  projects:
+  - OS Friday
+SoftwareDefinedTalk:
+  data_url: http://feeds.feedburner.com/DrunkAndRetiredcomPodcast
+  language: ENGLISH
+  projects:
+  - OS Friday
+SteveSmithSBlog:
+  data_url: http://feeds.feedburner.com/StevenSmith
+  language: ENGLISH
+  projects:
+  - OS Friday
+SwitchedToLinuxAtYouTube:
+  data_url: https://www.youtube.com/feeds/videos.xml?channel_id=UCoryWpk4QVYKFCJul9KBdyw
+  language: ENGLISH
+  projects:
+  - FOSS News
+Sysdig:
+  data_url: https://sysdig.com/feed/
+  language: ENGLISH
+  projects:
+  - OS Friday
+TechCrunchCom:
+  data_url: https://techcrunch.com/feed/
+  language: ENGLISH
+  projects:
+  - FOSS News
+TechNodeCom:
+  data_url: https://technode.com/feed/
+  language: ENGLISH
+  projects:
+  - FOSS News
+TechRadarCom:
+  data_url: https://www.techradar.com/rss
+  language: ENGLISH
+  projects:
+  - FOSS News
+TechgenixNews:
+  data_url: https://techgenix.com/feed/
+  language: ENGLISH
+  projects:
+  - OS Friday
+Tecosystems:
+  data_url: http://redmonk.com/sogrady/feed/rss/
+  language: ENGLISH
+  projects:
+  - OS Friday
+Teejeetech:
+  data_url: http://teejeetech.blogspot.com/feeds/posts/default
+  language: ENGLISH
+  projects:
+  - OS Friday
+TfirIo:
+  data_url: https://www.tfir.io/feed/
+  language: ENGLISH
+  projects:
+  - FOSS News
+TheArtOfSimplicity:
+  data_url: http://bartwullems.blogspot.com/feeds/posts/default
+  language: ENGLISH
+  projects:
+  - OS Friday
+TheCommunityRoundtable:
+  data_url: https://communityroundtable.com/feed/
+  language: ENGLISH
+  projects:
+  - OS Friday
+TheExptaBlog:
+  data_url: http://www.expta.com/feeds/posts/default
+  language: ENGLISH
+  projects:
+  - OS Friday
+TheLinuxExperimentAtYouTube:
+  data_url: https://www.youtube.com/feeds/videos.xml?channel_id=UC5UAwBUum7CPN5buc-_N1Fw
+  language: ENGLISH
+  projects:
+  - FOSS News
+TheMicrosoftPlatform:
+  data_url: http://microsoftplatform.blogspot.com/feeds/posts/default
+  language: ENGLISH
+  projects:
+  - OS Friday
+TheNewStack:
+  data_url: http://thenewstack.io/feed/
+  language: ENGLISH
+  projects:
+  - OS Friday
+TheNewStackAnalysts:
+  data_url: http://feeds.soundcloud.com/users/soundcloud:users:94518611/sounds.rss
+  language: ENGLISH
+  projects:
+  - OS Friday
+TheNewStackPodcast:
+  data_url: https://feeds.simplecast.com/IgzWks06
+  language: ENGLISH
+  projects:
+  - OS Friday
+TheNextWebCom:
+  data_url: https://thenextweb.com/feed/
+  language: ENGLISH
+  projects:
+  - FOSS News
+ThinkingInSoftware:
+  data_url: http://thinkinginsoftware.blogspot.com/feeds/posts/default
+  language: ENGLISH
+  projects:
+  - OS Friday
+ThoughtworksInsights:
+  data_url: http://www.thoughtworks.com/rss/insights.xml
+  language: ENGLISH
+  projects:
+  - OS Friday
+ThreeDPrintingMediaNetwork:
+  data_url: https://www.3dprintingmedia.network/feed/
+  language: ENGLISH
+  projects:
+  - FOSS News
+ThreeHundredSixtyDegreeDbProgramming:
+  data_url: http://db360.blogspot.com/feeds/posts/default
+  language: ENGLISH
+  projects:
+  - OS Friday
+Tigera:
+  data_url: https://blog.tigera.io/feed
+  language: ENGLISH
+  projects:
+  - OS Friday
+TigeraUploadsOnYoutube:
+  data_url: https://www.youtube.com/feeds/videos.xml?playlist_id=UU8uN3yhpeBeerGNwDiQbcgw
+  language: ENGLISH
+  projects:
+  - OS Friday
+Twistlock:
+  data_url: https://www.twistlock.com/feed/
+  language: ENGLISH
+  projects:
+  - OS Friday
+VentureBeatCom:
+  data_url: https://venturebeat.com/feed/
+  language: ENGLISH
+  projects:
+  - FOSS News
+VirtualisationManagementBlog:
+  data_url: http://virtualisationandmanagement.wordpress.com/feed/
+  language: ENGLISH
+  projects:
+  - OS Friday
+VisioGuy:
+  data_url: http://www.visguy.com/feed/
+  language: ENGLISH
+  projects:
+  - OS Friday
+VmwareCloudNativeAppsUploadsOnYoutube:
+  data_url: https://www.youtube.com/feeds/videos.xml?playlist_id=UUdkGV51Nu0unDNT58bHt9bg
+  language: ENGLISH
+  projects:
+  - OS Friday
+Weaveworks:
+  data_url: https://www.weave.works/feed.xml
+  language: ENGLISH
+  projects:
+  - OS Friday
+WeaveworksIncWeaveOnlineUserGroupsOnYoutube:
+  data_url: https://www.youtube.com/feeds/videos.xml?playlist_id=PL9lTuCFNLaD0wEsbqf6IrGCWvZIAIo9cW
+  language: ENGLISH
+  projects:
+  - OS Friday
+Webcasts:
+  data_url: http://redmondmag.com/rss-feeds/webcasts.aspx
+  language: ENGLISH
+  projects:
+  - OS Friday
+WeeklyOsm:
+  data_url: https://weeklyosm.eu/ru/feed
+  language: RUSSIAN
+  projects:
+  - FOSS News
+WindowsPowershellBlog:
+  data_url: http://blogs.msdn.com/b/powershell/atom.aspx
+  language: ENGLISH
+  projects:
+  - OS Friday
+WindowsServerDivisionWeblog:
+  data_url: http://blogs.technet.com/b/windowsserver/rss.aspx
+  language: ENGLISH
+  projects:
+  - OS Friday
+YouAreNotSoSmart:
+  data_url: http://youarenotsosmart.com/feed/
+  language: ENGLISH
+  projects:
+  - OS Friday
+YouTubeComAlekseySamoilov:
+  data_url: https://www.youtube.com/feeds/videos.xml?channel_id=UC3kAbMcYr-JEMSb2xX4OdpA
+  language: RUSSIAN
+  projects:
+  - FOSS News
+YouVeBeenHaacked:
+  data_url: http://feeds.haacked.com/haacked
+  language: ENGLISH
+  projects:
+  - OS Friday
+ZdNetComLinux:
+  data_url: https://www.zdnet.com/topic/linux/rss.xml
+  language: ENGLISH
+  projects:
+  - FOSS News
