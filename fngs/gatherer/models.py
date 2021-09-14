@@ -265,6 +265,9 @@ class DigestIssue(models.Model):
 class DigestGatheringIteration(models.Model):
 
     dt = models.DateTimeField(verbose_name='Date&time')
+    overall_count = models.IntegerField(verbose_name='Overall Records Count',
+                                        blank=True,
+                                        null=True)
     gathered_count = models.IntegerField(verbose_name='Gathered Records Count')
     saved_count = models.IntegerField(verbose_name='Saved Records Count',
                                       blank=True,

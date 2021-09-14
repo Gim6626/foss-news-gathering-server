@@ -70,8 +70,9 @@ class FiltrationType(Enum):
 
 class ParsingResult:
 
-    def __init__(self, posts_data, source_enabled, source_error, parser_error):
-        self.posts_data: List[PostData] or None = posts_data
+    def __init__(self, overall_count, posts_data_after_filtration, source_enabled, source_error, parser_error):
+        self.overall_count = overall_count
+        self.posts_data_after_filtration: List[PostData] or None = posts_data_after_filtration
         self.source_enabled: bool = source_enabled
         self.source_error: str or None = source_error
         self.parser_error: str or None = parser_error
@@ -110,24 +111,24 @@ class BasicParsingModule(metaclass=ABCMeta):
     def parse(self, days_count: int) -> ParsingResult:
         if not DigestRecordsSource.objects.get(name=self.source_name).enabled:  # TODO: Check existence
             logger.warning(f'"{self.source_name}" is disabled')
-            return ParsingResult([], False, None, None)
+            return ParsingResult(None, [], False, None, None)
         try:
             posts_data: List[PostData] = self._parse()
         except DigestSourceException as e:
             logger.error(f'Failed to parse "{self.source_name}", source error: {str(e)}')
-            return ParsingResult([], True, str(e), None)
+            return ParsingResult(None, [], True, str(e), None)
         except Exception as e:
             logger.error(f'Failed to parse "{self.source_name}", parser error: {str(e)}')
             logger.error(traceback.format_exc())
-            return ParsingResult([], True, None, str(e))
+            return ParsingResult(None, [], True, None, str(e))
         try:
             filtered_posts_data: List[PostData] = self._filter_out(posts_data, days_count)
             self._fill_keywords(filtered_posts_data)
-            return ParsingResult(filtered_posts_data, True, None, None)
+            return ParsingResult(len(posts_data), filtered_posts_data, True, None, None)
         except Exception as e:
             logger.error(f'Failed to filter data parsed from "{self.source_name}" source: {str(e)}')
             logger.error(traceback.format_exc())
-            return ParsingResult([], True, None, str(e))
+            return ParsingResult(None, [], True, None, str(e))
 
     @abstractmethod
     def _parse(self) -> List[PostData]:

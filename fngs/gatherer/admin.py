@@ -143,6 +143,7 @@ class DigestGatheringIterationAdmin(admin.ModelAdmin):
     list_display = (
         'id',
         'dt',
+        'overall_count',
         'gathered_count',
         'saved_count',
         'source',

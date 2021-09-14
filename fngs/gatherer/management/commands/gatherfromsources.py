@@ -56,12 +56,13 @@ class Command(BaseCommand):
         if parsing_result.success:
             posts_data_one = PostsData(parsing_module.source_name,
                                        parsing_module.projects,
-                                       parsing_result.posts_data,
+                                       parsing_result.posts_data_after_filtration,
                                        parsing_module.language,
                                        parsing_module.warning)
             iteration = DigestGatheringIteration(dt=datetime_now,
+                                                 overall_count=parsing_result.overall_count,
                                                  source_enabled=True,
-                                                 gathered_count=len(parsing_result.posts_data),
+                                                 gathered_count=len(parsing_result.posts_data_after_filtration),
                                                  source=source)
             iteration.save()
             for post_data in posts_data_one.posts_data_list:
@@ -71,6 +72,7 @@ class Command(BaseCommand):
             return iteration, posts_data_one
         elif not parsing_result.source_enabled:
             iteration = DigestGatheringIteration(dt=datetime_now,
+                                                 overall_count=parsing_result.overall_count,
                                                  source_enabled=False,
                                                  gathered_count=0,
                                                  source=source)
@@ -79,7 +81,8 @@ class Command(BaseCommand):
         else:
             iteration = DigestGatheringIteration(dt=datetime_now,
                                                  source_enabled=True,
-                                                 gathered_count=len(parsing_result.posts_data),
+                                                 overall_count=parsing_result.overall_count,
+                                                 gathered_count=len(parsing_result.posts_data_after_filtration),
                                                  source=source,
                                                  source_error=parsing_result.source_error,
                                                  parser_error=parsing_result.parser_error)
