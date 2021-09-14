@@ -142,11 +142,15 @@ class Command(BaseCommand):
             logger.console_handler.setLevel(logging.DEBUG)
         global days_count
         days_count = options['DAYS_COUNT']
+        module = options['MODULE']
         global parsing_modules_names
-        if options['MODULE'] == 'ALL':
+        projects = Project.objects.values_list('name', flat=True)
+        if module == 'ALL':
             sources_selected_by_user = DigestRecordsSource.objects.all()
+        elif module in projects:
+            sources_selected_by_user = DigestRecordsSource.objects.filter(projects__name__in=(module,))
         else:
-            sources_names_selected_by_user = options['MODULE'].split(',')
+            sources_names_selected_by_user = module.split(',')
             sources_selected_by_user = [source for source in DigestRecordsSource.objects.all() if source.name in sources_names_selected_by_user]
         enabled_sources_selected_by_user = []
         for source in sources_selected_by_user:
