@@ -63,6 +63,7 @@ class Command(BaseCommand):
                                                  overall_count=parsing_result.overall_count,
                                                  source_enabled=True,
                                                  gathered_count=len(parsing_result.posts_data_after_filtration),
+                                                 saved_count=0,
                                                  source=source)
             iteration.save()
             for post_data in posts_data_one.posts_data_list:
@@ -75,6 +76,7 @@ class Command(BaseCommand):
                                                  overall_count=parsing_result.overall_count,
                                                  source_enabled=False,
                                                  gathered_count=0,
+                                                 saved_count=0,
                                                  source=source)
             iteration.save()
             return None
@@ -83,6 +85,7 @@ class Command(BaseCommand):
                                                  source_enabled=True,
                                                  overall_count=parsing_result.overall_count,
                                                  gathered_count=len(parsing_result.posts_data_after_filtration),
+                                                 saved_count=0,
                                                  source=source,
                                                  source_error=parsing_result.source_error,
                                                  parser_error=parsing_result.parser_error)

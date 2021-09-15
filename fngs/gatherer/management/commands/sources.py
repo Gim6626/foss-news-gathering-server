@@ -111,16 +111,16 @@ class BasicParsingModule(metaclass=ABCMeta):
     def parse(self, days_count: int) -> ParsingResult:
         if not DigestRecordsSource.objects.get(name=self.source_name).enabled:  # TODO: Check existence
             logger.warning(f'"{self.source_name}" is disabled')
-            return ParsingResult(None, [], False, None, None)
+            return ParsingResult(0, [], False, None, None)
         try:
             posts_data: List[PostData] = self._parse()
         except DigestSourceException as e:
             logger.error(f'Failed to parse "{self.source_name}", source error: {str(e)}')
-            return ParsingResult(None, [], True, str(e), None)
+            return ParsingResult(0, [], True, str(e), None)
         except Exception as e:
             logger.error(f'Failed to parse "{self.source_name}", parser error: {str(e)}')
             logger.error(traceback.format_exc())
-            return ParsingResult(None, [], True, None, str(e))
+            return ParsingResult(0, [], True, None, str(e))
         try:
             filtered_posts_data: List[PostData] = self._filter_out(posts_data, days_count)
             self._fill_keywords(filtered_posts_data)
@@ -128,7 +128,7 @@ class BasicParsingModule(metaclass=ABCMeta):
         except Exception as e:
             logger.error(f'Failed to filter data parsed from "{self.source_name}" source: {str(e)}')
             logger.error(traceback.format_exc())
-            return ParsingResult(None, [], True, None, str(e))
+            return ParsingResult(0, [], True, None, str(e))
 
     @abstractmethod
     def _parse(self) -> List[PostData]:
