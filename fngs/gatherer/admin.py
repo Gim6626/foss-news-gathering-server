@@ -1,60 +1,84 @@
 import datetime
 
+from django.urls import reverse
 from django.contrib import admin
 
 from gatherer.models import *
+from common.urlsbuilder import object_modification_url
 
 
 class DigestRecordAdmin(admin.ModelAdmin):
+
     readonly_fields = (
         'id',
     )
     list_display = (
         'id',
         'dt',
-        'source',
+        'link_to_source',
         'gather_dt',
         'title',
         'url',
         'state',
-        'digest_number',
-        'digest_issue',
+        # 'link_to_digest_issue',
         'is_main',
         'category',
         'subcategory',
         'language',
         'duplicates',
-        'projects_names',
-        'title_keywords_names',
+        'links_to_projects',
+        'links_to_keywords',
     )
+
     filter_horizontal = (
         'title_keywords',
     )
+
     search_fields = (
         'title',
         'url',
     )
+
     autocomplete_fields = (
         'digest_issue',
     )
+
+    def link_to_source(self, obj):
+        return object_modification_url('gatherer', 'digestrecordssource', obj.source.id, str(obj.source))
+
+    def link_to_digest_issue(self, obj):
+        return object_modification_url('gatherer', 'digestissue', obj.digest_issue.id, str(obj.digest_issue))
+
+    def links_to_projects(self, obj):
+        return object_modification_url('gatherer', 'project', [p.id for p in obj.projects.all()], [str(p) for p in obj.projects.all()])
+
+    def links_to_keywords(self, obj):
+        return object_modification_url('gatherer', 'keyword', [k.id for k in obj.title_keywords.all()], [str(k) for k in obj.title_keywords.all()])
 
 
 class DigestRecordDuplicateAdmin(admin.ModelAdmin):
+
     readonly_fields = (
         'id',
     )
+
     list_display = (
         'id',
         'digest_number',
-        'digest_issue',
+        'link_to_digest_issue',
         'digest_records_titles',
     )
+
     filter_horizontal = (
         'digest_records',
     )
+
     autocomplete_fields = (
         'digest_issue',
     )
+
+    def link_to_digest_issue(self, obj):
+        return object_modification_url('gatherer', 'digestissue', obj.digest_issue.id, str(obj.digest_issue))
 
     def get_field_queryset(self, db, db_field, request):
         if db_field.name == 'digest_records':
@@ -108,13 +132,16 @@ class DigestRecordsSourceAdmin(admin.ModelAdmin):
         'name',
         'enabled',
         'data_url',
-        'projects_names',
+        'links_to_projects',
         'language',
     )
 
     search_fields = (
         'name',
     )
+
+    def links_to_projects(self, obj):
+        return object_modification_url('gatherer', 'project', [p.id for p in obj.projects.all()], [str(p) for p in obj.projects.all()])
 
 
 class DigestIssueAdmin(admin.ModelAdmin):
@@ -146,7 +173,7 @@ class DigestGatheringIterationAdmin(admin.ModelAdmin):
         'overall_count',
         'gathered_count',
         'saved_count',
-        'source',
+        'link_to_source',
         'source_enabled',
         'source_error',
         'parser_error',
@@ -155,6 +182,9 @@ class DigestGatheringIterationAdmin(admin.ModelAdmin):
     autocomplete_fields = (
         'source',
     )
+
+    def link_to_source(self, obj):
+        return object_modification_url('gatherer', 'digestrecordssource', obj.source.id, str(obj.source))
 
 
 admin.site.register(DigestRecord, DigestRecordAdmin)
