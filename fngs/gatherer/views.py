@@ -105,6 +105,12 @@ class KeywordViewSet(viewsets.ModelViewSet):
     serializer_class = KeywordSerializer
 
 
+class DigestIssueViewSet(viewsets.ModelViewSet):
+    permission_classes = [permissions.IsAdminUser]
+    queryset = DigestIssue.objects.all()
+    serializer_class = DigestIssueSerializer
+
+
 class GuessCategoryView(mixins.ListModelMixin, GenericViewSet):
     permission_classes = [permissions.IsAdminUser | TelegramBotReadOnlyPermission]
 

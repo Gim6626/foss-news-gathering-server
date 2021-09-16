@@ -91,3 +91,15 @@ class KeywordSerializer(serializers.ModelSerializer):
             'category',
             'is_generic',
         ]
+
+
+class DigestIssueSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = DigestIssue
+        fields = [
+            'id',
+            'number',
+            'is_special',
+            'habr_url',
+        ]

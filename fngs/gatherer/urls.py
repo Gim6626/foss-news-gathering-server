@@ -20,6 +20,7 @@ router.register('similar-digest-records', SimilarDigestRecordsViewSet, basename=
 router.register('duplicates-by-digest-record', DuplicatesByDigestRecordsViewSet, basename='duplicates_by_digest_record')
 router.register('projects', ProjectViewSet, basename='projects')
 router.register('keywords', KeywordViewSet, basename='keywords')
+router.register('digest-issues', DigestIssueViewSet, basename='digest_issues')
 router.register('guess-category', GuessCategoryView, basename='guess_category')
 router.register('similar-records-in-previous-digest', SimilarRecordsInPreviousDigest, basename='similar_records-in_previous_digest')
 router.register('digest-records-categorized-by-tbot', DigestRecordsCategorizedByTbotViewSet, basename='digest_records_categorized_by_tbot')
