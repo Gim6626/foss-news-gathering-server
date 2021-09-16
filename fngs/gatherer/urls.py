@@ -8,11 +8,11 @@ urlpatterns = [
 ]
 
 router = routers.DefaultRouter()
-router.register('digest-records', DigestRecordViewSet, base_name='digest_records')
-router.register('new-digest-records', NewDigestRecordViewSet, base_name='new_digest_records')
-router.register('new-foss-news-digest-records', NewFossNewsDigestRecordViewSet, base_name='new_foss_news_digest_records')
-router.register('one-new-foss-news-digest-record', OneNewFossNewsDigestRecordViewSet, base_name='one_new_foss_news_digest_record')
-router.register('not-categorized-digest-records-count', NotCategorizedDigestRecordsCountViewSet, base_name='not_categorized_digest_records_count')
+router.register('digest-records', DigestRecordViewSet, basename='digest_records')
+router.register('new-digest-records', NewDigestRecordViewSet, basename='new_digest_records')
+router.register('new-foss-news-digest-records', NewFossNewsDigestRecordViewSet, basename='new_foss_news_digest_records')
+router.register('one-new-foss-news-digest-record', OneNewFossNewsDigestRecordViewSet, basename='one_new_foss_news_digest_record')
+router.register('not-categorized-digest-records-count', NotCategorizedDigestRecordsCountViewSet, basename='not_categorized_digest_records_count')
 router.register('specific-digest-records', SpecificDigestRecordsViewSet, basename='specific_digest_records')
 router.register('digest-records-duplicates', DigestRecordDuplicateViewSet, basename='digest_records_duplicates')
 router.register('digest-records-duplicates-detailed', DigestRecordDuplicateDetailedViewSet, basename='digest_records_duplicates_detailed')
@@ -22,7 +22,7 @@ router.register('projects', ProjectViewSet, basename='projects')
 router.register('keywords', KeywordViewSet, basename='keywords')
 router.register('digest-issues', DigestIssueViewSet, basename='digest_issues')
 router.register('guess-category', GuessCategoryView, basename='guess_category')
-router.register('similar-records-in-previous-digest', SimilarRecordsInPreviousDigest, basename='similar_records-in_previous_digest')
+router.register('similar-records-in-previous-digest', SimilarRecordsInPreviousDigest, basename='similar_records_in_previous_digest')
 router.register('digest-records-categorized-by-tbot', DigestRecordsCategorizedByTbotViewSet, basename='digest_records_categorized_by_tbot')
 
 urlpatterns += router.urls
