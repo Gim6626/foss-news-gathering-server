@@ -248,6 +248,9 @@ class DigestIssue(models.Model):
 
     number = models.IntegerField(verbose_name='Issue Number',
                                  unique=True)
+    is_special = models.BooleanField(verbose_name='Is Special',
+                                     blank=True,
+                                     null=True)
     habr_url = models.CharField(verbose_name='Link to Habr',
                                 unique=True,
                                 max_length=128,

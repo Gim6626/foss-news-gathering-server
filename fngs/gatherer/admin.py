@@ -153,6 +153,7 @@ class DigestIssueAdmin(admin.ModelAdmin):
     list_display = (
         'id',
         'number',
+        'is_special',
         'habr_url',
     )
 
