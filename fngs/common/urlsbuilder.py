@@ -12,4 +12,7 @@ def _object_modification_url_nonformatted(app_name, model_name, obj_id, obj_disp
 
 
 def object_modification_url(app_name, model_name, obj_id, obj_display):
-    return format_html(_object_modification_url_nonformatted(app_name, model_name, obj_id, obj_display))
+    if obj_id:
+        return format_html(_object_modification_url_nonformatted(app_name, model_name, obj_id, obj_display))
+    else:
+        return ''

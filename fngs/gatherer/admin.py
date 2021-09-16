@@ -44,10 +44,10 @@ class DigestRecordAdmin(admin.ModelAdmin):
     )
 
     def link_to_source(self, obj):
-        return object_modification_url('gatherer', 'digestrecordssource', obj.source.id, str(obj.source))
+        return object_modification_url('gatherer', 'digestrecordssource', obj.source.id if obj.source else None, str(obj.source))
 
     def link_to_digest_issue(self, obj):
-        return object_modification_url('gatherer', 'digestissue', obj.digest_issue.id, str(obj.digest_issue))
+        return object_modification_url('gatherer', 'digestissue', obj.digest_issue.id if obj.digest_issue else None, str(obj.digest_issue))
 
     def links_to_projects(self, obj):
         return object_modification_url('gatherer', 'project', [p.id for p in obj.projects.all()], [str(p) for p in obj.projects.all()])
@@ -78,7 +78,7 @@ class DigestRecordDuplicateAdmin(admin.ModelAdmin):
     )
 
     def link_to_digest_issue(self, obj):
-        return object_modification_url('gatherer', 'digestissue', obj.digest_issue.id, str(obj.digest_issue))
+        return object_modification_url('gatherer', 'digestissue', obj.digest_issue.id if obj.digest_issue else None, str(obj.digest_issue))
 
     def get_field_queryset(self, db, db_field, request):
         if db_field.name == 'digest_records':
@@ -185,7 +185,7 @@ class DigestGatheringIterationAdmin(admin.ModelAdmin):
     )
 
     def link_to_source(self, obj):
-        return object_modification_url('gatherer', 'digestrecordssource', obj.source.id, str(obj.source))
+        return object_modification_url('gatherer', 'digestrecordssource', obj.source.id if obj.source else None, str(obj.source))
 
 
 admin.site.register(DigestRecord, DigestRecordAdmin)
