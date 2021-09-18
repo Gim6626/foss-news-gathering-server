@@ -778,6 +778,10 @@ class LachlanEvensonParsingModule(YouTubeComBasicParsingModule):
     )
 
 
+class UnixWayAtYouTubeParsingModule(YouTubeComBasicParsingModule):
+    pass
+
+
 class SoftwareDefinedTalkParsingModule(SimpleRssBasicParsingModule):
 
     filtration_needed = True
