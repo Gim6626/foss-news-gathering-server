@@ -158,6 +158,7 @@ class SimilarRecordsInPreviousDigest(mixins.ListModelMixin, GenericViewSet):
                 'is_main': r.is_main,
                 'category': r.category,
                 'subcategory': r.subcategory,
+                'url': r.url,
             }
             for r in similar_records_in_previous_digest
         ]
