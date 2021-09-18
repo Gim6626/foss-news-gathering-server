@@ -630,12 +630,11 @@ class AstraLinuxRuParsingModule(SimpleRssBasicParsingModule):
 class BaseAltRuParsingModule(SimpleRssBasicParsingModule):
 
     _BASE_URL = 'https://www.basealt.ru'
-    _POST_PREFIX = 'https://www.basealt.ru/about/news/archive'
 
     def process_url(self, url):
         if self._BASE_URL not in url:
-            logger.info(f'Relative URL found "{url}", prepending base url "{self._POST_PREFIX}"')
-            return f'{self._POST_PREFIX}{url}'
+            logger.info(f'Relative URL found "{url}", prepending with base url "{self._BASE_URL}"')
+            return f'{self._BASE_URL}{url}'
         else:
             return url
 
