@@ -147,7 +147,7 @@ class SimilarRecordsInPreviousDigest(mixins.ListModelMixin, GenericViewSet):
 
         similar_records_in_previous_digest = []
         for keyword in keywords:
-            records = DigestRecord.objects.filter(digest_number=current_digest_number - 1, state='IN_DIGEST')
+            records = DigestRecord.objects.filter(digest_issue__number=current_digest_number - 1, state='IN_DIGEST')
             for record in records:
                 if re.search(rf'\b{re.escape(keyword)}\b', record.title, re.IGNORECASE):
                     similar_records_in_previous_digest.append(record)
