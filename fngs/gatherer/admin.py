@@ -20,7 +20,7 @@ class DigestRecordAdmin(admin.ModelAdmin):
         'title',
         'url',
         'state',
-        # 'link_to_digest_issue',
+        'link_to_digest_issue',
         'is_main',
         'category',
         'subcategory',
