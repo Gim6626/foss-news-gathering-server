@@ -628,7 +628,15 @@ class AstraLinuxRuParsingModule(SimpleRssBasicParsingModule):
 
 
 class BaseAltRuParsingModule(SimpleRssBasicParsingModule):
-    pass
+
+    _BASE_URL = 'https://www.basealt.ru'
+
+    def process_url(self, url):
+        if self._BASE_URL not in url:
+            logger.info(f'Relative URL found "{url}", prepending base url "{self._BASE_URL}"')
+            return f'{self._BASE_URL}{url}'
+        else:
+            return url
 
 
 class PingvinusRuParsingModule(BasicParsingModule):
