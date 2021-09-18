@@ -46,9 +46,11 @@ class NotCategorizedFossNewsDigestRecordsMixin:
         except TelegramBotUser.DoesNotExist:
             return []
         categorized_by_this_user_digest_records_attempts = TelegramBotDigestRecordCategorizationAttempt.objects.filter(telegram_bot_user=tbot_user)
-        not_categorized_by_this_user_digest_records = DigestRecord.objects.filter(state='UNKNOWN', projects__in=(Project.objects.filter(name='FOSS News'))).exclude(pk__in=[a.digest_record.pk for a in categorized_by_this_user_digest_records_attempts]).order_by('-dt')
+        not_categorized_by_this_user_digest_records = DigestRecord.objects.filter(state='UNKNOWN',
+                                                                                  projects__in=(Project.objects.filter(name='FOSS News'))).exclude(pk__in=[a.digest_record.pk for a in categorized_by_this_user_digest_records_attempts]).order_by('-dt')
+        attempts_for_not_categorized_records = TelegramBotDigestRecordCategorizationAttempt.objects.filter(digest_record__in=not_categorized_by_this_user_digest_records)
         attempts_per_digest_record = {}
-        for attempt in TelegramBotDigestRecordCategorizationAttempt.objects.all():
+        for attempt in attempts_for_not_categorized_records:
             if attempt.digest_record.id in attempts_per_digest_record:
                 attempts_per_digest_record[attempt.digest_record.id] += 1
             else:
