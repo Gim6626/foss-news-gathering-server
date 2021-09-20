@@ -395,6 +395,7 @@ class LinuxInsiderComParsingModule(SimpleRssBasicParsingModule):
 
 class MashableComParsingModule(SimpleRssBasicParsingModule):
 
+    filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
     )
