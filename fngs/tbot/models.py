@@ -26,7 +26,8 @@ class TelegramBotUser(models.Model):
 class TelegramBotUserGroup(models.Model):
 
     name = models.CharField(verbose_name='Name',
-                            max_length=256)
+                            max_length=256,
+                            unique=True)
     users = models.ManyToManyField(to=TelegramBotUser,
                                    related_name='groups')
 
