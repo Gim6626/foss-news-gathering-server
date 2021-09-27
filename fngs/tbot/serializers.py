@@ -10,6 +10,40 @@ class TelegramBotUserSerializer(serializers.ModelSerializer):
             'id',
             'tid',
             'username',
+            'groups',
+        ]
+
+
+class TelegramBotUserGroupSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TelegramBotUserGroup
+        fields = [
+            'id',
+            'name',
+            'users'
+        ]
+
+
+class TelegramBotUserGroupBriefSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TelegramBotUserGroup
+        fields = [
+            'id',
+            'name',
+        ]
+
+
+class TelegramBotUserDetailedSerializer(serializers.ModelSerializer):
+    groups = TelegramBotUserGroupBriefSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = TelegramBotUser
+        # depth = 1
+        fields = [
+            'id',
+            'tid',
+            'username',
+            'groups',
         ]
 
 

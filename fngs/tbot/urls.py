@@ -5,6 +5,12 @@ router = routers.DefaultRouter()
 router.register('telegram-bot-user',
                 TelegramBotUserViewSet,
                 basename='telegram_bot_user')
+router.register('telegram-bot-user-detailed',
+                TelegramBotUserDetailedViewSet,
+                basename='telegram_bot_user_detailed')
+router.register('telegram-bot-user-group',
+                TelegramBotUserGroupViewSet,
+                basename='telegram_bot_user_group')
 router.register('telegram-bot-digest-record-categorization-attempt',
                 TelegramBotDigestRecordCategorizationAttemptViewSet,
                 basename='telegram_bot_digest_record_categorization_attempt')

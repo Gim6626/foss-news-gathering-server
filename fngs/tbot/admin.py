@@ -14,12 +14,37 @@ class TelegramBotUserAdmin(admin.ModelAdmin):
         'id',
         'tid',
         'username',
+        'links_to_groups',
     )
 
     search_fields = (
         'tid',
         'username',
     )
+
+    def links_to_groups(self, obj):
+        return object_modification_url('tbot', 'telegrambotusergroup', [g.id for g in obj.groups.all()], [str(g) for g in obj.groups.all()])
+
+
+class TelegramBotUserGroupAdmin(admin.ModelAdmin):
+
+    readonly_fields = (
+        'id',
+    )
+
+    list_display = (
+        'id',
+        'name',
+        'links_to_users',
+    )
+
+    search_fields = (
+        'id',
+        'name',
+    )
+
+    def links_to_users(self, obj):
+        return object_modification_url('tbot', 'telegrambotuser', [u.id for u in obj.users.all()], [str(u) for u in obj.users.all()])
 
 
 class TelegramBotDigestRecordCategorizationAttemptAdmin(admin.ModelAdmin):
@@ -52,3 +77,4 @@ class TelegramBotDigestRecordCategorizationAttemptAdmin(admin.ModelAdmin):
 
 admin.site.register(TelegramBotUser, TelegramBotUserAdmin)
 admin.site.register(TelegramBotDigestRecordCategorizationAttempt, TelegramBotDigestRecordCategorizationAttemptAdmin)
+admin.site.register(TelegramBotUserGroup, TelegramBotUserGroupAdmin)

@@ -19,6 +19,27 @@ class TelegramBotUser(models.Model):
     def __str__(self):
         return f'{self.username} (#{self.tid})'
 
+    def groups_names(self):
+        return f'{[g.name for g in self.groups.all()]}'
+
+
+class TelegramBotUserGroup(models.Model):
+
+    name = models.CharField(verbose_name='Name',
+                            max_length=256)
+    users = models.ManyToManyField(to=TelegramBotUser,
+                                   related_name='groups')
+
+    class Meta:
+        verbose_name = 'Telegram Bot User Group'
+        verbose_name_plural = 'Telegram Bot Users Groups'
+
+    def __str__(self):
+        return f'{self.name} (#{self.id})'
+
+    def users_usernames(self):
+        return f'{[u.username for u in self.users.all()]}'
+
 
 class TelegramBotDigestRecordCategorizationAttempt(models.Model):
 

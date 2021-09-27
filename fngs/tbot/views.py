@@ -20,6 +20,18 @@ class TelegramBotUserViewSet(viewsets.ModelViewSet):
     serializer_class = TelegramBotUserSerializer
 
 
+class TelegramBotUserDetailedViewSet(viewsets.ModelViewSet):
+    permission_classes = [permissions.IsAdminUser | TelegramBotFullPermission]
+    queryset = TelegramBotUser.objects.all().order_by('username')
+    serializer_class = TelegramBotUserDetailedSerializer
+
+
+class TelegramBotUserGroupViewSet(viewsets.ModelViewSet):
+    permission_classes = [permissions.IsAdminUser | TelegramBotFullPermission]
+    queryset = TelegramBotUserGroup.objects.all().order_by('name')
+    serializer_class = TelegramBotUserGroupSerializer
+
+
 class TelegramBotDigestRecordCategorizationAttemptViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAdminUser | TelegramBotFullPermission]
     queryset = TelegramBotDigestRecordCategorizationAttempt.objects.all().order_by('-dt')
