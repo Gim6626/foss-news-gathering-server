@@ -114,6 +114,7 @@ class KeywordAdmin(admin.ModelAdmin):
         'name',
         'category',
         'is_generic',
+        'enabled',
     )
 
     search_fields = (

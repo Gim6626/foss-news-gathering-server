@@ -3,11 +3,18 @@ from enum import Enum
 
 
 class DigestRecordState(Enum):
+    # Passed auto-filters but not yet reviewed
     UNKNOWN = 'unknown'
+    # Reviewed, ok
     IN_DIGEST = 'in_digest'
+    # Reviewed, but already mentioned in previous digest
     OUTDATED = 'outdated'
+    # Reviewed, not related to digest themes
     IGNORED = 'ignored'
+    # Not passed auto-filters
     FILTERED = 'filtered'
+    # Passed auto-filters, but with keywords that were disabled at those moment
+    SKIPPED = 'skipped'
 
     @classmethod
     def choices(cls):
@@ -198,6 +205,8 @@ class Keyword(models.Model):
     is_generic = models.BooleanField(verbose_name='Is generic',
                                      null=True,
                                      blank=True)
+    enabled = models.BooleanField(verbose_name='Is enabled',
+                                  default=True)
 
     class Meta:
         unique_together = (

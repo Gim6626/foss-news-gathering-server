@@ -114,6 +114,10 @@ class Command(BaseCommand):
             else:
                 logger.debug(f'Adding {short_post_data_str} to database')
                 all_matched_keywords = []
+                if post_data.filtered:
+                    state = DigestRecordState.FILTERED.name
+                else:
+                    state = DigestRecordState.UNKNOWN.name
                 for keyword_name in post_data.keywords:
                     matched_keywords_for_one = Keyword.objects.filter(name=keyword_name)
                     if len(matched_keywords_for_one) == 0:
@@ -121,15 +125,23 @@ class Command(BaseCommand):
                     elif len(matched_keywords_for_one) > 1:
                         logger.error(f'More than one keyword with name "{keyword_name}" in database')
                     else:
-                        all_matched_keywords.append(matched_keywords_for_one[0])
+                        keyword = matched_keywords_for_one[0]
+                        all_matched_keywords.append(keyword)
+                if all_matched_keywords:
+                    all_keywords_disabled = True
+                    for keyword in all_matched_keywords:
+                        if keyword.enabled:
+                            all_keywords_disabled = False
+                            break
+                    if all_keywords_disabled:
+                        logger.warning(f'Record "{post_data.title}" ({post_data.url}) marked as skipped because all it\'s keywords {[k.name for k in all_matched_keywords]} marked as disabled currently')
+                        state = DigestRecordState.SKIPPED.name
                 digest_record = DigestRecord(dt=post_data.dt,
                                              source=source,
                                              gather_dt=datetime.datetime.now(tz=dateutil.tz.tzlocal()),
                                              title=post_data.title.strip(),
                                              url=post_data.url,
-                                             state=DigestRecordState.UNKNOWN.name
-                                                   if not post_data.filtered
-                                                   else DigestRecordState.FILTERED.name,
+                                             state=state,
                                              language=source.language,
                                              description=post_data.brief)
                 digest_record.save()
