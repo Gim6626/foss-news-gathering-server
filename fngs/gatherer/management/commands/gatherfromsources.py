@@ -130,7 +130,7 @@ class Command(BaseCommand):
                 if all_matched_keywords:
                     all_keywords_disabled = True
                     for keyword in all_matched_keywords:
-                        if keyword.enabled:
+                        if keyword.enabled and not keyword.is_generic:
                             all_keywords_disabled = False
                             break
                     if all_keywords_disabled:
