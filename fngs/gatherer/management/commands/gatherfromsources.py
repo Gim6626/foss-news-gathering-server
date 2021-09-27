@@ -127,10 +127,10 @@ class Command(BaseCommand):
                     else:
                         keyword = matched_keywords_for_one[0]
                         all_matched_keywords.append(keyword)
-                if all_matched_keywords:
+                if state == DigestRecordState.UNKNOWN.name and all_matched_keywords:
                     all_keywords_disabled = True
                     for keyword in all_matched_keywords:
-                        if keyword.enabled and not keyword.is_generic:
+                        if keyword.enabled:
                             all_keywords_disabled = False
                             break
                     if all_keywords_disabled:
