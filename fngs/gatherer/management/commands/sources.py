@@ -55,11 +55,13 @@ class PostsData:
                  projects: List[Project],
                  posts_data_list: List[PostData],
                  language: Language,
+                 filters: List['FiltrationType'],
                  warning: str = None):
         self.source_name = source_name
         self.projects = projects
         self.posts_data_list = posts_data_list
         self.language = language
+        self.filters = filters
         self.warning = warning
 
 

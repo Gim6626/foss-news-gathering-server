@@ -58,6 +58,7 @@ class Command(BaseCommand):
                                        parsing_module.projects,
                                        parsing_result.posts_data_after_filtration,
                                        parsing_module.language,
+                                       parsing_module.filters,
                                        parsing_module.warning)
             iteration = DigestGatheringIteration(dt=datetime_now,
                                                  overall_count=parsing_result.overall_count,
@@ -128,12 +129,28 @@ class Command(BaseCommand):
                         keyword = matched_keywords_for_one[0]
                         all_matched_keywords.append(keyword)
                 if state == DigestRecordState.UNKNOWN.name and all_matched_keywords:
-                    all_keywords_disabled = True
-                    for keyword in all_matched_keywords:
-                        if keyword.enabled:
-                            all_keywords_disabled = False
-                            break
-                    if all_keywords_disabled:
+                    if not posts_data_one.filters:
+                        should_be_skipped = False
+                    elif FiltrationType.SPECIFIC in posts_data_one.filters \
+                            and FiltrationType.GENERIC in posts_data_one.filters:
+                        should_be_skipped = True
+                        for keyword in all_matched_keywords:
+                            if keyword.enabled:
+                                should_be_skipped = False
+                                break
+                    elif FiltrationType.SPECIFIC in posts_data_one.filters:
+                        should_be_skipped = True
+                        for keyword in all_matched_keywords:
+                            if keyword.enabled and not keyword.is_generic:
+                                should_be_skipped = False
+                                break
+                    else:
+                        should_be_skipped = True
+                        for keyword in all_matched_keywords:
+                            if keyword.enabled and keyword.is_generic:
+                                should_be_skipped = False
+                                break
+                    if should_be_skipped:
                         logger.warning(f'Record "{post_data.title}" ({post_data.url}) marked as skipped because all it\'s keywords {[k.name for k in all_matched_keywords]} marked as disabled currently')
                         state = DigestRecordState.SKIPPED.name
                 digest_record = DigestRecord(dt=post_data.dt,
