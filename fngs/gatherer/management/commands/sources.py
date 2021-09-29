@@ -363,7 +363,6 @@ class AnalyticsIndiaMagComParsingModule(SimpleRssBasicParsingModule):
     filtration_needed = True
     filters = (
         FiltrationType.SPECIFIC,
-        FiltrationType.GENERIC,
     )
 
 
