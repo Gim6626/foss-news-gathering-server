@@ -19,6 +19,7 @@ class DigestRecordAdmin(admin.ModelAdmin):
         'gather_dt',
         'title',
         'url',
+        'additional_url',
         'state',
         'link_to_digest_issue',
         'is_main',

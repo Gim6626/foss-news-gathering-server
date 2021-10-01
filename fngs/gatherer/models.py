@@ -96,6 +96,10 @@ class DigestRecord(models.Model):
                            max_length=256,
                            unique=True,
                            blank=False)
+    additional_url = models.CharField(verbose_name='Additional URL',
+                                      max_length=256,
+                                      null=True,
+                                      blank=True)
     state = models.CharField(verbose_name='State',
                              choices=DigestRecordState.choices(),
                              max_length=15,
