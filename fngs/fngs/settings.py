@@ -20,9 +20,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-from .secret import (
+from .localsettings import (
     DJANGO_SECRET_KEY,
     DB_PASSWORD,
+    DB_PORT,
 )
 SECRET_KEY = DJANGO_SECRET_KEY
 
@@ -100,7 +101,7 @@ DATABASES = {
         'HOST': 'localhost',
         'NAME': 'fossnews',
         'PASSWORD': DB_PASSWORD,
-        'PORT': '5432',
+        'PORT': DB_PORT,
         'USER': 'postgres',
     },
 }
