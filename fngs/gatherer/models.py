@@ -52,7 +52,7 @@ class DigestRecordSubcategory(Enum):
     DIY = 'diy'
     LAW = 'law'
     KnD = 'knd'
-    SYSTEM = 'system'  # Obsolete, should not be used
+    SYSTEM = 'system'
     SPECIAL = 'special'
     EDUCATION = 'education'
     DATABASES = 'db'
