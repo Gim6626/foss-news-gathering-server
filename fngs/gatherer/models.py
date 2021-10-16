@@ -162,6 +162,7 @@ class DigestRecord(models.Model):
         return f'{self.dt} {self.title} {self.url} #{self.digest_number} state:"{self.state}" cat:"{self.category}" subcat: "{self.subcategory}" keywords: "{self.keywords}"'
 
 
+# Actually not really duplicates, duplicates are with "DUPLICATE" state, this are different records about same theme
 class DigestRecordDuplicate(models.Model):
 
     digest_number = models.IntegerField(verbose_name='Digest Number',
