@@ -9,6 +9,8 @@ class DigestRecordState(Enum):
     IN_DIGEST = 'in_digest'
     # Reviewed, but already mentioned in previous digest
     OUTDATED = 'outdated'
+    # Duplicate, absolutely the same record exists, maybe with another link only
+    DUPLICATE = 'duplicate'
     # Reviewed, not related to digest themes
     IGNORED = 'ignored'
     # Not passed auto-filters
