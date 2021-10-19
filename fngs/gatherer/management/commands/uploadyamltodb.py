@@ -44,7 +44,7 @@ class Command(BaseCommand):
         fin = open(options['YAML_FILE'], 'r')
         fin_data = yaml.safe_load(fin)
         for record_dict in fin_data:
-            category = record_dict['content_type']
+            content_type = record_dict['content_type']
             dt = datetime.datetime.strptime(record_dict['datetime'], '%Y-%m-%d %H:%M:%S %z')
             digest_number = record_dict['digest_number']
             state = record_dict['state']
@@ -52,11 +52,11 @@ class Command(BaseCommand):
             title = record_dict['title']
             url = record_dict['url']
             is_main = False
-            if category == 'main':
-                category = 'news'
+            if content_type == 'main':
+                content_type = 'news'
                 is_main = True
             state = state.upper()
-            category = category.upper()
+            content_type = content_type.upper()
             if content_category in SUBCATEGORY_MAPPING:
                 content_category = SUBCATEGORY_MAPPING[content_category]
             digest_record = DigestRecord(dt=dt,
@@ -65,8 +65,8 @@ class Command(BaseCommand):
                                          state=state,
                                          digest_number=digest_number,
                                          is_main=is_main,
-                                         category=category,
-                                         subcategory=content_category)
+                                         content_type=content_type,
+                                         content_category=content_category)
 
             same_in_db = DigestRecord.objects.filter(url=url)
             if same_in_db:
