@@ -111,19 +111,19 @@ class DigestIssueViewSet(viewsets.ModelViewSet):
     serializer_class = DigestIssueSerializer
 
 
-class GuessCategoryView(mixins.ListModelMixin, GenericViewSet):
+class GuessContentCategoryView(mixins.ListModelMixin, GenericViewSet):
     permission_classes = [permissions.IsAdminUser | TelegramBotReadOnlyPermission]
 
     def list(self, request, *args, **kwargs):
         title = request.query_params.get('title', None)
         keywords = Keyword.objects.all()
-        matched_keywords_by_category = {}
+        matched_keywords_by_content_category = {}
         for keyword in keywords:
             if re.search(rf'\b{re.escape(keyword.name)}\b', title, re.IGNORECASE):
-                if keyword.content_category not in matched_keywords_by_category:
-                    matched_keywords_by_category[keyword.content_category] = []
-                matched_keywords_by_category[keyword.content_category].append(keyword.name)
-        return Response({'title': title, 'matches': matched_keywords_by_category}, status=status.HTTP_200_OK)
+                if keyword.content_category not in matched_keywords_by_content_category:
+                    matched_keywords_by_content_category[keyword.content_category] = []
+                matched_keywords_by_content_category[keyword.content_category].append(keyword.name)
+        return Response({'title': title, 'matches': matched_keywords_by_content_category}, status=status.HTTP_200_OK)
 
 
 class SimilarRecordsInPreviousDigest(mixins.ListModelMixin, GenericViewSet):

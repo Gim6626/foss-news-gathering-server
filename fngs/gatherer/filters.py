@@ -30,8 +30,8 @@ class CurrentDigestRecordsDuplicatesFilter(filters.FilterSet):
 
 class SimilarDigestRecordsFilter(filters.FilterSet):
     digest_issue = filters.NumberFilter(method='digest_filter')
-    category = filters.CharFilter(method='category_filter')
-    subcategory = filters.CharFilter(method='subcategory_filter')
+    content_type = filters.CharFilter(method='content_type_filter')
+    content_category = filters.CharFilter(method='content_category_filter')
 
     class Meta:
         model = DigestRecord
@@ -44,11 +44,11 @@ class SimilarDigestRecordsFilter(filters.FilterSet):
     def digest_filter(self, queryset, name, value):
         return queryset.filter(digest_issue=value)
 
-    def category_filter(self, queryset, name, value):
-        return queryset.filter(category=value)
+    def content_type_filter(self, queryset, name, value):
+        return queryset.filter(content_type=value)
 
-    def subcategory_filter(self, queryset, name, value):
-        return queryset.filter(subcategory=value)
+    def content_category_filter(self, queryset, name, value):
+        return queryset.filter(content_category=value)
 
 
 class DuplicatesByDigestRecordFilter(filters.FilterSet):
