@@ -38,7 +38,7 @@ class SimilarDigestRecordsFilter(filters.FilterSet):
         fields = [
             'digest_issue',
             'content_type',
-            'subcategory'
+            'content_category'
         ]
 
     def digest_filter(self, queryset, name, value):

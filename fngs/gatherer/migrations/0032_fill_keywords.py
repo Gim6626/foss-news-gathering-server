@@ -4,7 +4,7 @@ import os
 import yaml
 
 from django.db import migrations, models
-from gatherer.models import Keyword, DigestRecordSubcategory
+from gatherer.models import Keyword, DigestRecordContentCategory
 
 
 def fill_keywords(apps, schema_editor):
@@ -18,7 +18,7 @@ def fill_keywords(apps, schema_editor):
         for keyword_type, keywords_names in keyword_types.items():
             is_generic = keyword_type == 'generic'
             for keyword_name in keywords_names:
-                category = DigestRecordSubcategory(category_name)
+                category = DigestRecordContentCategory(category_name)
                 keyword = Keyword(name=keyword_name, category=category.name, is_generic=is_generic)
                 keyword.save()
 

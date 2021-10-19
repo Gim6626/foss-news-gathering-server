@@ -45,7 +45,7 @@ class Language(Enum):
         return tuple((i.name, i.value) for i in cls)
 
 
-class DigestRecordSubcategory(Enum):
+class DigestRecordContentCategory(Enum):
     EVENTS = 'events'
     INTROS = 'intros'
     OPENING = 'opening'
@@ -122,11 +122,11 @@ class DigestRecord(models.Model):
                                     max_length=15,
                                     null=True,
                                     blank=True)
-    subcategory = models.CharField(verbose_name='Subcategory',
-                                   choices=DigestRecordSubcategory.choices(),
-                                   max_length=15,
-                                   null=True,
-                                   blank=True)
+    content_category = models.CharField(verbose_name='Content Category',
+                                        choices=DigestRecordContentCategory.choices(),
+                                        max_length=15,
+                                        null=True,
+                                        blank=True)
     keywords = models.CharField(verbose_name='Keywords',  # Obsolete, should not be used
                                 max_length=1024,
                                 null=True,
@@ -159,7 +159,7 @@ class DigestRecord(models.Model):
         verbose_name_plural = 'Digest Records'
 
     def __str__(self):
-        return f'{self.dt} {self.title} {self.url} #{self.digest_number} state:"{self.state}" cat:"{self.content_type}" subcat: "{self.subcategory}" keywords: "{self.keywords}"'
+        return f'{self.dt} {self.title} {self.url} #{self.digest_number} state:"{self.state}" cat:"{self.content_type}" subcat: "{self.content_category}" keywords: "{self.keywords}"'
 
 
 # Actually not really duplicates, duplicates are with "DUPLICATE" state, this are different records about same theme
@@ -205,7 +205,7 @@ class Keyword(models.Model):
 
     name = models.CharField(verbose_name='Name', max_length=64)
     category = models.CharField(verbose_name='Category',
-                                choices=DigestRecordSubcategory.choices(),
+                                choices=DigestRecordContentCategory.choices(),
                                 max_length=15,
                                 null=True,
                                 blank=True)

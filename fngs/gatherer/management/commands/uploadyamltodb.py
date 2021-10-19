@@ -48,7 +48,7 @@ class Command(BaseCommand):
             dt = datetime.datetime.strptime(record_dict['datetime'], '%Y-%m-%d %H:%M:%S %z')
             digest_number = record_dict['digest_number']
             state = record_dict['state']
-            subcategory = record_dict['subcategory']
+            content_category = record_dict['content_category']
             title = record_dict['title']
             url = record_dict['url']
             is_main = False
@@ -57,8 +57,8 @@ class Command(BaseCommand):
                 is_main = True
             state = state.upper()
             category = category.upper()
-            if subcategory in SUBCATEGORY_MAPPING:
-                subcategory = SUBCATEGORY_MAPPING[subcategory]
+            if content_category in SUBCATEGORY_MAPPING:
+                content_category = SUBCATEGORY_MAPPING[content_category]
             digest_record = DigestRecord(dt=dt,
                                          title=title,
                                          url=url,
@@ -66,7 +66,7 @@ class Command(BaseCommand):
                                          digest_number=digest_number,
                                          is_main=is_main,
                                          category=category,
-                                         subcategory=subcategory)
+                                         subcategory=content_category)
 
             same_in_db = DigestRecord.objects.filter(url=url)
             if same_in_db:

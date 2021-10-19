@@ -157,7 +157,7 @@ class SimilarRecordsInPreviousDigest(mixins.ListModelMixin, GenericViewSet):
                 'title': r.title,
                 'is_main': r.is_main,
                 'content_type': r.content_type,
-                'subcategory': r.subcategory,
+                'content_category': r.content_category,
                 'url': r.url,
             }
             for r in similar_records_in_previous_digest
@@ -186,7 +186,7 @@ class DigestRecordsCategorizedByTbotViewSet(mixins.ListModelMixin, GenericViewSe
                     'digest_issue': categorization_attempt.digest_record.digest_issue,
                     'is_main': categorization_attempt.digest_record.is_main,
                     'content_type': categorization_attempt.digest_record.content_type,
-                    'subcategory': categorization_attempt.digest_record.subcategory,
+                    'content_category': categorization_attempt.digest_record.content_category,
                     'title_keywords': [k.name for k in categorization_attempt.digest_record.title_keywords.all()],
                     'estimations': [],
                 }

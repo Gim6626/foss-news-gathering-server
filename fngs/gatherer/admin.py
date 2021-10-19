@@ -24,7 +24,7 @@ class DigestRecordAdmin(admin.ModelAdmin):
         'link_to_digest_issue',
         'is_main',
         'content_type',
-        'subcategory',
+        'content_category',
         'language',
         'duplicates',
         'links_to_projects',
