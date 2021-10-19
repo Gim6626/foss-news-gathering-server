@@ -61,7 +61,7 @@ class TelegramBotDigestRecordCategorizationAttempt(models.Model):
                                             null=True,
                                             blank=True)
     estimated_category = models.CharField(verbose_name='Estimated Category',
-                                          choices=DigestRecordCategory.choices(),
+                                          choices=DigestRecordContentType.choices(),
                                           max_length=15,
                                           null=True,
                                           blank=True)

@@ -37,7 +37,7 @@ class SimilarDigestRecordsFilter(filters.FilterSet):
         model = DigestRecord
         fields = [
             'digest_issue',
-            'category',
+            'content_type',
             'subcategory'
         ]
 

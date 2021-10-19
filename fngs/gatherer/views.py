@@ -156,7 +156,7 @@ class SimilarRecordsInPreviousDigest(mixins.ListModelMixin, GenericViewSet):
                 # TODO: Use serializer
                 'title': r.title,
                 'is_main': r.is_main,
-                'category': r.category,
+                'content_type': r.content_type,
                 'subcategory': r.subcategory,
                 'url': r.url,
             }
@@ -185,7 +185,7 @@ class DigestRecordsCategorizedByTbotViewSet(mixins.ListModelMixin, GenericViewSe
                     'url': categorization_attempt.digest_record.url,
                     'digest_issue': categorization_attempt.digest_record.digest_issue,
                     'is_main': categorization_attempt.digest_record.is_main,
-                    'category': categorization_attempt.digest_record.category,
+                    'content_type': categorization_attempt.digest_record.content_type,
                     'subcategory': categorization_attempt.digest_record.subcategory,
                     'title_keywords': [k.name for k in categorization_attempt.digest_record.title_keywords.all()],
                     'estimations': [],

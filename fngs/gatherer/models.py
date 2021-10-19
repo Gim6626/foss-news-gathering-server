@@ -23,7 +23,7 @@ class DigestRecordState(Enum):
         return tuple((i.name, i.value) for i in cls)
 
 
-class DigestRecordCategory(Enum):
+class DigestRecordContentType(Enum):
     UNKNOWN = 'unknown'
     NEWS = 'news'
     ARTICLES = 'articles'
@@ -117,11 +117,11 @@ class DigestRecord(models.Model):
     is_main = models.BooleanField(verbose_name='Is main post',
                                   null=True,
                                   blank=True)
-    category = models.CharField(verbose_name='Category',
-                                choices=DigestRecordCategory.choices(),
-                                max_length=15,
-                                null=True,
-                                blank=True)
+    content_type = models.CharField(verbose_name='Content Type',
+                                    choices=DigestRecordContentType.choices(),
+                                    max_length=15,
+                                    null=True,
+                                    blank=True)
     subcategory = models.CharField(verbose_name='Subcategory',
                                    choices=DigestRecordSubcategory.choices(),
                                    max_length=15,
@@ -159,7 +159,7 @@ class DigestRecord(models.Model):
         verbose_name_plural = 'Digest Records'
 
     def __str__(self):
-        return f'{self.dt} {self.title} {self.url} #{self.digest_number} state:"{self.state}" cat:"{self.category}" subcat: "{self.subcategory}" keywords: "{self.keywords}"'
+        return f'{self.dt} {self.title} {self.url} #{self.digest_number} state:"{self.state}" cat:"{self.content_type}" subcat: "{self.subcategory}" keywords: "{self.keywords}"'
 
 
 # Actually not really duplicates, duplicates are with "DUPLICATE" state, this are different records about same theme

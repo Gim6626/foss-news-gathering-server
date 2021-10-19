@@ -44,7 +44,7 @@ class Command(BaseCommand):
         fin = open(options['YAML_FILE'], 'r')
         fin_data = yaml.safe_load(fin)
         for record_dict in fin_data:
-            category = record_dict['category']
+            category = record_dict['content_type']
             dt = datetime.datetime.strptime(record_dict['datetime'], '%Y-%m-%d %H:%M:%S %z')
             digest_number = record_dict['digest_number']
             state = record_dict['state']
