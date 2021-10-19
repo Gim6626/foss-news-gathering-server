@@ -57,8 +57,8 @@ class TelegramBotDigestRecordCategorizationAttemptSerializer(serializers.ModelSe
             'digest_record',
             'estimated_state',
             'estimated_is_main',
-            'estimated_category',
-            'estimated_subcategory',
+            'estimated_content_type',
+            'estimated_content_category',
         ]
 
 
@@ -73,6 +73,6 @@ class TelegramBotDigestRecordCategorizationAttemptDetailedSerializer(serializers
             'digest_record',
             'estimated_state',
             'estimated_is_main',
-            'estimated_category',
-            'estimated_subcategory',
+            'estimated_content_type',
+            'estimated_content_category',
         ]

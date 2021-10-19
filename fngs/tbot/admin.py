@@ -60,8 +60,8 @@ class TelegramBotDigestRecordCategorizationAttemptAdmin(admin.ModelAdmin):
         'estimated_state',
         'link_to_digest_record',
         'estimated_is_main',
-        'estimated_category',
-        'estimated_subcategory',
+        'estimated_content_type',
+        'estimated_content_category',
     )
 
     autocomplete_fields = (
