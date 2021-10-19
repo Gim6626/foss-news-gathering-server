@@ -113,7 +113,7 @@ class KeywordAdmin(admin.ModelAdmin):
     list_display = (
         'id',
         'name',
-        'category',
+        'content_category',
         'is_generic',
         'enabled',
     )

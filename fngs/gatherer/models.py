@@ -204,11 +204,11 @@ class Project(models.Model):
 class Keyword(models.Model):
 
     name = models.CharField(verbose_name='Name', max_length=64)
-    category = models.CharField(verbose_name='Category',
-                                choices=DigestRecordContentCategory.choices(),
-                                max_length=15,
-                                null=True,
-                                blank=True)
+    content_category = models.CharField(verbose_name='Content Category',
+                                        choices=DigestRecordContentCategory.choices(),
+                                        max_length=15,
+                                        null=True,
+                                        blank=True)
     is_generic = models.BooleanField(verbose_name='Is generic',
                                      null=True,
                                      blank=True)
@@ -218,13 +218,13 @@ class Keyword(models.Model):
     class Meta:
         unique_together = (
             'name',
-            'category',
+            'content_category',
         )
         verbose_name = 'Keyword'
         verbose_name_plural = 'Keywords'
 
     def __str__(self):
-        return f'{self.name} ({self.category}, {"GENERIC" if self.is_generic else "NON-GENERIC"})'
+        return f'{self.name} ({self.content_category}, {"GENERIC" if self.is_generic else "NON-GENERIC"})'
 
 
 class DigestRecordsSource(models.Model):

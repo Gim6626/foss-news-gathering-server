@@ -120,9 +120,9 @@ class GuessCategoryView(mixins.ListModelMixin, GenericViewSet):
         matched_keywords_by_category = {}
         for keyword in keywords:
             if re.search(rf'\b{re.escape(keyword.name)}\b', title, re.IGNORECASE):
-                if keyword.category not in matched_keywords_by_category:
-                    matched_keywords_by_category[keyword.category] = []
-                matched_keywords_by_category[keyword.category].append(keyword.name)
+                if keyword.content_category not in matched_keywords_by_category:
+                    matched_keywords_by_category[keyword.content_category] = []
+                matched_keywords_by_category[keyword.content_category].append(keyword.name)
         return Response({'title': title, 'matches': matched_keywords_by_category}, status=status.HTTP_200_OK)
 
 

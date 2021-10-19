@@ -90,7 +90,7 @@ class KeywordSerializer(serializers.ModelSerializer):
         fields = [
             'id',
             'name',
-            'category',
+            'content_category',
             'is_generic',
         ]
 
