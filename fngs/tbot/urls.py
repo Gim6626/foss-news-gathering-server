@@ -26,5 +26,8 @@ router.register('telegram-bot-not-categorized-foss-news-digest-records-count',
 router.register('telegram-bot-user-by-tid',
                 TelegramBotUserByTidViewSet,
                 basename='telegram_bot_user_by_tid')
+router.register('digest-records-categorized-by-tbot',
+                DigestRecordsCategorizedByTbotViewSet,
+                basename='digest_records_categorized_by_tbot')
 
 urlpatterns = router.urls

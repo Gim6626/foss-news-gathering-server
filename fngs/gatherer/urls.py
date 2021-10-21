@@ -23,6 +23,5 @@ router.register('keywords', KeywordViewSet, basename='keywords')
 router.register('digest-issues', DigestIssueViewSet, basename='digest_issues')
 router.register('guess-content-category', GuessContentCategoryView, basename='guess_category')
 router.register('similar-records-in-previous-digest', SimilarRecordsInPreviousDigest, basename='similar_records_in_previous_digest')
-router.register('digest-records-categorized-by-tbot', DigestRecordsCategorizedByTbotViewSet, basename='digest_records_categorized_by_tbot')
 
 urlpatterns += router.urls

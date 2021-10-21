@@ -6,6 +6,7 @@ from rest_framework import (
     status,
 )
 from rest_framework.response import Response
+from rest_framework.viewsets import GenericViewSet
 
 from gatherer.serializers import *
 from common.permissions import *
@@ -125,4 +126,37 @@ class TelegramBotUserByTidViewSet(mixins.ListModelMixin,
                             'tid': telegram_bot_user.tid,
                             'username': telegram_bot_user.username,
                         },
+                        status=status.HTTP_200_OK)
+
+
+class DigestRecordsCategorizedByTbotViewSet(mixins.ListModelMixin, GenericViewSet):
+    permission_classes = [permissions.IsAdminUser]
+
+    def list(self, request, *args, **kwargs):
+        unknown_state_digest_records = DigestRecord.objects.filter(state='UNKNOWN')
+        tbot_categorizations_attempts_for_unknown_records = TelegramBotDigestRecordCategorizationAttempt.objects.filter(digest_record__in=unknown_state_digest_records)
+        categorizations_data_by_digest_record = {}
+        for categorization_attempt in tbot_categorizations_attempts_for_unknown_records:
+            digest_record_id = categorization_attempt.digest_record.id
+            if digest_record_id not in categorizations_data_by_digest_record:
+                categorizations_data_by_digest_record[digest_record_id] = {
+                    # TODO: Use serializer
+                    'dt': categorization_attempt.digest_record.dt,
+                    'source': categorization_attempt.digest_record.source.name,
+                    'title': categorization_attempt.digest_record.title,
+                    'url': categorization_attempt.digest_record.url,
+                    'additional_url': categorization_attempt.digest_record.additional_url,
+                    'digest_issue': categorization_attempt.digest_record.digest_issue,
+                    'is_main': categorization_attempt.digest_record.is_main,
+                    'content_type': categorization_attempt.digest_record.content_type,
+                    'content_category': categorization_attempt.digest_record.content_category,
+                    'title_keywords': [k.name for k in categorization_attempt.digest_record.title_keywords.all()],
+                    'estimations': [],
+                }
+            estimation_data = {
+                'user': categorization_attempt.telegram_bot_user.username,
+                'state': categorization_attempt.estimated_state,
+            }
+            categorizations_data_by_digest_record[digest_record_id]['estimations'].append(estimation_data)
+        return Response(categorizations_data_by_digest_record,
                         status=status.HTTP_200_OK)
