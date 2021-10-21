@@ -183,6 +183,7 @@ class DigestRecordsCategorizedByTbotViewSet(mixins.ListModelMixin, GenericViewSe
                     'source': categorization_attempt.digest_record.source.name,
                     'title': categorization_attempt.digest_record.title,
                     'url': categorization_attempt.digest_record.url,
+                    'additional_url': categorization_attempt.digest_record.additional_url,
                     'digest_issue': categorization_attempt.digest_record.digest_issue,
                     'is_main': categorization_attempt.digest_record.is_main,
                     'content_type': categorization_attempt.digest_record.content_type,
