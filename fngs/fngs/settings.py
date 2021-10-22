@@ -20,11 +20,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-from .localsettings import (
-    DJANGO_SECRET_KEY,
-    DB_PASSWORD,
-    DB_PORT,
-)
+from .localsettings import *
 SECRET_KEY = DJANGO_SECRET_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -99,7 +95,7 @@ DATABASES = {
         'CONN_MAX_AGE': 0,
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'HOST': 'localhost',
-        'NAME': 'fossnews',
+        'NAME': DB_NAME,
         'PASSWORD': DB_PASSWORD,
         'PORT': DB_PORT,
         'USER': 'postgres',
