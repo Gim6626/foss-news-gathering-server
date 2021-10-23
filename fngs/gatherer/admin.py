@@ -115,6 +115,7 @@ class KeywordAdmin(admin.ModelAdmin):
         'name',
         'content_category',
         'is_generic',
+        'proprietary',
         'enabled',
     )
 

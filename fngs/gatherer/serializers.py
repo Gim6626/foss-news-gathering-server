@@ -92,6 +92,8 @@ class KeywordSerializer(serializers.ModelSerializer):
             'name',
             'content_category',
             'is_generic',
+            'proprietary',
+            'enabled',
         ]
 
 

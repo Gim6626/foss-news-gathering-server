@@ -212,6 +212,10 @@ class Keyword(models.Model):
     is_generic = models.BooleanField(verbose_name='Is generic',
                                      null=True,
                                      blank=True)
+    proprietary = models.BooleanField(verbose_name='Is proprietary',
+                                      null=False,
+                                      blank=False,
+                                      default=False)
     enabled = models.BooleanField(verbose_name='Is enabled',
                                   default=True)
 
