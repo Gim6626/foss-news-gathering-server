@@ -1,4 +1,6 @@
 import random
+
+from django.forms.models import model_to_dict
 from rest_framework import (
     viewsets,
     permissions,
@@ -151,7 +153,7 @@ class DigestRecordsCategorizedByTbotViewSet(mixins.ListModelMixin, GenericViewSe
                     'is_main': categorization_attempt.digest_record.is_main,
                     'content_type': categorization_attempt.digest_record.content_type,
                     'content_category': categorization_attempt.digest_record.content_category,
-                    'title_keywords': [k.name for k in categorization_attempt.digest_record.title_keywords.all()],
+                    'title_keywords': [model_to_dict(k) for k in categorization_attempt.digest_record.title_keywords.all()],
                     'estimations': [],
                 }
             estimation_data = {
