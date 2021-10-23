@@ -166,9 +166,9 @@ class BasicParsingModule(metaclass=ABCMeta):
         filtered_posts_data: List[PostData] = []
         keywords_to_check = []
         if FiltrationType.GENERIC in self.filters:
-            keywords_to_check += [k.name for k in Keyword.objects.filter(is_generic=True)]
+            keywords_to_check += [k.name for k in Keyword.objects.filter(is_generic=True, proprietary=False)]
         if FiltrationType.SPECIFIC in self.filters:
-            keywords_to_check += [k.name for k in Keyword.objects.filter(is_generic=False)]
+            keywords_to_check += [k.name for k in Keyword.objects.filter(is_generic=False, proprietary=False)]
         for post_data in posts_data:
             if not post_data.title:
                 logger.error(f'Empty title for URL {post_data.url}')
