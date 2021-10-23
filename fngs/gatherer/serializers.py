@@ -25,32 +25,6 @@ class DigestRecordSerializer(serializers.ModelSerializer):
         ]
 
 
-class DigestRecordDetailedSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = DigestRecord
-        depth = 2
-        fields = [
-            'id',
-            'dt',
-            'gather_dt',
-            'source',
-            'title',
-            'url',
-            'additional_url',
-            'state',
-            'digest_issue',
-            'is_main',
-            'content_type',
-            'content_category',
-            'title_keywords',
-            'not_proprietary_keywords_names',
-            'proprietary_keywords_names',
-            'projects',
-            'language',
-            'tbot_estimations',
-        ]
-
-
 class DigestRecordDuplicateSerializer(serializers.ModelSerializer):
 
     class Meta:
@@ -96,6 +70,35 @@ class KeywordSerializer(serializers.ModelSerializer):
             'is_generic',
             'proprietary',
             'enabled',
+        ]
+
+
+class DigestRecordDetailedSerializer(serializers.ModelSerializer):
+    not_proprietary_keywords = KeywordSerializer(many=True, read_only=True)
+    proprietary_keywords = KeywordSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = DigestRecord
+        depth = 2
+        fields = [
+            'id',
+            'dt',
+            'gather_dt',
+            'source',
+            'title',
+            'url',
+            'additional_url',
+            'state',
+            'digest_issue',
+            'is_main',
+            'content_type',
+            'content_category',
+            'title_keywords',
+            'not_proprietary_keywords',
+            'proprietary_keywords',
+            'projects',
+            'language',
+            'tbot_estimations',
         ]
 
 

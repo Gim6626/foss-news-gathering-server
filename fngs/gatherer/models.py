@@ -154,13 +154,11 @@ class DigestRecord(models.Model):
     def title_keywords_names(self):
         return f'{", ".join([k.name for k in self.title_keywords.all()])}'
 
-    # TODO: Replace with objects and fix serializer
-    def not_proprietary_keywords_names(self):
-        return [k.name for k in self.title_keywords.filter(proprietary=False)]
+    def not_proprietary_keywords(self):
+        return self.title_keywords.filter(proprietary=False, is_generic=False)
 
-    # TODO: Replace with objects and fix serializer
-    def proprietary_keywords_names(self):
-        return [k.name for k in self.title_keywords.filter(proprietary=True)]
+    def proprietary_keywords(self):
+        return self.title_keywords.filter(proprietary=True)
 
     class Meta:
         verbose_name = 'Digest Record'
