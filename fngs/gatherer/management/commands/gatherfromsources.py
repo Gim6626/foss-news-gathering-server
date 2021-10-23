@@ -123,11 +123,10 @@ class Command(BaseCommand):
                     matched_keywords_for_one = Keyword.objects.filter(name=keyword_name)
                     if len(matched_keywords_for_one) == 0:
                         logger.error(f'Failed to find keywords with name "{keyword_name}" in database')
-                    elif len(matched_keywords_for_one) > 1:
-                        logger.error(f'More than one keyword with name "{keyword_name}" in database')
                     else:
-                        keyword = matched_keywords_for_one[0]
-                        all_matched_keywords.append(keyword)
+                        if len(matched_keywords_for_one) > 1:
+                            logger.warning(f'More than one keyword with name "{keyword_name}" found in database')
+                        all_matched_keywords += matched_keywords_for_one
                 if state == DigestRecordState.UNKNOWN.name and all_matched_keywords:
                     enabled_and_valuable_matched_keywords = []
                     if not posts_data_one.filters:
