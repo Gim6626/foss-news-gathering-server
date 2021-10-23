@@ -43,6 +43,8 @@ class DigestRecordDetailedSerializer(serializers.ModelSerializer):
             'content_type',
             'content_category',
             'title_keywords',
+            'not_proprietary_keywords_names',
+            'proprietary_keywords_names',
             'projects',
             'language',
             'tbot_estimations',
