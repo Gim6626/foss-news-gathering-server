@@ -234,7 +234,7 @@ class Keyword(models.Model):
         verbose_name_plural = 'Keywords'
 
     def __str__(self):
-        return f'{self.name} ({self.content_category}, {"GENERIC" if self.is_generic else "NON-GENERIC"})'
+        return f'{self.name} ({self.content_category}, {"GENERIC" if self.is_generic else "NON-GENERIC"}, {"PROPRIETARY" if self.proprietary else "NOT PROPRIETARY"})'
 
 
 class DigestRecordsSource(models.Model):
