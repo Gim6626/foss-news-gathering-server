@@ -14,6 +14,7 @@ router.register('new-foss-news-digest-records', NewFossNewsDigestRecordViewSet, 
 router.register('one-new-foss-news-digest-record', OneNewFossNewsDigestRecordViewSet, basename='one_new_foss_news_digest_record')
 router.register('one-new-foss-news-digest-record-from-tbot', OneNewFossNewsDigestRecordFromTbotViewSet, basename='one_new_foss_news_digest_record_from_tbot')
 router.register('not-categorized-digest-records-count', NotCategorizedDigestRecordsCountViewSet, basename='not_categorized_digest_records_count')
+router.register('not-categorized-digest-records-from-tbot-count', NotCategorizedDigestRecordsFromTbotCountViewSet, basename='not_categorized_digest_records_from_tbot_count')
 router.register('specific-digest-records', SpecificDigestRecordsViewSet, basename='specific_digest_records')
 router.register('digest-records-duplicates', DigestRecordDuplicateViewSet, basename='digest_records_duplicates')
 router.register('digest-records-duplicates-detailed', DigestRecordDuplicateDetailedViewSet, basename='digest_records_duplicates_detailed')

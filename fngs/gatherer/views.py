@@ -60,19 +60,26 @@ class OneNewFossNewsDigestRecordViewSet(GenericViewSet,
             return []
 
 
-class OneNewFossNewsDigestRecordFromTbotViewSet(GenericViewSet,
-                                                mixins.ListModelMixin,
-                                                NotCategorizedDigestRecordsMixin):
-    permission_classes = [permissions.IsAdminUser]
-    serializer_class = DigestRecordDetailedSerializer
+class NotCategorizedDigestRecordsFromTbotMixin(NotCategorizedDigestRecordsMixin):
 
-    def get_queryset(self):
-        queryset = self.not_categorized_records_queryset()
+    def not_categorized_records_queryset(self):
+        queryset = super().not_categorized_records_queryset()
         dt_now = datetime.datetime.now()
         dt_now_minus_2w = dt_now - datetime.timedelta(days=14)
         recent_tbot_attempts = TelegramBotDigestRecordCategorizationAttempt.objects.filter(dt__gt=dt_now_minus_2w)
         recent_tbot_attempts_records_ids = [attempt.digest_record.id for attempt in recent_tbot_attempts]
         queryset = queryset.filter(id__in=recent_tbot_attempts_records_ids)
+        return queryset
+
+
+class OneNewFossNewsDigestRecordFromTbotViewSet(GenericViewSet,
+                                                mixins.ListModelMixin,
+                                                NotCategorizedDigestRecordsFromTbotMixin):
+    permission_classes = [permissions.IsAdminUser]
+    serializer_class = DigestRecordDetailedSerializer
+
+    def get_queryset(self):
+        queryset = self.not_categorized_records_queryset()
         queryset = queryset.order_by('dt')
         if queryset:
             return [queryset[0]]
@@ -87,7 +94,18 @@ class NotCategorizedDigestRecordsCountViewSet(mixins.ListModelMixin,
 
     def list(self, request, *args, **kwargs):
         queryset = self.not_categorized_records_queryset()
-        count = len(queryset)
+        count = queryset.count()
+        return Response({'count': count}, status=status.HTTP_200_OK)
+
+
+class NotCategorizedDigestRecordsFromTbotCountViewSet(mixins.ListModelMixin,
+                                                      GenericViewSet,
+                                                      NotCategorizedDigestRecordsFromTbotMixin):
+    permission_classes = [permissions.IsAdminUser]
+
+    def list(self, request, *args, **kwargs):
+        queryset = self.not_categorized_records_queryset()
+        count = queryset.count()
         return Response({'count': count}, status=status.HTTP_200_OK)
 
 
