@@ -1,3 +1,4 @@
+import datetime
 import re
 
 from rest_framework import (
@@ -26,29 +27,67 @@ class NewDigestRecordViewSet(viewsets.ModelViewSet):
     serializer_class = DigestRecordSerializer
 
 
-class NewFossNewsDigestRecordViewSet(GenericViewSet, mixins.ListModelMixin):
+class NotCategorizedDigestRecordsMixin:
+
+    def not_categorized_records_queryset(self):
+        queryset = DigestRecord.objects.filter(state='UNKNOWN', projects__in=(Project.objects.filter(name='FOSS News')))
+        return queryset
+
+
+class NewFossNewsDigestRecordViewSet(GenericViewSet,
+                                     mixins.ListModelMixin,
+                                     NotCategorizedDigestRecordsMixin):
     permission_classes = [permissions.IsAdminUser | TelegramBotReadOnlyPermission]
-    queryset = DigestRecord.objects.filter(state='UNKNOWN', projects__in=(Project.objects.filter(name='FOSS News')))
     serializer_class = DigestRecordDetailedSerializer
 
+    def get_queryset(self):
+        queryset = self.not_categorized_records_queryset()
+        return queryset
 
-class OneNewFossNewsDigestRecordViewSet(GenericViewSet, mixins.ListModelMixin):
+
+class OneNewFossNewsDigestRecordViewSet(GenericViewSet,
+                                        mixins.ListModelMixin,
+                                        NotCategorizedDigestRecordsMixin):
     permission_classes = [permissions.IsAdminUser]
     serializer_class = DigestRecordDetailedSerializer
 
     def get_queryset(self):
-        queryset = DigestRecord.objects.filter(state='UNKNOWN', projects__in=(Project.objects.filter(name='FOSS News'))).order_by('dt')
+        queryset = self.not_categorized_records_queryset()
+        queryset = queryset.order_by('dt')
         if queryset:
             return [queryset[0]]
         else:
             return []
 
 
-class NotCategorizedDigestRecordsCountViewSet(mixins.ListModelMixin, GenericViewSet):
+class OneNewFossNewsDigestRecordFromTbotViewSet(GenericViewSet,
+                                                mixins.ListModelMixin,
+                                                NotCategorizedDigestRecordsMixin):
+    permission_classes = [permissions.IsAdminUser]
+    serializer_class = DigestRecordDetailedSerializer
+
+    def get_queryset(self):
+        queryset = self.not_categorized_records_queryset()
+        dt_now = datetime.datetime.now()
+        dt_now_minus_2w = dt_now - datetime.timedelta(days=14)
+        recent_tbot_attempts = TelegramBotDigestRecordCategorizationAttempt.objects.filter(dt__gt=dt_now_minus_2w)
+        recent_tbot_attempts_records_ids = [attempt.digest_record.id for attempt in recent_tbot_attempts]
+        queryset = queryset.filter(id__in=recent_tbot_attempts_records_ids)
+        queryset = queryset.order_by('dt')
+        if queryset:
+            return [queryset[0]]
+        else:
+            return []
+
+
+class NotCategorizedDigestRecordsCountViewSet(mixins.ListModelMixin,
+                                              GenericViewSet,
+                                              NotCategorizedDigestRecordsMixin):
     permission_classes = [permissions.IsAdminUser]
 
     def list(self, request, *args, **kwargs):
-        count = len(DigestRecord.objects.filter(state='UNKNOWN', projects__in=(Project.objects.filter(name='FOSS News'))))
+        queryset = self.not_categorized_records_queryset()
+        count = len(queryset)
         return Response({'count': count}, status=status.HTTP_200_OK)
 
 
