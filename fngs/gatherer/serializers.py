@@ -40,7 +40,7 @@ class DigestRecordDuplicateDetailedSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = DigestRecordDuplicate
-        depth = 1
+        depth = 2
         fields = [
             'id',
             'digest_issue',
