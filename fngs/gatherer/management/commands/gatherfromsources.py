@@ -129,6 +129,7 @@ class Command(BaseCommand):
                         keyword = matched_keywords_for_one[0]
                         all_matched_keywords.append(keyword)
                 if state == DigestRecordState.UNKNOWN.name and all_matched_keywords:
+                    enabled_and_valuable_matched_keywords = []
                     if not posts_data_one.filters:
                         should_be_skipped = False
                     elif FiltrationType.SPECIFIC in posts_data_one.filters \
@@ -136,23 +137,31 @@ class Command(BaseCommand):
                         should_be_skipped = True
                         for keyword in all_matched_keywords:
                             if keyword.enabled:
-                                should_be_skipped = False
-                                break
+                                enabled_and_valuable_matched_keywords.append(keyword)
                     elif FiltrationType.SPECIFIC in posts_data_one.filters:
                         should_be_skipped = True
                         for keyword in all_matched_keywords:
                             if keyword.enabled and not keyword.is_generic:
-                                should_be_skipped = False
-                                break
+                                enabled_and_valuable_matched_keywords.append(keyword)
                     else:
                         should_be_skipped = True
                         for keyword in all_matched_keywords:
                             if keyword.enabled and keyword.is_generic:
-                                should_be_skipped = False
-                                break
+                                enabled_and_valuable_matched_keywords.append(keyword)
+                    if enabled_and_valuable_matched_keywords:
+                        should_be_skipped = False
                     if should_be_skipped:
-                        logger.warning(f'Record "{post_data.title}" ({post_data.url}) marked as skipped because all it\'s keywords {[k.name for k in all_matched_keywords]} marked as disabled currently')
+                        logger.warning(f'Record "{post_data.title}" ({post_data.url}) marked as skipped after keywords check')
                         state = DigestRecordState.SKIPPED.name
+                    else:
+                        all_proprietary = True
+                        for keyword in enabled_and_valuable_matched_keywords:
+                            if not keyword.proprietary:
+                                all_proprietary = False
+                                break
+                        if all_proprietary:
+                            logger.warning(f'Record "{post_data.title}" ({post_data.url}) marked as skipped because all it\'s enabled and valuable keywords {[k.name for k in enabled_and_valuable_matched_keywords]} are proprietary')
+                            state = DigestRecordState.SKIPPED.name
                 digest_record = DigestRecord(dt=post_data.dt,
                                              source=source,
                                              gather_dt=datetime.datetime.now(tz=dateutil.tz.tzlocal()),
