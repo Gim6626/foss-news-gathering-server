@@ -251,8 +251,7 @@ class DigestRecordsSource(models.Model):
     projects = models.ManyToManyField(to='Project',
                                       blank=True,
                                       verbose_name='Projects',
-                                      related_name='sources',
-                                      null=True)
+                                      related_name='sources')
     language = models.CharField(verbose_name='Language',
                                 choices=Language.choices(),
                                 max_length=15,
