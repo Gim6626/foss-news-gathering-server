@@ -147,6 +147,9 @@ class DigestRecord(models.Model):
     description = models.TextField(verbose_name='Description',
                                    null=True,
                                    blank=True)
+    cleared_description = models.TextField(verbose_name='Cleared description',
+                                           null=True,
+                                           blank=True)
 
     def projects_names(self):
         return f'{", ".join([p.name for p in self.projects.all()])}'

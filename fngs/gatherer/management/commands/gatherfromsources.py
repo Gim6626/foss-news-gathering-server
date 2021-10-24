@@ -1,6 +1,8 @@
 from django.core.management.base import BaseCommand
 
 from gatherer.models import *
+from ds.models import *
+
 import datetime
 from enum import Enum
 from typing import List
@@ -9,6 +11,9 @@ import logging
 import sys
 import os
 import yaml
+import lemminflect
+import nltk
+from bs4 import BeautifulSoup
 
 
 from .sources import *
@@ -161,6 +166,8 @@ class Command(BaseCommand):
                         if all_proprietary:
                             logger.warning(f'Record "{post_data.title}" ({post_data.url}) marked as skipped because all it\'s enabled and valuable keywords {[k.name for k in enabled_and_valuable_matched_keywords]} are proprietary')
                             state = DigestRecordState.SKIPPED.name
+                description = post_data.brief
+                cleared_description = BeautifulSoup(description, 'lxml').text
                 digest_record = DigestRecord(dt=post_data.dt,
                                              source=source,
                                              gather_dt=datetime.datetime.now(tz=dateutil.tz.tzlocal()),
@@ -168,17 +175,51 @@ class Command(BaseCommand):
                                              url=post_data.url,
                                              state=state,
                                              language=source.language,
-                                             description=post_data.brief)
+                                             description=description,
+                                             cleared_description=cleared_description)
                 digest_record.save()
                 digest_record.projects.set(source.projects.all())
                 if all_matched_keywords:
                     digest_record.title_keywords.set(all_matched_keywords)
                 digest_record.save()
+                self._save_lemmas(digest_record, cleared_description)
                 added_digest_records_count += 1
                 logger.debug(f'Added {short_post_data_str} to database')
         iteration.saved_count = added_digest_records_count
         iteration.save()
         logger.info(f'Finished saving to database for source "{posts_data_one.source_name}", added {added_digest_records_count} digest record(s), {already_existing_digest_records_count} already existed, dates filled for {already_existing_digest_records_dt_updated_count} existing record(s)')
+
+    def _save_lemmas(self, digest_record, cleared_description):
+        words = nltk.word_tokenize(cleared_description)
+        word_lemmas_counts = {}
+        for word in words:
+            word_lemmas = lemminflect.getAllLemmas(word)
+            lemmas_keys = ('NOUN', 'VERB', 'AUX', 'ADV', 'ADJ')
+            word_lemmas_plain = []
+            for lk in lemmas_keys:
+                if lk in word_lemmas:
+                    word_lemmas_plain += (l.lower() for l in word_lemmas[lk])
+            if not word_lemmas and re.match(r'\w', word):
+                word_lemmas_plain.append(word.lower())
+            for l in word_lemmas_plain:
+                if l not in word_lemmas_counts:
+                    word_lemmas_counts[l] = 1
+                else:
+                    word_lemmas_counts[l] += 1
+        for lemma_text, lemma_count_in_dr in word_lemmas_counts.items():
+            existing_lemmas = Lemma.objects.filter(text=lemma_text)
+            if not existing_lemmas:
+                lemma_object = Lemma(text=lemma_text)
+                lemma_object.save()
+            else:
+                lemma_object = existing_lemmas[0]
+            existing_digest_record_lemmas = DigestRecordLemma.objects.filter(lemma=lemma_object,
+                                                                             digest_record=digest_record)
+            if not existing_digest_record_lemmas:
+                digest_record_lemma = DigestRecordLemma(lemma=lemma_object,
+                                                        digest_record=digest_record,
+                                                        count=lemma_count_in_dr)
+                digest_record_lemma.save()
 
     def _init_globals(self, **options):
         if options['debug']:

@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'gatherer',
     'search',
     'tbot',
+    'ds',
 ]
 
 MIDDLEWARE = [
