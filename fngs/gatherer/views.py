@@ -208,17 +208,8 @@ class SimilarRecordsInPreviousDigest(mixins.ListModelMixin, GenericViewSet):
             for record in records:
                 if re.search(rf'\b{re.escape(keyword)}\b', record.title, re.IGNORECASE) and record not in similar_records_in_previous_digest:
                     similar_records_in_previous_digest.append(record)
-        similar_records_in_previous_digest_titles = [
-            {
-                # TODO: Use serializer
-                'title': r.title,
-                'is_main': r.is_main,
-                'content_type': r.content_type,
-                'content_category': r.content_category,
-                'url': r.url,
-            }
-            for r in similar_records_in_previous_digest
-        ]
+        similar_records_in_previous_digest_titles = [DigestRecordDetailedSerializer(r).data
+                                                     for r in similar_records_in_previous_digest]
 
         return Response({'similar_records_in_previous_digest': similar_records_in_previous_digest_titles},
                         status=status.HTTP_200_OK)

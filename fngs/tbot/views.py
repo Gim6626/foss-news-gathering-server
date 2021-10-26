@@ -122,12 +122,7 @@ class TelegramBotUserByTidViewSet(mixins.ListModelMixin,
             return Response({'error': 'Telegram bot users not found'},
                             status=status.HTTP_404_NOT_FOUND)
         telegram_bot_user = telegram_bot_users[0]
-        return Response({
-                            # TODO: Use serializer
-                            'id': telegram_bot_user.id,
-                            'tid': telegram_bot_user.tid,
-                            'username': telegram_bot_user.username,
-                        },
+        return Response(TelegramBotUserDetailedSerializer(telegram_bot_user).data,
                         status=status.HTTP_200_OK)
 
 
@@ -142,18 +137,7 @@ class DigestRecordsCategorizedByTbotViewSet(mixins.ListModelMixin, GenericViewSe
             digest_record_id = categorization_attempt.digest_record.id
             if digest_record_id not in categorizations_data_by_digest_record:
                 categorizations_data_by_digest_record[digest_record_id] = {
-                    # TODO: Use serializer
-                    'dt': categorization_attempt.digest_record.dt,
-                    'source': categorization_attempt.digest_record.source.name,
-                    'title': categorization_attempt.digest_record.title,
-                    'url': categorization_attempt.digest_record.url,
-                    'language': categorization_attempt.digest_record.language,
-                    'additional_url': categorization_attempt.digest_record.additional_url,
-                    'digest_issue': categorization_attempt.digest_record.digest_issue,
-                    'is_main': categorization_attempt.digest_record.is_main,
-                    'content_type': categorization_attempt.digest_record.content_type,
-                    'content_category': categorization_attempt.digest_record.content_category,
-                    'title_keywords': [model_to_dict(k) for k in categorization_attempt.digest_record.title_keywords.all()],
+                    'record': DigestRecordDetailedSerializer(DigestRecord.objects.get(id=digest_record_id)).data,
                     'estimations': [],
                 }
             estimation_data = {
