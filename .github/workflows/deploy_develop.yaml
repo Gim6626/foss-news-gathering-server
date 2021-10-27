@@ -5,6 +5,10 @@ on:
     branches:
       - develop
 
+concurrency:
+  group: deploy_develop
+  cancel-in-progress: false
+
 jobs:
   deploy_develop:
     runs-on: self-hosted
