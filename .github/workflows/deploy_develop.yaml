@@ -15,15 +15,17 @@ jobs:
     - name: Fetch code
       working-directory: /home/gim6626/fngs-dev
       run: git pull
-    - name: Switch to virtual environment
-      working-directory: /home/gim6626/fngs-dev
-      run: source env/bin/activate
     - name: Install requirements
       working-directory: /home/gim6626/fngs-dev
-      run: pip3 install -r requirements.txt
+      run: |
+        source env/bin/activate
+        pip3 install -r requirements.txt
     - name: Run migrations
-      working-directory: /home/gim6626/fngs-dev/fngs
-      run: python3 manage.py migrate
+      working-directory: /home/gim6626/fngs-dev
+      run: |
+        source env/bin/activate
+        cd fngs
+        python3 manage.py migrate
     - name: Restart FNGS Dev
       run: sudo systemctl restart fngs-dev.service
     - name: Wait a bit to let FNGS Dev start
