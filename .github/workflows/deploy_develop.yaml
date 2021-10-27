@@ -12,18 +12,18 @@ jobs:
       FNGS_DEV_DIR: /home/gim6626/fngs-dev
     steps:
     - name: Checkout "develop" branch
-      working-directory: $FNGS_DEV_DIR
+      working-directory: ${{ env.FNGS_DEV_DIR }}
       run: git checkout develop
     - name: Fetch code
-      working-directory: $FNGS_DEV_DIR
+      working-directory: ${{ env.FNGS_DEV_DIR }}
       run: git pull
     - name: Install requirements
-      working-directory: $FNGS_DEV_DIR
+      working-directory: ${{ env.FNGS_DEV_DIR }}
       run: |
         source env/bin/activate
         pip3 install -r requirements.txt
     - name: Run migrations
-      working-directory: $FNGS_DEV_DIR
+      working-directory: ${{ env.FNGS_DEV_DIR }}
       run: |
         source env/bin/activate
         cd fngs
