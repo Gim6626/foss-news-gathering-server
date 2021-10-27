@@ -9,19 +9,20 @@ jobs:
   deploy_develop:
     runs-on: self-hosted
     steps:
-    - name: Go to fngs-dev
-      run: cd ~/fngs-dev
     - name: Checkout "develop" branch
+      working-directory: ~/fngs-dev
       run: git checkout develop
     - name: Fetch code
+      working-directory: ~/fngs-dev
       run: git pull
     - name: Switch to virtual environment
+      working-directory: ~/fngs-dev
       run: source env/bin/activate
     - name: Install requirements
+      working-directory: ~/fngs-dev
       run: pip3 install -r requirements.txt
-    - name: Go to server folder
-      run: cd fngs
     - name: Run migrations
+      working-directory: ~/fngs-dev/fngs
       run: python3 manage.py migrate
     - name: Restart FNGS Dev
       run: sudo systemctl restart fngs-dev.service
