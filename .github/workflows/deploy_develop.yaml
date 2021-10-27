@@ -8,20 +8,22 @@ on:
 jobs:
   deploy_develop:
     runs-on: self-hosted
+    env:
+      FNGS_DEV_DIR: /home/gim6626/fngs-dev
     steps:
     - name: Checkout "develop" branch
-      working-directory: /home/gim6626/fngs-dev
+      working-directory: $FNGS_DEV_DIR
       run: git checkout develop
     - name: Fetch code
-      working-directory: /home/gim6626/fngs-dev
+      working-directory: $FNGS_DEV_DIR
       run: git pull
     - name: Install requirements
-      working-directory: /home/gim6626/fngs-dev
+      working-directory: $FNGS_DEV_DIR
       run: |
         source env/bin/activate
         pip3 install -r requirements.txt
     - name: Run migrations
-      working-directory: /home/gim6626/fngs-dev
+      working-directory: $FNGS_DEV_DIR
       run: |
         source env/bin/activate
         cd fngs
