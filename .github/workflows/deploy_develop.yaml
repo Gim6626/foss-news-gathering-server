@@ -1,0 +1,31 @@
+name: FNGS Develop Deploy
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  deploy_develop:
+    runs-on: self-hosted
+    steps:
+    - name: Go to fngs-dev
+      run: cd ~/fngs-dev
+    - name: Checkout "develop" branch
+      run: git checkout develop
+    - name: Fetch code
+      run: git pull
+    - name: Switch to virtual environment
+      run: source env/bin/activate
+    - name: Install requirements
+      run: pip3 install -r requirements.txt
+    - name: Go to server folder
+      run: cd fngs
+    - name: Run migrations
+      run: python3 manage.py migrate
+    - name: Restart FNGS Dev
+      run: sudo systemctl restart fngs-dev.service
+    - name: Wait a bit to let FNGS Dev start
+      run: sleep 5
+    - name: Check FNGS Dev status
+      run: systemctl status fngs-dev.service
