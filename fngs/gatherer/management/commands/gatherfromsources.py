@@ -166,7 +166,7 @@ class Command(BaseCommand):
                             if not keyword.proprietary:
                                 all_proprietary = False
                                 break
-                        if all_proprietary:
+                        if all_proprietary and enabled_and_valuable_matched_keywords:
                             logger.warning(f'Record "{post_data.title}" ({post_data.url}) marked as skipped because all it\'s enabled and valuable keywords {[k.name for k in enabled_and_valuable_matched_keywords]} are proprietary')
                             state = DigestRecordState.SKIPPED.name
                 description = post_data.brief
