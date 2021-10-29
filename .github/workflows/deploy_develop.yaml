@@ -12,6 +12,7 @@ concurrency:
 jobs:
   deploy_develop:
     runs-on: self-hosted
+    if: github.repository == 'foss-news/foss-news-gathering-server'
     env:
       FNGS_DEV_DIR: /home/gim6626/fngs-dev
     steps:
