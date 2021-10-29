@@ -182,7 +182,10 @@ class Command(BaseCommand):
                 if all_matched_keywords:
                     digest_record.title_keywords.set(all_matched_keywords)
                 digest_record.save()
-                self._save_lemmas(digest_record, cleared_description)
+                if digest_record.language == Language.ENGLISH.name:
+                    self._save_lemmas(digest_record, cleared_description)
+                else:
+                    logger.debug(f'Skipped parsing lemmas for "{digest_record.title}" because it is not english')
                 added_digest_records_count += 1
                 logger.debug(f'Added {short_post_data_str} to database')
         iteration.saved_count = added_digest_records_count
