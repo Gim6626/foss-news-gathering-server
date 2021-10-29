@@ -186,7 +186,10 @@ class Command(BaseCommand):
                     digest_record.title_keywords.set(all_matched_keywords)
                 digest_record.save()
                 if digest_record.language == Language.ENGLISH.name:
-                    self._save_lemmas(digest_record, cleared_description)
+                    if cleared_description:
+                        self._save_lemmas(digest_record, cleared_description)
+                    else:
+                        logger.debug(f'Skipped parsing lemmas for "{digest_record.title}" because cleared description is empty')
                 else:
                     logger.debug(f'Skipped parsing lemmas for "{digest_record.title}" because it is not english')
                 added_digest_records_count += 1
