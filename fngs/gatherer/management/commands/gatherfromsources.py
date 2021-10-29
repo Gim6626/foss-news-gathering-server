@@ -170,7 +170,7 @@ class Command(BaseCommand):
                             logger.warning(f'Record "{post_data.title}" ({post_data.url}) marked as skipped because all it\'s enabled and valuable keywords {[k.name for k in enabled_and_valuable_matched_keywords]} are proprietary')
                             state = DigestRecordState.SKIPPED.name
                 description = post_data.brief
-                cleared_description = BeautifulSoup(description, 'lxml').text
+                cleared_description = BeautifulSoup(description, 'lxml').text if description else None
                 digest_record = DigestRecord(dt=post_data.dt,
                                              source=source,
                                              gather_dt=datetime.datetime.now(tz=dateutil.tz.tzlocal()),
