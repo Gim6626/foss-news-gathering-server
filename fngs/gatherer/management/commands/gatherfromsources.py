@@ -135,6 +135,9 @@ class Command(BaseCommand):
                 if state == DigestRecordState.UNKNOWN.name and all_matched_keywords:
                     enabled_and_valuable_matched_keywords = []
                     if not posts_data_one.filters:
+                        for keyword in all_matched_keywords:
+                            if keyword.enabled:
+                                enabled_and_valuable_matched_keywords.append(keyword)
                         should_be_skipped = False
                     elif FiltrationType.SPECIFIC in posts_data_one.filters \
                             and FiltrationType.GENERIC in posts_data_one.filters:
