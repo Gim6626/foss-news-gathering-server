@@ -33,7 +33,7 @@ class NotCategorizedDigestRecordsMixin:
 
     def not_categorized_records_queryset(self):
         queryset1 = DigestRecord.objects.filter(state='UNKNOWN', projects__in=(Project.objects.filter(name='FOSS News')))
-        queryset2 = DigestRecord.objects.filter(digest_issue__number=DigestIssue.objects.order_by('-number')[0].number, state='IN_DIGEST', projects__in=(Project.objects.filter(name='FOSS News'))).filter(~Q(content_type=None)).count()
+        queryset2 = DigestRecord.objects.filter(digest_issue__number=DigestIssue.objects.order_by('-number')[0].number, state='IN_DIGEST', projects__in=(Project.objects.filter(name='FOSS News'))).filter(~Q(content_type=None))
         return queryset1 | queryset2
 
 
