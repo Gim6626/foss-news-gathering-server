@@ -1,3 +1,5 @@
+from django.db.models import Q
+
 import datetime
 import re
 
@@ -30,8 +32,9 @@ class NewDigestRecordViewSet(viewsets.ModelViewSet):
 class NotCategorizedDigestRecordsMixin:
 
     def not_categorized_records_queryset(self):
-        queryset = DigestRecord.objects.filter(state='UNKNOWN', projects__in=(Project.objects.filter(name='FOSS News')))
-        return queryset
+        queryset1 = DigestRecord.objects.filter(state='UNKNOWN', projects__in=(Project.objects.filter(name='FOSS News')))
+        queryset2 = DigestRecord.objects.filter(digest_issue__number=DigestIssue.objects.order_by('-number')[0].number, state='IN_DIGEST', projects__in=(Project.objects.filter(name='FOSS News'))).filter(~Q(content_type=None)).count()
+        return queryset1 | queryset2
 
 
 class NewFossNewsDigestRecordViewSet(GenericViewSet,
