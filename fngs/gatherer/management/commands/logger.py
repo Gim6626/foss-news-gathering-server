@@ -14,7 +14,7 @@ class Formatter(logging.Formatter):
         logging.Formatter.__init__(self, fmt)
 
     def _colorized_fmt(self, color=Fore.RESET):
-        return f'{color}[%(asctime)s] %(levelname)s:{Style.RESET_ALL} %(message)s'
+        return f'{color}[%(asctime)s] %(levelname)s: %(message)s{Style.RESET_ALL}'
 
     def format(self, record):
         # Save the original format configured by the user
@@ -25,7 +25,7 @@ class Formatter(logging.Formatter):
         if record.levelno == logging.DEBUG:
             color = Fore.CYAN
         elif record.levelno == logging.INFO:
-            color = Fore.RESET
+            color = Fore.GREEN
         elif record.levelno == logging.WARNING:
             color = Fore.YELLOW
         elif record.levelno == logging.ERROR:
