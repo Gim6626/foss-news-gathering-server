@@ -30,7 +30,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         self._init_globals(**options)
         custom_logger.info('Started updating keywords in digest records')
-        digest_records_queryset = DigestRecord.objects.filter()
+        digest_records_queryset = DigestRecord.objects.all()
         last_printed_percent = None
         digest_record_object: DigestRecord
         keywords_queryset = Keyword.objects.all()
@@ -50,7 +50,7 @@ class Command(BaseCommand):
                 last_printed_percent = percent
         if last_printed_percent is not None and last_printed_percent != 100:
             custom_logger.info(f'Processed 100%')
-        custom_logger.info(f'Finished updating keywords in digest records, updated {updated_digest_records_count} digest records')
+        custom_logger.info(f'Finished updating keywords in digest records, updated {updated_digest_records_count}/{digest_records_queryset.count()} ({math.floor(updated_digest_records_count / digest_records_queryset.count() * 100)}) digest records')
 
     def _init_globals(self, **options):
         if options['debug']:
