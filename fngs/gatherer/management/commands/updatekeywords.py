@@ -9,7 +9,8 @@ import math
 
 
 from .logger import Logger
-custom_logger = Logger()
+SCRIPT_DIRECTORY = os.path.dirname(os.path.realpath(__file__))
+custom_logger = Logger(os.path.join('keywordsupdate.log'))
 from .sources import BasicParsingModule
 
 
@@ -29,6 +30,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         self._init_globals(**options)
+        custom_logger.info(f'Saving log to "{custom_logger.file_path}"')
         custom_logger.info('Started updating keywords in digest records')
         digest_records_queryset = DigestRecord.objects.all()
         last_printed_percent = None
@@ -43,6 +45,7 @@ class Command(BaseCommand):
             if set(title_keywords_to_save) != set(digest_record_object.title_keywords.all()):
                 custom_logger.debug(f'Need to update keywords for digest record #{digest_record_object.id} "{digest_record_object.title}", old keywords were {sorted([k.name for k in digest_record_object.title_keywords.all()])}, new keywords are {sorted([k.name for k in title_keywords_to_save])}')
                 digest_record_object.title_keywords.set(title_keywords_to_save)
+                custom_logger.debug('Updated')
                 updated_digest_records_count += 1
             percent = math.floor(digest_record_object_i / digest_records_queryset.count() * 100)
             if last_printed_percent is None or percent != last_printed_percent:

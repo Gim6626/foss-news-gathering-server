@@ -47,13 +47,14 @@ class Formatter(logging.Formatter):
 
 class Logger(logging.Logger):
 
-    def __init__(self, log_file_name=None):
-        super().__init__('fngs')
+    def __init__(self, log_file_path=None):
+        self.file_path = os.path.realpath(log_file_path) if log_file_path else None
+        super().__init__(__file__)
 
         logging_formatter = Formatter()
 
-        if log_file_name is not None:
-            self.file_handler = logging.FileHandler(os.path.join(SCRIPT_DIRECTORY, log_file_name))
+        if log_file_path is not None:
+            self.file_handler = logging.FileHandler(log_file_path)
             self.file_handler.setFormatter(logging_formatter)
             self.file_handler.setLevel(logging.DEBUG)
             self.addHandler(self.file_handler)

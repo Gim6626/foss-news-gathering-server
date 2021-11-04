@@ -19,7 +19,8 @@ from bs4 import BeautifulSoup
 from .sources import *
 
 from .logger import Logger
-custom_logger = Logger('gatherfromsources.log')
+SCRIPT_DIRECTORY = os.path.dirname(os.path.realpath(__file__))
+custom_logger = Logger(os.path.join(SCRIPT_DIRECTORY, 'gatherfromsources.log'))
 
 SCRIPT_DIRECTORY = os.path.dirname(os.path.realpath(__file__))
 
@@ -45,6 +46,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         self._init_globals(**options)
+        custom_logger.info(f'Saving log to "{custom_logger.file_path}"')
         parsing_modules = ParsingModuleFactory.create(parsing_modules_names, custom_logger)
         custom_logger.info('Started parsing all sources')
         for parsing_module in parsing_modules:
