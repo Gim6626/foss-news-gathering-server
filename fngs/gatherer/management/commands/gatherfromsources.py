@@ -1,16 +1,12 @@
 from django.core.management.base import BaseCommand
 
-from gatherer.models import *
 from ds.models import *
 
-import datetime
-from enum import Enum
-from typing import List
 import dateutil.parser
 import logging
 import sys
 import os
-import yaml
+import traceback
 import lemminflect
 import nltk
 from bs4 import BeautifulSoup
@@ -45,16 +41,21 @@ class Command(BaseCommand):
                             help='Days to gather')
 
     def handle(self, *args, **options):
-        self._init_globals(**options)
-        custom_logger.info(f'Saving log to "{custom_logger.file_path}"')
-        parsing_modules = ParsingModuleFactory.create(parsing_modules_names, custom_logger)
-        custom_logger.info('Started parsing all sources')
-        for parsing_module in parsing_modules:
-            parsing_result = self._parse(parsing_module)
-            if parsing_result is not None:
-                iteration, posts_data_one = parsing_result
-                self._save_to_database(iteration, posts_data_one)
-        custom_logger.info(f'Finished parsing all sources, all saved to database')  # TODO: Add stats
+        try:
+            self._init_globals(**options)
+            custom_logger.info(f'Saving log to "{custom_logger.file_path}"')
+            parsing_modules = ParsingModuleFactory.create(parsing_modules_names, custom_logger)
+            custom_logger.info('Started parsing all sources')
+            for parsing_module in parsing_modules:
+                parsing_result = self._parse(parsing_module)
+                if parsing_result is not None:
+                    iteration, posts_data_one = parsing_result
+                    self._save_to_database(iteration, posts_data_one)
+            custom_logger.info(f'Finished parsing all sources, all saved to database')  # TODO: Add stats
+        except Exception as e:
+            custom_logger.critical(e)
+            custom_logger.critical(traceback.format_exc())
+            sys.exit(1)
 
     def _parse(self, parsing_module):
         custom_logger.info(f'Started parsing {parsing_module.source_name}')
