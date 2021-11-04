@@ -47,6 +47,7 @@ class Command(BaseCommand):
                 if set(title_keywords_to_save) != set(digest_record_object.title_keywords.all()):
                     custom_logger.debug(f'Need to update keywords for digest record #{digest_record_object.id} "{digest_record_object.title}", old keywords were {sorted([k.name for k in digest_record_object.title_keywords.all()])}, new keywords are {sorted([k.name for k in title_keywords_to_save])}')
                     digest_record_object.title_keywords.set(title_keywords_to_save)
+                    digest_record_object.save()
                     custom_logger.debug('Updated')
                     updated_digest_records_count += 1
                 percent = math.floor(digest_record_object_i / digest_records_queryset.count() * 100)
