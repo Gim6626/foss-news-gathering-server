@@ -42,6 +42,7 @@ class Command(BaseCommand):
             keywords_queryset = Keyword.objects.all()
             updated_digest_records_count = 0
             for digest_record_object_i, digest_record_object in enumerate(digest_records_queryset):
+                # TODO: Optimize, too slow
                 title_keywords_to_save = []
                 for keyword in keywords_queryset:
                     if BasicParsingModule.find_keyword_in_title(keyword.name, digest_record_object.title):
