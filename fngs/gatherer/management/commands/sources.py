@@ -145,10 +145,11 @@ class BasicParsingModule(metaclass=ABCMeta):
             for keyword in keywords_to_check:
                 if keyword in post_data.keywords:
                     continue
-                if self._find_keyword_in_title(keyword, post_data.title):
+                if BasicParsingModule.find_keyword_in_title(keyword, post_data.title):
                     post_data.keywords.append(keyword)
 
-    def _find_keyword_in_title(self, keyword, title):
+    @staticmethod
+    def find_keyword_in_title(keyword, title):
         return re.search(rf'\b{re.escape(keyword)}\b', title, re.IGNORECASE)
 
     def _filter_out(self, source_posts_data: List[PostData], days_count: int):
@@ -177,7 +178,7 @@ class BasicParsingModule(metaclass=ABCMeta):
                 continue
             matched = False
             for keyword in keywords_to_check:
-                if self._find_keyword_in_title(keyword, post_data.title):
+                if BasicParsingModule.find_keyword_in_title(keyword, post_data.title):
                     matched = True
                     break
             processed_post_data = copy(post_data)
