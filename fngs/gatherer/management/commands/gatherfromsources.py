@@ -17,8 +17,9 @@ from bs4 import BeautifulSoup
 
 
 from .sources import *
-from .logger import logger
 
+from .logger import Logger
+custom_logger = Logger('gatherfromsources.log')
 
 SCRIPT_DIRECTORY = os.path.dirname(os.path.realpath(__file__))
 
@@ -44,17 +45,17 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         self._init_globals(**options)
-        parsing_modules = ParsingModuleFactory.create(parsing_modules_names)
-        logger.info('Started parsing all sources')
+        parsing_modules = ParsingModuleFactory.create(parsing_modules_names, custom_logger)
+        custom_logger.info('Started parsing all sources')
         for parsing_module in parsing_modules:
             parsing_result = self._parse(parsing_module)
             if parsing_result is not None:
                 iteration, posts_data_one = parsing_result
                 self._save_to_database(iteration, posts_data_one)
-        logger.info(f'Finished parsing all sources, all saved to database')  # TODO: Add stats
+        custom_logger.info(f'Finished parsing all sources, all saved to database')  # TODO: Add stats
 
     def _parse(self, parsing_module):
-        logger.info(f'Started parsing {parsing_module.source_name}')
+        custom_logger.info(f'Started parsing {parsing_module.source_name}')
         parsing_result = parsing_module.parse(days_count)
         source = DigestRecordsSource.objects.get(name=parsing_module.source_name)
         datetime_now = datetime.datetime.now(tz=dateutil.tz.tzlocal())
@@ -73,9 +74,9 @@ class Command(BaseCommand):
                                                  source=source)
             iteration.save()
             for post_data in posts_data_one.posts_data_list:
-                logger.info(f'New post {post_data.dt if post_data.dt is not None else "?"} "{post_data.title}" {post_data.url}')
-            logger.debug(f'Parsed from {parsing_module.source_name}: {[(post_data.title, post_data.url) for post_data in posts_data_one.posts_data_list]}')
-            logger.info(f'Finished parsing {parsing_module.source_name}, got {len(posts_data_one.posts_data_list)} post(s)')
+                custom_logger.info(f'New post {post_data.dt if post_data.dt is not None else "?"} "{post_data.title}" {post_data.url}')
+            custom_logger.debug(f'Parsed from {parsing_module.source_name}: {[(post_data.title, post_data.url) for post_data in posts_data_one.posts_data_list]}')
+            custom_logger.info(f'Finished parsing {parsing_module.source_name}, got {len(posts_data_one.posts_data_list)} post(s)')
             return iteration, posts_data_one
         elif not parsing_result.source_enabled:
             iteration = DigestGatheringIteration(dt=datetime_now,
@@ -99,7 +100,7 @@ class Command(BaseCommand):
             return None
 
     def _save_to_database(self, iteration: DigestGatheringIteration, posts_data_one: PostsData):
-        logger.info(f'Saving to database for source "{posts_data_one.source_name}"')
+        custom_logger.info(f'Saving to database for source "{posts_data_one.source_name}"')
         source = DigestRecordsSource.objects.get(name=posts_data_one.source_name)
         added_digest_records_count = 0
         already_existing_digest_records_count = 0
@@ -110,15 +111,15 @@ class Command(BaseCommand):
             if similar_records:
                 if not similar_records[0].dt:
                     similar_records[0].dt = post_data.dt
-                    logger.debug(f'{short_post_data_str} already exists in database, but without date, fix it')
+                    custom_logger.debug(f'{short_post_data_str} already exists in database, but without date, fix it')
                     already_existing_digest_records_dt_updated_count += 1
                     similar_records[0].save()
                 else:
-                    logger.warning(f'{short_post_data_str} ignored, found same in database')
+                    custom_logger.warning(f'{short_post_data_str} ignored, found same in database')
                     already_existing_digest_records_count += 1
                 continue
             else:
-                logger.debug(f'Adding {short_post_data_str} to database')
+                custom_logger.debug(f'Adding {short_post_data_str} to database')
                 all_matched_keywords = []
                 if post_data.filtered:
                     state = DigestRecordState.FILTERED.name
@@ -127,10 +128,10 @@ class Command(BaseCommand):
                 for keyword_name in post_data.keywords:
                     matched_keywords_for_one = Keyword.objects.filter(name=keyword_name)
                     if len(matched_keywords_for_one) == 0:
-                        logger.error(f'Failed to find keywords with name "{keyword_name}" in database')
+                        custom_logger.error(f'Failed to find keywords with name "{keyword_name}" in database')
                     else:
                         if len(matched_keywords_for_one) > 1:
-                            logger.warning(f'More than one keyword with name "{keyword_name}" found in database')
+                            custom_logger.warning(f'More than one keyword with name "{keyword_name}" found in database')
                         all_matched_keywords += matched_keywords_for_one
                 if state == DigestRecordState.UNKNOWN.name and all_matched_keywords:
                     enabled_and_valuable_matched_keywords = []
@@ -158,7 +159,7 @@ class Command(BaseCommand):
                     if enabled_and_valuable_matched_keywords:
                         should_be_skipped = False
                     if should_be_skipped:
-                        logger.warning(f'Record "{post_data.title}" ({post_data.url}) marked as skipped after keywords check')
+                        custom_logger.warning(f'Record "{post_data.title}" ({post_data.url}) marked as skipped after keywords check')
                         state = DigestRecordState.SKIPPED.name
                     else:
                         all_proprietary = True
@@ -167,7 +168,7 @@ class Command(BaseCommand):
                                 all_proprietary = False
                                 break
                         if all_proprietary and enabled_and_valuable_matched_keywords:
-                            logger.warning(f'Record "{post_data.title}" ({post_data.url}) marked as skipped because all it\'s enabled and valuable keywords {[k.name for k in enabled_and_valuable_matched_keywords]} are proprietary')
+                            custom_logger.warning(f'Record "{post_data.title}" ({post_data.url}) marked as skipped because all it\'s enabled and valuable keywords {[k.name for k in enabled_and_valuable_matched_keywords]} are proprietary')
                             state = DigestRecordState.SKIPPED.name
                 description = post_data.brief
                 cleared_description = BeautifulSoup(description, 'lxml').text if description else None
@@ -189,14 +190,14 @@ class Command(BaseCommand):
                     if cleared_description:
                         self._save_lemmas(digest_record, cleared_description)
                     else:
-                        logger.debug(f'Skipped parsing lemmas for "{digest_record.title}" because cleared description is empty')
+                        custom_logger.debug(f'Skipped parsing lemmas for "{digest_record.title}" because cleared description is empty')
                 else:
-                    logger.debug(f'Skipped parsing lemmas for "{digest_record.title}" because it is not english')
+                    custom_logger.debug(f'Skipped parsing lemmas for "{digest_record.title}" because it is not english')
                 added_digest_records_count += 1
-                logger.debug(f'Added {short_post_data_str} to database')
+                custom_logger.debug(f'Added {short_post_data_str} to database')
         iteration.saved_count = added_digest_records_count
         iteration.save()
-        logger.info(f'Finished saving to database for source "{posts_data_one.source_name}", added {added_digest_records_count} digest record(s), {already_existing_digest_records_count} already existed, dates filled for {already_existing_digest_records_dt_updated_count} existing record(s)')
+        custom_logger.info(f'Finished saving to database for source "{posts_data_one.source_name}", added {added_digest_records_count} digest record(s), {already_existing_digest_records_count} already existed, dates filled for {already_existing_digest_records_dt_updated_count} existing record(s)')
 
     def _save_lemmas(self, digest_record, cleared_description):
         words = nltk.word_tokenize(cleared_description)
@@ -232,7 +233,7 @@ class Command(BaseCommand):
 
     def _init_globals(self, **options):
         if options['debug']:
-            logger.console_handler.setLevel(logging.DEBUG)
+            custom_logger.console_handler.setLevel(logging.DEBUG)
         global days_count
         days_count = options['DAYS_COUNT']
         module = options['MODULE']
@@ -250,18 +251,18 @@ class Command(BaseCommand):
             if source.enabled:
                 enabled_sources_selected_by_user.append(source)
             else:
-                logger.warning(f'Source "{source.name}" is disabled, not parsing')
+                custom_logger.warning(f'Source "{source.name}" is disabled, not parsing')
         parsing_modules_names = [s.name for s in enabled_sources_selected_by_user]
 
 
 class ParsingModuleFactory:
 
     @staticmethod
-    def create(parsing_module_names: List[str]) -> List[BasicParsingModule]:
-        return [ParsingModuleFactory.create_one(parsing_module_name) for parsing_module_name in parsing_module_names]
+    def create(parsing_module_names: List[str], logger) -> List[BasicParsingModule]:
+        return [ParsingModuleFactory.create_one(parsing_module_name, logger) for parsing_module_name in parsing_module_names]
 
     @staticmethod
-    def create_one(parsing_module_name: str) -> BasicParsingModule:
+    def create_one(parsing_module_name: str, logger) -> BasicParsingModule:
         parsing_module_constructor = globals()[parsing_module_name + 'ParsingModule']
-        parsing_module = parsing_module_constructor()
+        parsing_module = parsing_module_constructor(logger)
         return parsing_module

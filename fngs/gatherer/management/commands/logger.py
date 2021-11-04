@@ -47,16 +47,16 @@ class Formatter(logging.Formatter):
 
 class Logger(logging.Logger):
 
-    def __init__(self):
+    def __init__(self, log_file_name=None):
         super().__init__('fngs')
 
         logging_formatter = Formatter()
 
-        self.file_handler = logging.FileHandler(os.path.join(SCRIPT_DIRECTORY,
-                                                        'gatherfromsources.log'))
-        self.file_handler.setFormatter(logging_formatter)
-        self.file_handler.setLevel(logging.DEBUG)
-        self.addHandler(self.file_handler)
+        if log_file_name is not None:
+            self.file_handler = logging.FileHandler(os.path.join(SCRIPT_DIRECTORY, log_file_name))
+            self.file_handler.setFormatter(logging_formatter)
+            self.file_handler.setLevel(logging.DEBUG)
+            self.addHandler(self.file_handler)
 
         self.console_handler = logging.StreamHandler(sys.stderr)
         self.console_handler.setFormatter(logging_formatter)
@@ -66,4 +66,4 @@ class Logger(logging.Logger):
         logging.getLogger('requests').setLevel(logging.WARNING)
 
 
-logger = Logger()
+logger = None

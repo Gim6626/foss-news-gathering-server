@@ -12,7 +12,6 @@ from copy import copy
 import pytz
 
 from gatherer.models import *
-from .logger import logger
 
 
 foss_news_project = Project.objects.get(name='FOSS News')
@@ -99,6 +98,9 @@ class BasicParsingModule(metaclass=ABCMeta):
     filters = []
     language: Language = None
 
+    def __init__(self, logger):
+        self.logger = logger
+
     @property
     def source_name(self):
         return self.__class__.__name__.replace('ParsingModule', '')
@@ -112,24 +114,24 @@ class BasicParsingModule(metaclass=ABCMeta):
 
     def parse(self, days_count: int) -> ParsingResult:
         if not DigestRecordsSource.objects.get(name=self.source_name).enabled:  # TODO: Check existence
-            logger.warning(f'"{self.source_name}" is disabled')
+            self.logger.warning(f'"{self.source_name}" is disabled')
             return ParsingResult(0, [], False, None, None)
         try:
             posts_data: List[PostData] = self._parse()
         except DigestSourceException as e:
-            logger.error(f'Failed to parse "{self.source_name}", source error: {str(e)}')
+            self.logger.error(f'Failed to parse "{self.source_name}", source error: {str(e)}')
             return ParsingResult(0, [], True, str(e), None)
         except Exception as e:
-            logger.error(f'Failed to parse "{self.source_name}", parser error: {str(e)}')
-            logger.error(traceback.format_exc())
+            self.logger.error(f'Failed to parse "{self.source_name}", parser error: {str(e)}')
+            self.logger.error(traceback.format_exc())
             return ParsingResult(0, [], True, None, str(e))
         try:
             filtered_posts_data: List[PostData] = self._filter_out(posts_data, days_count)
             self._fill_keywords(filtered_posts_data)
             return ParsingResult(len(posts_data), filtered_posts_data, True, None, None)
         except Exception as e:
-            logger.error(f'Failed to filter data parsed from "{self.source_name}" source: {str(e)}')
-            logger.error(traceback.format_exc())
+            self.logger.error(f'Failed to filter data parsed from "{self.source_name}" source: {str(e)}')
+            self.logger.error(traceback.format_exc())
             return ParsingResult(0, [], True, None, str(e))
 
     @abstractmethod
@@ -153,11 +155,11 @@ class BasicParsingModule(metaclass=ABCMeta):
         actual_posts_data = self._filter_out_old(source_posts_data, days_count)
         outdated_len = len(source_posts_data) - len(actual_posts_data)
         if outdated_len:
-            logger.info(f'{len(source_posts_data) - len(actual_posts_data)}/{len(source_posts_data)} posts ignored for "{self.source_name}" as too old')
+            self.logger.info(f'{len(source_posts_data) - len(actual_posts_data)}/{len(source_posts_data)} posts ignored for "{self.source_name}" as too old')
         filtered_posts_data = self._filter_out_by_keywords(actual_posts_data)
         nonactual_len = len(actual_posts_data) - len(filtered_posts_data)
         if nonactual_len:
-            logger.info(f'{len(source_posts_data) - len(actual_posts_data)}/{len(source_posts_data)} posts ignored for "{self.source_name}" as not passed keywords filters')
+            self.logger.info(f'{len(source_posts_data) - len(actual_posts_data)}/{len(source_posts_data)} posts ignored for "{self.source_name}" as not passed keywords filters')
         return filtered_posts_data
 
     def _filter_out_by_keywords(self, posts_data: List[PostData]):
@@ -171,7 +173,7 @@ class BasicParsingModule(metaclass=ABCMeta):
             keywords_to_check += [k.name for k in Keyword.objects.filter(is_generic=False, proprietary=False)]
         for post_data in posts_data:
             if not post_data.title:
-                logger.error(f'Empty title for URL {post_data.url}')
+                self.logger.error(f'Empty title for URL {post_data.url}')
                 continue
             matched = False
             for keyword in keywords_to_check:
@@ -180,10 +182,10 @@ class BasicParsingModule(metaclass=ABCMeta):
                     break
             processed_post_data = copy(post_data)
             if matched:
-                logger.debug(f'"{post_data.title}" from "{self.source_name}" added because it contains keywords {post_data.keywords}')
+                self.logger.debug(f'"{post_data.title}" from "{self.source_name}" added because it contains keywords {post_data.keywords}')
                 processed_post_data.filtered = False
             else:
-                logger.warning(f'"{post_data.title}" ({post_data.url}) from "{self.source_name}" filtered out cause not contains none of expected keywords')
+                self.logger.warning(f'"{post_data.title}" ({post_data.url}) from "{self.source_name}" filtered out cause not contains none of expected keywords')
                 processed_post_data.filtered = True
             filtered_posts_data.append(processed_post_data)
         return filtered_posts_data
@@ -194,18 +196,18 @@ class BasicParsingModule(metaclass=ABCMeta):
         already_existing_digest_records_dt_updated_count = 0
         for post_data in posts_data:
             if post_data.dt is not None and (dt_now - post_data.dt).days > days_count:
-                logger.debug(f'"{post_data.title}" from "{self.source_name}" filtered as too old ({post_data.dt})')
+                self.logger.debug(f'"{post_data.title}" from "{self.source_name}" filtered as too old ({post_data.dt})')
                 similar_records = DigestRecord.objects.filter(url=post_data.url)  # TODO: Replace check for duplicates before and with "get"
                 if similar_records:
                     if not similar_records[0].dt:
                         similar_records[0].dt = post_data.dt
-                        logger.debug(f'{post_data.url} already exists in database, but without date, fix it')
+                        self.logger.debug(f'{post_data.url} already exists in database, but without date, fix it')
                         already_existing_digest_records_dt_updated_count += 1
                         similar_records[0].save()
             else:
                 filtered_posts_data.append(post_data)
         if already_existing_digest_records_dt_updated_count:
-            logger.info(f'Few outdated sources found in database without dates, fixed for {already_existing_digest_records_dt_updated_count} sources')
+            self.logger.info(f'Few outdated sources found in database without dates, fixed for {already_existing_digest_records_dt_updated_count} sources')
         return filtered_posts_data
 
 
@@ -218,8 +220,9 @@ class RssBasicParsingModule(BasicParsingModule):
     description_tag_name = None
     no_description = False
 
-    def __init__(self):
+    def __init__(self, logger):
         self.rss_data_root = None
+        super().__init__(logger)
 
     def _preprocess_xml(self, text: str):
         return text
@@ -234,7 +237,7 @@ class RssBasicParsingModule(BasicParsingModule):
         if response.status_code != 200:
             raise DigestSourceException(f'"{self.source_name}" returned status code {response.status_code}')
         else:
-            logger.debug(f'Successfully fetched RSS for "{self.source_name}"')
+            self.logger.debug(f'Successfully fetched RSS for "{self.source_name}"')
         self.rss_data_root = ET.fromstring(self._preprocess_xml(response.text))
         no_description_at_all = True
         for rss_data_elem in self.rss_items_root():
@@ -262,7 +265,7 @@ class RssBasicParsingModule(BasicParsingModule):
                         elif 'href' in rss_data_subelem.attrib:
                             url = rss_data_subelem.attrib['href']
                         else:
-                            logger.error(f'Could not find URL for "{title}" feed record')
+                            self.logger.error(f'Could not find URL for "{title}" feed record')
                     elif self.description_tag_name in tag:
                         brief = text
                         no_description_at_all = False
@@ -276,14 +279,14 @@ class RssBasicParsingModule(BasicParsingModule):
                 url = self.process_url(url)
                 if not url:
                     if title:
-                        logger.error(f'Empty URL for title "{title}" for source "{self.source_name}"')
+                        self.logger.error(f'Empty URL for title "{title}" for source "{self.source_name}"')
                     else:
-                        logger.error(f'Empty URL and empty title for source "{self.source_name}"')
+                        self.logger.error(f'Empty URL and empty title for source "{self.source_name}"')
                     continue
                 post_data = PostData(dt, title, url, brief)
                 posts_data.append(post_data)
         if posts_data and no_description_at_all and not self.no_description:
-            logger.error(f'No descriptions at all in {self.source_name} source feed')
+            self.logger.error(f'No descriptions at all in {self.source_name} source feed')
         return posts_data
 
     def _date_from_russian_to_english(self,
@@ -537,7 +540,7 @@ class FilterFossNewsItselfMixin:
     def filter_foss_news_itself(self, posts_data: List[PostData]):
         for post_data in posts_data:
             if re.fullmatch(FOSS_NEWS_REGEXP, post_data.title):
-                logger.warning(f'Filtered "{post_data.title}" as it is our digest itself')
+                self.logger.warning(f'Filtered "{post_data.title}" as it is our digest itself')
                 post_data.filtered = True
         return posts_data
 
@@ -635,7 +638,7 @@ class BaseAltRuParsingModule(SimpleRssBasicParsingModule):
 
     def process_url(self, url):
         if self._BASE_URL not in url:
-            logger.info(f'Relative URL found "{url}", prepending with base url "{self._BASE_URL}"')
+            self.logger.info(f'Relative URL found "{url}", prepending with base url "{self._BASE_URL}"')
             return f'{self._BASE_URL}{url}'
         else:
             return url
@@ -643,8 +646,8 @@ class BaseAltRuParsingModule(SimpleRssBasicParsingModule):
 
 class PingvinusRuParsingModule(BasicParsingModule):
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, logger):
+        super().__init__(logger)
         self.news_page_url = f'{self.data_url}/news'
 
     def _parse(self):
@@ -665,7 +668,7 @@ class PingvinusRuParsingModule(BasicParsingModule):
             dt = datetime.datetime.strptime(date_str, '%d.%m.%Y')
             dt = dt.replace(tzinfo=dateutil.tz.gettz('Europe/Moscow'))
             if not title:
-                logger.error(f'Empty title for URL {url}')
+                self.logger.error(f'Empty title for URL {url}')
                 continue
             post_data = PostData(dt, title, url, None)
             posts.append(post_data)
