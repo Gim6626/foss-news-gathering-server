@@ -246,6 +246,9 @@ class Command(BaseCommand):
         else:
             sources_names_selected_by_user = module.split(',')
             sources_selected_by_user = [source for source in DigestRecordsSource.objects.all() if source.name in sources_names_selected_by_user]
+        if not sources_selected_by_user:
+            custom_logger.error(f'Failed to find parsing modules matched "{module}"')
+            sys.exit(1)
         enabled_sources_selected_by_user = []
         for source in sources_selected_by_user:
             if source.enabled:
