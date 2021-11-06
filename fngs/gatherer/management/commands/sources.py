@@ -198,7 +198,7 @@ class BasicParsingModule(metaclass=ABCMeta):
         for post_data in posts_data:
             if post_data.dt is not None and (dt_now - post_data.dt).days > days_count:
                 self.logger.debug(f'"{post_data.title}" from "{self.source_name}" filtered as too old ({post_data.dt})')
-                similar_records = DigestRecord.objects.filter(url=post_data.url)  # TODO: Replace check for duplicates before and with "get"
+                similar_records = DigestRecord.objects.filter(url=post_data.url)  # TODO: Replace check for similar records before and with "get"
                 if similar_records:
                     if not similar_records[0].dt:
                         similar_records[0].dt = post_data.dt

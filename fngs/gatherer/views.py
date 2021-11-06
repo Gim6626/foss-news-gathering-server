@@ -121,35 +121,35 @@ class SpecificDigestRecordsViewSet(GenericViewSet, mixins.ListModelMixin):
     filter_backends = [DjangoFilterBackend]
 
 
-class DigestRecordDuplicateViewSet(viewsets.ModelViewSet):
+class SimilarDigestRecordsViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAdminUser]
-    queryset = DigestRecordDuplicate.objects.all()
-    serializer_class = DigestRecordDuplicateSerializer
+    queryset = SimilarDigestRecords.objects.all()
+    serializer_class = SimilarDigestRecordsSerializer
 
 
-class DigestRecordDuplicateDetailedViewSet(viewsets.ModelViewSet):
+class SimilarDigestRecordsDetailedViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAdminUser]
-    queryset = DigestRecordDuplicate.objects.all()
-    serializer_class = DigestRecordDuplicateDetailedSerializer
-    filter_class = CurrentDigestRecordsDuplicatesFilter
+    queryset = SimilarDigestRecords.objects.all()
+    serializer_class = SimilarDigestRecordsDetailedSerializer
+    filter_class = CurrentSimilarDigestRecordsFilter
     filter_backends = [DjangoFilterBackend]
 
 
-class SimilarDigestRecordsViewSet(GenericViewSet, mixins.ListModelMixin):
+class DigestRecordsLookingSimilarViewSet(GenericViewSet, mixins.ListModelMixin):
     permission_classes = [permissions.IsAdminUser]
     model = DigestRecord
     serializer_class = DigestRecordSerializer
     queryset = DigestRecord.objects.filter(state='IN_DIGEST')
-    filter_class = SimilarDigestRecordsFilter
+    filter_class = DigestRecordsLookingSimilarFilter
     filter_backends = [DjangoFilterBackend]
 
 
-class DuplicatesByDigestRecordsViewSet(GenericViewSet, mixins.ListModelMixin):
+class SimilarDigestRecordsByDigestRecordViewSet(GenericViewSet, mixins.ListModelMixin):
     permission_classes = [permissions.IsAdminUser]
-    model = DigestRecordDuplicate
-    serializer_class = DigestRecordDuplicateDetailedSerializer
-    queryset = DigestRecordDuplicate.objects.all()
-    filter_class = DuplicatesByDigestRecordFilter
+    model = SimilarDigestRecords
+    serializer_class = SimilarDigestRecordsDetailedSerializer
+    queryset = SimilarDigestRecords.objects.all()
+    filter_class = SimilarDigestRecordsByDigestRecordFilter
     filter_backends = [DjangoFilterBackend]
 
 

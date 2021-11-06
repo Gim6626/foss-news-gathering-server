@@ -171,8 +171,7 @@ class DigestRecord(models.Model):
         return f'{self.dt} {self.title} {self.url} #{self.digest_number} state:"{self.state}" cat:"{self.content_type}" subcat: "{self.content_category}" keywords: "{self.keywords}"'
 
 
-# Actually not really duplicates, duplicates are with "DUPLICATE" state, this are different records about same theme
-class DigestRecordDuplicate(models.Model):
+class SimilarDigestRecords(models.Model):
 
     digest_number = models.IntegerField(verbose_name='Digest Number',
                                         null=True,
@@ -184,12 +183,12 @@ class DigestRecordDuplicate(models.Model):
                                      blank=True)
     digest_records = models.ManyToManyField(to=DigestRecord,
                                             verbose_name='Digest Record',
-                                            related_name='duplicates',
+                                            related_name='similar_records',
                                             )
 
     class Meta:
-        verbose_name = 'Digest Record Duplicate'
-        verbose_name_plural = 'Digest Records Duplicates'
+        verbose_name = 'Similar Digest Records'
+        verbose_name_plural = 'Similar Digest Records'
 
     def digest_records_titles(self):
         return f'{", ".join([dr.title for dr in self.digest_records.all()])}'

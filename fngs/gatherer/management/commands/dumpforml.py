@@ -64,9 +64,9 @@ class Command(BaseCommand):
         custom_logger.info('Finished preparation of digest records')
         # pprint(digest_records_plain)
         digest_similar_records_plain = []
-        digest_similar_records_object: DigestRecordDuplicate
+        digest_similar_records_object: SimilarDigestRecords
         custom_logger.info('Started preparation of similar digest records')
-        digest_similar_records_queryset = DigestRecordDuplicate.objects.all()
+        digest_similar_records_queryset = SimilarDigestRecords.objects.all()
         last_printed_percent = None
         for digest_similar_records_object_i, digest_similar_records_object in enumerate(digest_similar_records_queryset):
             if digest_similar_records_object.digest_issue is None:

@@ -26,7 +26,7 @@ class DigestRecordAdmin(admin.ModelAdmin):
         'content_type',
         'content_category',
         'language',
-        'duplicates',
+        'similar_records',
         'links_to_projects',
         'links_to_keywords',
     )
@@ -57,7 +57,7 @@ class DigestRecordAdmin(admin.ModelAdmin):
         return object_modification_url('gatherer', 'keyword', [k.id for k in obj.title_keywords.all()], [str(k) for k in obj.title_keywords.all()])
 
 
-class DigestRecordDuplicateAdmin(admin.ModelAdmin):
+class SimilarDigestRecordsAdmin(admin.ModelAdmin):
 
     readonly_fields = (
         'id',
@@ -192,7 +192,7 @@ class DigestGatheringIterationAdmin(admin.ModelAdmin):
 
 
 admin.site.register(DigestRecord, DigestRecordAdmin)
-admin.site.register(DigestRecordDuplicate, DigestRecordDuplicateAdmin)
+admin.site.register(SimilarDigestRecords, SimilarDigestRecordsAdmin)
 admin.site.register(Project, ProjectAdmin)
 admin.site.register(Keyword, KeywordAdmin)
 admin.site.register(DigestRecordsSource, DigestRecordsSourceAdmin)

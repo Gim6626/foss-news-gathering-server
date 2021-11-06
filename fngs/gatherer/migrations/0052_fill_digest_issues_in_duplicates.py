@@ -5,13 +5,13 @@ import json
 
 from django.db import migrations, models
 from gatherer.models import (
-    DigestRecordDuplicate,
+    SimilarDigestRecords,
     DigestIssue,
 )
 import logging
 
 def fill_issues_in_duplicates(apps, schema_editor):
-    for duplicate in DigestRecordDuplicate.objects.all():
+    for duplicate in SimilarDigestRecords.objects.all():
         try:
             issue = DigestIssue.objects.get(number=duplicate.digest_number)
         except Exception as e:
