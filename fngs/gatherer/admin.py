@@ -65,7 +65,6 @@ class SimilarDigestRecordsAdmin(admin.ModelAdmin):
 
     list_display = (
         'id',
-        'digest_number',
         'link_to_digest_issue',
         'digest_records_titles',
     )

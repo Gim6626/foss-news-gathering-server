@@ -106,9 +106,6 @@ class DigestRecord(models.Model):
                              max_length=15,
                              null=True,
                              blank=True)
-    digest_number = models.IntegerField(verbose_name='Digest Number',  # Obsolete, should not be used
-                                        null=True,
-                                        blank=True)
     digest_issue = models.ForeignKey(to='DigestIssue',
                                      on_delete=models.PROTECT,
                                      null=True,
@@ -167,14 +164,11 @@ class DigestRecord(models.Model):
         verbose_name_plural = 'Digest Records'
 
     def __str__(self):
-        return f'{self.dt} {self.title} {self.url} #{self.digest_number} state:"{self.state}" cat:"{self.content_type}" subcat: "{self.content_category}" keywords: "{self.keywords}"'
+        return f'{self.dt} {self.title} {self.url} #{self.digest_issue.number} state:"{self.state}" cat:"{self.content_type}" subcat: "{self.content_category}" keywords: "{self.keywords}"'
 
 
 class SimilarDigestRecords(models.Model):
 
-    digest_number = models.IntegerField(verbose_name='Digest Number',
-                                        null=True,
-                                        blank=True)
     digest_issue = models.ForeignKey(to='DigestIssue',
                                      verbose_name='Digest Issue',
                                      on_delete=models.PROTECT,
