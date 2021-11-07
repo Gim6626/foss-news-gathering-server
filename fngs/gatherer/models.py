@@ -49,7 +49,6 @@ class DigestRecordContentCategory(Enum):
     EVENTS = 'events'
     INTROS = 'intros'
     OPENING = 'opening'
-    NEWS = 'news'  # Obsolete, should not be used
     ORG = 'org'
     DIY = 'diy'
     LAW = 'law'
