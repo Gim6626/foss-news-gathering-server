@@ -148,7 +148,7 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
-    'PAGE_SIZE': 1000,
+    'DEFAULT_PAGINATION_CLASS': 'fngs.pagination.Pagination',
 }
 
 from datetime import timedelta
