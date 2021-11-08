@@ -164,7 +164,7 @@ class DigestRecord(models.Model):
         verbose_name_plural = 'Digest Records'
 
     def __str__(self):
-        return f'{self.dt} {self.title} {self.url} #{self.digest_issue.number} state:"{self.state}" cat:"{self.content_type}" subcat: "{self.content_category}" keywords: "{self.keywords}"'
+        return f'{self.dt} {self.title} {self.url} #{self.digest_issue.number if self.digest_issue else None} state:"{self.state}" cat:"{self.content_type}" subcat: "{self.content_category}" keywords: "{self.keywords}"'
 
 
 class SimilarDigestRecords(models.Model):
