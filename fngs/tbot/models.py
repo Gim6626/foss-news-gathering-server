@@ -59,7 +59,8 @@ class TelegramBotDigestRecordCategorizationAttempt(models.Model):
                                        blank=True)
     estimated_is_main = models.BooleanField(verbose_name='Estimated Is Main Post',
                                             null=True,
-                                            blank=True)
+                                            blank=True,
+                                            default=None)
     estimated_content_type = models.CharField(verbose_name='Estimated Content Type',
                                               choices=DigestRecordContentType.choices(),
                                               max_length=15,
