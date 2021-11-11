@@ -1,0 +1,43 @@
+name: FNGS Main Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: deploy_main
+  cancel-in-progress: false
+
+jobs:
+  deploy_main:
+    runs-on: self-hosted
+    if: github.repository == 'foss-news/foss-news-gathering-server'
+    env:
+      FNGS_DEV_DIR: /home/gim6626/fngs
+    steps:
+    - name: Checkout "main" branch
+      working-directory: ${{ env.FNGS_DEV_DIR }}
+      run: git checkout main
+    - name: Fetch code
+      working-directory: ${{ env.FNGS_DEV_DIR }}
+      run: git pull
+    - name: Install requirements
+      working-directory: ${{ env.FNGS_DEV_DIR }}
+      run: |
+        source env/bin/activate
+        pip3 install -r requirements.txt
+    - name: Stop FNGS
+      run: sudo systemctl stop fngs.service
+    - name: Run migrations
+      working-directory: ${{ env.FNGS_DEV_DIR }}
+      run: |
+        source env/bin/activate
+        cd fngs
+        python3 manage.py migrate
+    - name: Start FNGS
+      run: sudo systemctl start fngs.service
+    - name: Wait a bit to let FNGS start
+      run: sleep 5
+    - name: Check FNGS status
+      run: systemctl status fngs.service
