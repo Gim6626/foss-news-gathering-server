@@ -133,6 +133,7 @@ class DigestRecordsCategorizedByTbotViewSet(mixins.ListModelMixin, GenericViewSe
         unknown_state_digest_records = DigestRecord.objects.filter(state='UNKNOWN')
         tbot_categorizations_attempts_for_unknown_records = TelegramBotDigestRecordCategorizationAttempt.objects.filter(digest_record__in=unknown_state_digest_records)
         categorizations_data_by_digest_record = {}
+        categorization_attempt: TelegramBotDigestRecordCategorizationAttempt
         for categorization_attempt in tbot_categorizations_attempts_for_unknown_records:
             digest_record_id = categorization_attempt.digest_record.id
             if digest_record_id not in categorizations_data_by_digest_record:
@@ -143,6 +144,9 @@ class DigestRecordsCategorizedByTbotViewSet(mixins.ListModelMixin, GenericViewSe
             estimation_data = {
                 'user': categorization_attempt.telegram_bot_user.username,
                 'state': categorization_attempt.estimated_state,
+                'is_main': categorization_attempt.estimated_is_main,
+                'content_type': categorization_attempt.estimated_content_type,
+                'content_category': categorization_attempt.estimated_content_category,
             }
             categorizations_data_by_digest_record[digest_record_id]['estimations'].append(estimation_data)
         return Response(categorizations_data_by_digest_record,
