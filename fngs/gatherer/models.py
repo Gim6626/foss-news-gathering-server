@@ -112,7 +112,8 @@ class DigestRecord(models.Model):
                                      blank=True)
     is_main = models.BooleanField(verbose_name='Is main post',
                                   null=True,
-                                  blank=True)
+                                  blank=True,
+                                  default=None)
     content_type = models.CharField(verbose_name='Content Type',
                                     choices=DigestRecordContentType.choices(),
                                     max_length=15,
