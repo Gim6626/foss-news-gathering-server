@@ -8,6 +8,8 @@ from rest_framework import (
     mixins,
     status,
 )
+
+import fngs.pagination
 from gatherer.serializers import *
 from rest_framework.viewsets import GenericViewSet
 from rest_framework.response import Response
@@ -159,7 +161,12 @@ class ProjectViewSet(viewsets.ModelViewSet):
     serializer_class = ProjectSerializer
 
 
+class KeywordPagination(fngs.pagination.Pagination):
+    max_page_size = 5000
+
+
 class KeywordViewSet(viewsets.ModelViewSet):
+    pagination_class = KeywordPagination
     permission_classes = [permissions.IsAdminUser]
     queryset = Keyword.objects.all()
     serializer_class = KeywordSerializer
