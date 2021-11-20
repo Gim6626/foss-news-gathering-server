@@ -9,9 +9,10 @@ DATETIME_FORMAT = '%Y-%m-%dT%H:%M:%S%z'
 class DigestRecordSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
+        # TODO: Extract common code from here and DigestRecordDetailedSerializer
         representation = super().to_representation(instance)
-        representation['dt'] = instance.dt.strftime(DATETIME_FORMAT)
-        representation['gather_dt'] = instance.gather_dt.strftime(DATETIME_FORMAT)
+        representation['dt'] = instance.dt.strftime(DATETIME_FORMAT) if instance.dt else None
+        representation['gather_dt'] = instance.gather_dt.strftime(DATETIME_FORMAT) if instance.gather_dt else None
         return representation
 
     class Meta:
@@ -88,9 +89,10 @@ class DigestRecordDetailedSerializer(serializers.ModelSerializer):
     proprietary_keywords = KeywordSerializer(many=True, read_only=True)
 
     def to_representation(self, instance):
+        # TODO: Extract common code from here and DigestRecordSerializer
         representation = super().to_representation(instance)
-        representation['dt'] = instance.dt.strftime(DATETIME_FORMAT)
-        representation['gather_dt'] = instance.gather_dt.strftime(DATETIME_FORMAT)
+        representation['dt'] = instance.dt.strftime(DATETIME_FORMAT) if instance.dt else None
+        representation['gather_dt'] = instance.gather_dt.strftime(DATETIME_FORMAT) if instance.gather_dt else None
         return representation
 
     class Meta:
