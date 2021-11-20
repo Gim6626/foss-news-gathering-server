@@ -34,9 +34,14 @@ class NewDigestRecordViewSet(viewsets.ModelViewSet):
 class NotCategorizedDigestRecordsMixin:
 
     def not_categorized_records_queryset(self):
-        queryset1 = DigestRecord.objects.filter(state='UNKNOWN', projects__in=(Project.objects.filter(name='FOSS News')))
-        queryset2 = DigestRecord.objects.filter(digest_issue__number=DigestIssue.objects.order_by('-number')[0].number, state='IN_DIGEST', projects__in=(Project.objects.filter(name='FOSS News')), content_type='UNKNOWN')
-        return queryset1 | queryset2
+        foss_news_queryset = DigestRecord.objects.filter(projects__in=(Project.objects.filter(name='FOSS News')))
+        unknown_state_queryset = foss_news_queryset.filter(state='UNKNOWN')
+        foss_news_current_queryset = foss_news_queryset.filter(digest_issue__number=DigestIssue.objects.order_by('-number')[0].number, state='IN_DIGEST')
+        unknown_content_type_queryset = foss_news_current_queryset.filter(content_type='UNKNOWN')
+        none_content_type_queryset = foss_news_current_queryset.filter(content_type=None)
+        none_is_main_queryset = foss_news_current_queryset.filter(is_main=None)
+        none_content_category_queryset = foss_news_current_queryset.filter(content_category=None).exclude(content_type='OTHER')
+        return unknown_state_queryset | unknown_content_type_queryset | none_content_type_queryset | none_is_main_queryset | none_content_category_queryset
 
 
 class NewFossNewsDigestRecordViewSet(GenericViewSet,
