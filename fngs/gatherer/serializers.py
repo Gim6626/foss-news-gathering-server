@@ -3,7 +3,17 @@ from rest_framework import serializers
 from gatherer.models import *
 
 
+DATETIME_FORMAT = '%Y-%m-%dT%H:%M:%S%z'
+
+
 class DigestRecordSerializer(serializers.ModelSerializer):
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        representation['dt'] = instance.dt.strftime(DATETIME_FORMAT)
+        representation['gather_dt'] = instance.gather_dt.strftime(DATETIME_FORMAT)
+        return representation
+
     class Meta:
         model = DigestRecord
         fields = [
@@ -76,6 +86,12 @@ class KeywordSerializer(serializers.ModelSerializer):
 class DigestRecordDetailedSerializer(serializers.ModelSerializer):
     not_proprietary_keywords = KeywordSerializer(many=True, read_only=True)
     proprietary_keywords = KeywordSerializer(many=True, read_only=True)
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        representation['dt'] = instance.dt.strftime(DATETIME_FORMAT)
+        representation['gather_dt'] = instance.gather_dt.strftime(DATETIME_FORMAT)
+        return representation
 
     class Meta:
         model = DigestRecord
