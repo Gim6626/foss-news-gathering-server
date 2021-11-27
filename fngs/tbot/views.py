@@ -11,6 +11,7 @@ from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
 from gatherer.serializers import *
+from gatherer.mixins import *
 from common.permissions import *
 
 from .models import *
@@ -126,12 +127,14 @@ class TelegramBotUserByTidViewSet(mixins.ListModelMixin,
                         status=status.HTTP_200_OK)
 
 
-class DigestRecordsCategorizedByTbotViewSet(mixins.ListModelMixin, GenericViewSet):
+class DigestRecordsCategorizedByTbotViewSet(mixins.ListModelMixin,
+                                            GenericViewSet,
+                                            NotCategorizedDigestRecordsMixin):
     permission_classes = [permissions.IsAdminUser]
 
     def list(self, request, *args, **kwargs):
-        unknown_state_digest_records = DigestRecord.objects.filter(state='UNKNOWN')
-        tbot_categorizations_attempts_for_unknown_records = TelegramBotDigestRecordCategorizationAttempt.objects.filter(digest_record__in=unknown_state_digest_records)
+        not_fully_categorized_digest_records = self.not_categorized_records_queryset()
+        tbot_categorizations_attempts_for_unknown_records = TelegramBotDigestRecordCategorizationAttempt.objects.filter(digest_record__in=not_fully_categorized_digest_records)
         categorizations_data_by_digest_record = {}
         categorization_attempt: TelegramBotDigestRecordCategorizationAttempt
         for categorization_attempt in tbot_categorizations_attempts_for_unknown_records:
