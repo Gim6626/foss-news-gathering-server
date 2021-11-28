@@ -26,12 +26,23 @@ class DigestRecordViewSet(viewsets.ModelViewSet):
     serializer_class = DigestRecordSerializer
 
 
+class DetailedDigestRecordViewSet(viewsets.ModelViewSet):
+    permission_classes = [permissions.IsAdminUser]
+    queryset = DigestRecord.objects.all().order_by('dt')
+    serializer_class = DigestRecordSerializer
+    model = DigestRecord
+    filter_class = SpecificDigestRecordsFilter
+    filter_backends = [DjangoFilterBackend]
+
+
+# TODO: Obsolete, remove with removal of api/v1
 class NewDigestRecordViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAdminUser]
     queryset = DigestRecord.objects.filter(state='UNKNOWN')
     serializer_class = DigestRecordSerializer
 
 
+# TODO: Obsolete, remove with removal of api/v1
 class NewFossNewsDigestRecordViewSet(GenericViewSet,
                                      mixins.ListModelMixin,
                                      NotCategorizedDigestRecordsMixin):
@@ -39,10 +50,25 @@ class NewFossNewsDigestRecordViewSet(GenericViewSet,
     serializer_class = DigestRecordDetailedSerializer
 
     def get_queryset(self):
-        queryset = self.not_categorized_records_queryset()
+        queryset = self.not_categorized_records_queryset(from_bot=False)
         return queryset
 
 
+class NotCategorizedDigestRecordViewSet(GenericViewSet,
+                                        mixins.ListModelMixin,
+                                        NotCategorizedDigestRecordsMixin):
+    permission_classes = [permissions.IsAdminUser | TelegramBotReadOnlyPermission]
+    serializer_class = DigestRecordDetailedSerializer
+
+    def list(self, request, *args, **kwargs):
+        project_name = request.query_params.get('project', None)
+        if not project_name:
+            return Response({'error': 'Missing "project" option'}, status=status.HTTP_400_BAD_REQUEST)
+        queryset = self.not_categorized_records_queryset(from_bot=False, project_name=project_name)
+        return Response(DigestRecordSerializer(queryset).data, status=status.HTTP_200_OK)
+
+
+# TODO: Obsolete, remove with removal of api/v1
 class OneNewFossNewsDigestRecordViewSet(GenericViewSet,
                                         mixins.ListModelMixin,
                                         NotCategorizedDigestRecordsMixin):
@@ -50,7 +76,7 @@ class OneNewFossNewsDigestRecordViewSet(GenericViewSet,
     serializer_class = DigestRecordDetailedSerializer
 
     def get_queryset(self):
-        queryset = self.not_categorized_records_queryset()
+        queryset = self.not_categorized_records_queryset(from_bot=False)
         queryset = queryset.order_by('dt')
         if queryset:
             return [queryset[0]]
@@ -58,26 +84,38 @@ class OneNewFossNewsDigestRecordViewSet(GenericViewSet,
             return []
 
 
-class NotCategorizedDigestRecordsFromTbotMixin(NotCategorizedDigestRecordsMixin):
+class OldestNotCategorizedDigestRecordViewSet(GenericViewSet,
+                                              mixins.ListModelMixin,
+                                              NotCategorizedDigestRecordsMixin):
+    permission_classes = [permissions.IsAdminUser]
+    serializer_class = DigestRecordDetailedSerializer
 
-    def not_categorized_records_queryset(self):
-        queryset = super().not_categorized_records_queryset()
-        dt_now = datetime.datetime.now()
-        dt_now_minus_2w = dt_now - datetime.timedelta(days=14)
-        recent_tbot_attempts = TelegramBotDigestRecordCategorizationAttempt.objects.filter(dt__gt=dt_now_minus_2w)
-        recent_tbot_attempts_records_ids = [attempt.digest_record.id for attempt in recent_tbot_attempts]
-        queryset = queryset.filter(id__in=recent_tbot_attempts_records_ids)
-        return queryset
+    def list(self, request, *args, **kwargs):
+        project_name = request.query_params.get('project', None)
+        if not project_name:
+            return Response({'error': 'Missing "project" option'}, status=status.HTTP_400_BAD_REQUEST)
+        from_bot = request.query_params.get('from-bot', None)
+        if not from_bot:
+            return Response({'error': 'Missing "from-bot" option'}, status=status.HTTP_400_BAD_REQUEST)
+        from_bot = False if from_bot == 'false' else True
+        queryset = self.not_categorized_records_queryset(from_bot, project_name)
+        queryset = queryset.order_by('dt')
+        if queryset:
+            digest_record = queryset[0]
+            return Response(DigestRecordSerializer(digest_record).data, status=status.HTTP_200_OK)
+        else:
+            return Response([], status=status.HTTP_404_NOT_FOUND)
 
 
+# TODO: Obsolete, remove with removal of api/v1
 class OneNewFossNewsDigestRecordFromTbotViewSet(GenericViewSet,
                                                 mixins.ListModelMixin,
-                                                NotCategorizedDigestRecordsFromTbotMixin):
+                                                NotCategorizedDigestRecordsMixin):
     permission_classes = [permissions.IsAdminUser]
     serializer_class = DigestRecordDetailedSerializer
 
     def get_queryset(self):
-        queryset = self.not_categorized_records_queryset()
+        queryset = self.not_categorized_records_queryset(from_bot=True)
         queryset = queryset.order_by('dt')
         if queryset:
             return [queryset[0]]
@@ -91,22 +129,28 @@ class NotCategorizedDigestRecordsCountViewSet(mixins.ListModelMixin,
     permission_classes = [permissions.IsAdminUser]
 
     def list(self, request, *args, **kwargs):
-        queryset = self.not_categorized_records_queryset()
+        project_name = request.query_params.get('project', None)
+        if not project_name:
+            project_name = 'FOSS News'  # TODO: Obsolete, remove with removal of api/v1
+            # return Response({'error': 'Missing "project" option'}, status=status.HTTP_400_BAD_REQUEST)
+        queryset = self.not_categorized_records_queryset(from_bot=False, project_name=project_name)
         count = queryset.count()
         return Response({'count': count}, status=status.HTTP_200_OK)
 
 
+# TODO: Obsolete, remove with removal of api/v1
 class NotCategorizedDigestRecordsFromTbotCountViewSet(mixins.ListModelMixin,
                                                       GenericViewSet,
-                                                      NotCategorizedDigestRecordsFromTbotMixin):
+                                                      NotCategorizedDigestRecordsMixin):
     permission_classes = [permissions.IsAdminUser]
 
     def list(self, request, *args, **kwargs):
-        queryset = self.not_categorized_records_queryset()
+        queryset = self.not_categorized_records_queryset(from_bot=True)
         count = queryset.count()
         return Response({'count': count}, status=status.HTTP_200_OK)
 
 
+# TODO: Obsolete, remove with removal of api/v1
 class SpecificDigestRecordsViewSet(GenericViewSet, mixins.ListModelMixin):
     permission_classes = [permissions.IsAdminUser]
     model = DigestRecord
@@ -126,8 +170,9 @@ class SimilarDigestRecordsDetailedViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAdminUser]
     queryset = SimilarDigestRecords.objects.all()
     serializer_class = SimilarDigestRecordsDetailedSerializer
-    filter_class = CurrentSimilarDigestRecordsFilter
+    filter_class = SimilarDigestRecordsFilter
     filter_backends = [DjangoFilterBackend]
+    model = SimilarDigestRecords
 
 
 class DigestRecordsLookingSimilarViewSet(GenericViewSet, mixins.ListModelMixin):
@@ -139,6 +184,7 @@ class DigestRecordsLookingSimilarViewSet(GenericViewSet, mixins.ListModelMixin):
     filter_backends = [DjangoFilterBackend]
 
 
+# TODO: Obsolete, remove with removal of api/v1
 class SimilarDigestRecordsByDigestRecordViewSet(GenericViewSet, mixins.ListModelMixin):
     permission_classes = [permissions.IsAdminUser]
     model = SimilarDigestRecords
@@ -186,6 +232,7 @@ class GuessContentCategoryView(mixins.ListModelMixin, GenericViewSet):
         return Response({'title': title, 'matches': matched_keywords_by_content_category}, status=status.HTTP_200_OK)
 
 
+# TODO: Obsolete, remove with removal of api/v1 by adding search by keywords to DigestRecordsLookingSimilarFilter
 class SimilarRecordsInPreviousDigest(mixins.ListModelMixin, GenericViewSet):
     permission_classes = [permissions.IsAdminUser | TelegramBotReadOnlyPermission]
 

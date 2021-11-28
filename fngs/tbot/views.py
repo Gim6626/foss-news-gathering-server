@@ -23,6 +23,18 @@ class TelegramBotUserViewSet(viewsets.ModelViewSet):
     queryset = TelegramBotUser.objects.all().order_by('username')
     serializer_class = TelegramBotUserSerializer
 
+    def list(self, request, *args, **kwargs):
+        tid = request.query_params.get('tid', None)
+        if tid:
+            telegram_bot_users = TelegramBotUser.objects.filter(tid=tid)
+            if not telegram_bot_users:
+                return Response({'error': f'Telegram bot user with tid="{tid}" not found'},
+                                status=status.HTTP_404_NOT_FOUND)
+            telegram_bot_user = telegram_bot_users[0]
+            return Response(TelegramBotUserDetailedSerializer(telegram_bot_user).data,
+                            status=status.HTTP_200_OK)
+        return super().list(request, *args, **kwargs)
+
 
 class TelegramBotUserDetailedViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAdminUser | TelegramBotFullPermission]
@@ -54,7 +66,7 @@ class NotCategorizedFossNewsDigestRecordsMixin:
 
     ENOUGH_TBOT_USERS_DIGEST_RECORD_ESTIMATIONS = 3
 
-    def not_categorized_records(self, tbot_user_id):
+    def not_categorized_records(self, tbot_user_id, project_name='FOSS News'):
         if tbot_user_id is None:
             return []
         try:
@@ -63,7 +75,7 @@ class NotCategorizedFossNewsDigestRecordsMixin:
             return []
         categorized_by_this_user_digest_records_attempts = TelegramBotDigestRecordCategorizationAttempt.objects.filter(telegram_bot_user=tbot_user)
         not_categorized_by_this_user_digest_records = DigestRecord.objects.filter(state='UNKNOWN',
-                                                                                  projects__in=(Project.objects.filter(name='FOSS News'))).exclude(pk__in=[a.digest_record.pk for a in categorized_by_this_user_digest_records_attempts]).order_by('-dt')
+                                                                                  projects__in=(Project.objects.filter(name=project_name))).exclude(pk__in=[a.digest_record.pk for a in categorized_by_this_user_digest_records_attempts]).order_by('-dt')
         attempts_for_not_categorized_records = TelegramBotDigestRecordCategorizationAttempt.objects.filter(digest_record__in=not_categorized_by_this_user_digest_records)
         attempts_per_digest_record = {}
         for attempt in attempts_for_not_categorized_records:
@@ -78,6 +90,7 @@ class NotCategorizedFossNewsDigestRecordsMixin:
         return not_categorized_by_this_user_digest_records_but_still_actual
 
 
+# TODO: Obsolete, remove with removal of api/v1
 class TelegramBotOneRandomNotCategorizedFossNewsDigestRecordViewSet(mixins.ListModelMixin,
                                                                     mixins.RetrieveModelMixin,
                                                                     viewsets.GenericViewSet,
@@ -95,6 +108,29 @@ class TelegramBotOneRandomNotCategorizedFossNewsDigestRecordViewSet(mixins.ListM
             return []
 
 
+class TelegramBotOneRandomNotCategorizedDigestRecordViewSet(mixins.ListModelMixin,
+                                                            viewsets.GenericViewSet,
+                                                            NotCategorizedFossNewsDigestRecordsMixin):
+    permission_classes = [permissions.IsAdminUser | TelegramBotFullPermission]
+    serializer_class = DigestRecordDetailedSerializer
+
+    def list(self, request, *args, **kwargs):
+        tbot_user_id = request.query_params.get('tbot-user-id', None)
+        if not tbot_user_id:
+            return Response({'error': 'Empty "tbot-user-id" parameter'}, status=status.HTTP_400_BAD_REQUEST)
+        project_name = self.request.query_params.get('project', None)
+        if not project_name:
+            return Response({'error': 'Empty "project_name" parameter'}, status=status.HTTP_400_BAD_REQUEST)
+        not_categorized_by_this_user_digest_records_but_still_actual = self.not_categorized_records(tbot_user_id,
+                                                                                                    project_name)
+        if not_categorized_by_this_user_digest_records_but_still_actual:
+            random_record = random.choice(not_categorized_by_this_user_digest_records_but_still_actual)
+            return Response(DigestRecordSerializer(random_record).data, status=status.HTTP_200_OK)
+        else:
+            return Response({}, status=status.HTTP_404_NOT_FOUND)
+
+
+# TODO: Obsolete, remove with removal of api/v1
 class TelegramBotNotCategorizedFossNewsDigestRecordsCountViewSet(mixins.ListModelMixin,
                                                                  viewsets.GenericViewSet,
                                                                  NotCategorizedFossNewsDigestRecordsMixin):
@@ -109,6 +145,27 @@ class TelegramBotNotCategorizedFossNewsDigestRecordsCountViewSet(mixins.ListMode
             return Response({}, status=status.HTTP_404_NOT_FOUND)
 
 
+class TelegramBotNotCategorizedDigestRecordsCountViewSet(mixins.ListModelMixin,
+                                                         viewsets.GenericViewSet,
+                                                         NotCategorizedFossNewsDigestRecordsMixin):
+    permission_classes = [permissions.IsAdminUser | TelegramBotFullPermission]
+
+    def list(self, request, *args, **kwargs):
+        tbot_user_id = request.query_params.get('tbot-user-id', None)
+        if not tbot_user_id:
+            return Response({'error': 'Empty "tbot-user-id" parameter'}, status=status.HTTP_400_BAD_REQUEST)
+        project_name = self.request.query_params.get('project', None)
+        if not project_name:
+            return Response({'error': 'Empty "project_name" parameter'}, status=status.HTTP_400_BAD_REQUEST)
+        not_categorized_by_this_user_digest_records_but_still_actual = self.not_categorized_records(tbot_user_id,
+                                                                                                    project_name)
+        if not_categorized_by_this_user_digest_records_but_still_actual:
+            return Response({'count': not_categorized_by_this_user_digest_records_but_still_actual.count()}, status=status.HTTP_200_OK)
+        else:
+            return Response({}, status=status.HTTP_404_NOT_FOUND)
+
+
+# TODO: Obsolete, remove with removal of api/v1
 class TelegramBotUserByTidViewSet(mixins.ListModelMixin,
                                   viewsets.GenericViewSet):
     permission_classes = [permissions.IsAdminUser | TelegramBotReadOnlyPermission]

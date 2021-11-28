@@ -15,8 +15,10 @@ class SpecificDigestRecordsFilter(filters.FilterSet):
         return queryset.filter(digest_issue=value)
 
 
+# TODO: Obsolete, remove with removal of api/v1
 class CurrentSimilarDigestRecordsFilter(filters.FilterSet):
     digest_issue = filters.NumberFilter(method='digest_filter')
+    digest_record = filters.NumberFilter(method='similar_records_filter')
 
     class Meta:
         model = SimilarDigestRecords
@@ -26,6 +28,24 @@ class CurrentSimilarDigestRecordsFilter(filters.FilterSet):
 
     def digest_filter(self, queryset, name, value):
         return queryset.filter(digest_issue=value)
+
+
+class SimilarDigestRecordsFilter(filters.FilterSet):
+    digest_issue = filters.NumberFilter(method='digest_issue_filter')
+    digest_record = filters.NumberFilter(method='digest_record_filter')
+
+    class Meta:
+        model = SimilarDigestRecords
+        fields = [
+            'digest_issue',
+            'digest_record',
+        ]
+
+    def digest_issue_filter(self, queryset, name, value):
+        return queryset.filter(digest_issue=value)
+
+    def digest_record_filter(self, queryset, name, value):
+        return queryset.filter(digest_records__in=DigestRecord.objects.filter(pk=value))
 
 
 class DigestRecordsLookingSimilarFilter(filters.FilterSet):
@@ -51,6 +71,7 @@ class DigestRecordsLookingSimilarFilter(filters.FilterSet):
         return queryset.filter(content_category=value)
 
 
+# TODO: Obsolete, remove with removal of api/v1
 class SimilarDigestRecordsByDigestRecordFilter(filters.FilterSet):
     digest_record = filters.NumberFilter(method='similar_records_filter')
 
