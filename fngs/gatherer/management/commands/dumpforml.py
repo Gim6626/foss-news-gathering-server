@@ -14,6 +14,7 @@ custom_logger = Logger()
 parse_all = False
 records_limit: int or None = None
 similar_records_limit: int or None = None
+output_format: str or None = None
 
 
 SCRIPT_DIRECTORY = os.path.dirname(os.path.realpath(__file__))
@@ -29,6 +30,10 @@ class Command(BaseCommand):
                             '--debug',
                             action='store_true',
                             help='Debug mode')
+        parser.add_argument('-o',
+                            '--output-format',
+                            choices=('JSON', 'CSV'),
+                            help='Output format')
         parser.add_argument('-a',
                             '--all',
                             action='store_true',
@@ -67,7 +72,7 @@ class Command(BaseCommand):
                 'description': digest_record_object.cleared_description,
                 'type': digest_record_object.content_type,
                 'category': digest_record_object.content_category,
-                'keywords': [{'name': k.name, 'foss': not k.proprietary, 'generic': k.is_generic}
+                'keywords': [{'name': k.name, 'foss': not k.proprietary, 'generic': k.is_generic, 'category': k.content_category}
                              for k in digest_record_object.title_keywords.all()] if digest_record_object.title_keywords else [],
                 'language': digest_record_object.language,
                 'url': digest_record_object.url,
@@ -112,12 +117,24 @@ class Command(BaseCommand):
 
         custom_logger.info(f'Saving digest records to "{options["DIGEST_RECORDS_SAVE_PATH"]}"')
         with open(options['DIGEST_RECORDS_SAVE_PATH'], 'w') as fout:
-            json.dump(digest_records_plain, fout, indent=4)
+            if output_format == 'JSON':
+                json.dump(digest_records_plain, fout, indent=4)
+            elif output_format == 'CSV':
+                for digest_record_plain in digest_records_plain:
+                    s = f'{digest_record_plain["id"]}\t{digest_record_plain["title"]}\t{digest_record_plain["url"]}'
+                    if [k for k in digest_record_plain['keywords'] if not k['generic']]:
+                        for k in digest_record_plain['keywords']:
+                            if not k['generic']:
+                                s += f'\t{k["name"]}\t{k["foss"]}\t{k["category"]}'
+                    fout.write(f'{s}\n')
         custom_logger.info('Saved')
         if options['similar_records_save_path']:
             custom_logger.info(f'Saving similar digest records to "{options["similar_records_save_path"]}"')
             with open(options['similar_records_save_path'], 'w') as fout:
-                json.dump(digest_similar_records_plain, fout, indent=4)
+                if output_format == 'JSON':
+                    json.dump(digest_similar_records_plain, fout, indent=4)
+                else:
+                    raise NotImplementedError
             custom_logger.info('Saved')
 
     def _init_globals(self, **options):
@@ -132,3 +149,6 @@ class Command(BaseCommand):
         if options['similar_records_limit'] is not None:
             global similar_records_limit
             similar_records_limit = int(options['similar_records_limit'])
+        if options['output_format'] is not None:
+            global output_format
+            output_format = options['output_format']
