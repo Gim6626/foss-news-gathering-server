@@ -19,7 +19,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         source_obj: DigestRecordsSource
         sources_plain: List[Dict] = []
-        for source_obj in DigestRecordsSource.objects.all():
+        for source_obj in DigestRecordsSource.objects.filter(projects__in=[Project.objects.get(name='FOSS News')]):
             source_records_good_count = DigestRecord.objects.filter(source=source_obj, state='IN_DIGEST').count()
             source_records_bad_count = DigestRecord.objects.filter(source=source_obj).exclude(state='IN_DIGEST').count()
             if source_records_good_count or source_records_bad_count:
