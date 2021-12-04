@@ -22,13 +22,14 @@ class Command(BaseCommand):
         for source_obj in DigestRecordsSource.objects.all():
             source_records_good_count = DigestRecord.objects.filter(source=source_obj, state='IN_DIGEST').count()
             source_records_bad_count = DigestRecord.objects.filter(source=source_obj).exclude(state='IN_DIGEST').count()
-            source_plain = {
-                'name': source_obj.name,
-                'data_url': source_obj.data_url,
-                'good_records_count': source_records_good_count,
-                'bad_records_count': source_records_bad_count,
-            }
-            sources_plain.append(source_plain)
+            if source_records_good_count or source_records_bad_count:
+                source_plain = {
+                    'name': source_obj.name,
+                    'data_url': source_obj.data_url,
+                    'good_records_count': source_records_good_count,
+                    'bad_records_count': source_records_bad_count,
+                }
+                sources_plain.append(source_plain)
         sources_plain_str = json.dumps(sources_plain, indent=4)
         fout = open(options['OUTPUT_FILE_PATH'], 'w')
         fout.write(sources_plain_str)
