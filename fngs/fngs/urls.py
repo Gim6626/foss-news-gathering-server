@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
+import auth.urls
 import gatherer.urls
 import gatherer.urls_v2
 import search.urls
@@ -28,6 +29,7 @@ api_v1_prefix = 'api/v1/'
 api_v2_prefix = 'api/v2'
 
 urlpatterns = [
+    path(f'{api_v2_prefix}/auth/', include(auth.urls)),
     path('admin/', admin.site.urls),
     path(api_v1_prefix, include(gatherer.urls)),
     path(f'{api_v2_prefix}/gatherer', include(gatherer.urls_v2)),
