@@ -31,10 +31,8 @@ api_v2_prefix = 'api/v2'
 urlpatterns = [
     path(f'{api_v2_prefix}/auth/', include(auth.urls)),
     path('admin/', admin.site.urls),
-    path(api_v1_prefix, include(gatherer.urls)),
-    path(f'{api_v2_prefix}/gatherer', include(gatherer.urls_v2)),
-    path(api_v1_prefix, include(tbot.urls)),
-    path(f'{api_v2_prefix}/tbot', include(tbot.urls_v2)),
+    path(f'{api_v2_prefix}/gatherer/', include(gatherer.urls_v2)),
+    path(f'{api_v2_prefix}/tbot/', include(tbot.urls_v2)),
     path('', include(search.urls)),
     path('', include(osfriday.urls)),
 ]

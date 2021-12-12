@@ -6,9 +6,10 @@ from tbot.models import *
 
 class NotCategorizedDigestRecordsMixin:
 
-    def not_categorized_records_queryset(self, from_bot, project_name='FOSS News'):
+    def not_categorized_records_queryset(self, from_bot: bool, project_name: str = 'FOSS News'):
+        queryset = DigestRecord.objects.filter(projects__in=(Project.objects.filter(name=project_name)))
+        unknown_state_queryset = queryset.filter(state='UNKNOWN')
         if from_bot:
-            queryset = super().not_categorized_records_queryset()
             dt_now = datetime.datetime.now()
             dt_now_minus_2w = dt_now - datetime.timedelta(days=14)
             recent_tbot_attempts = TelegramBotDigestRecordCategorizationAttempt.objects.filter(dt__gt=dt_now_minus_2w)
@@ -16,9 +17,7 @@ class NotCategorizedDigestRecordsMixin:
             queryset = queryset.filter(id__in=recent_tbot_attempts_records_ids)
             return queryset
         else:
-            foss_news_queryset = DigestRecord.objects.filter(projects__in=(Project.objects.filter(name=project_name)))
-            unknown_state_queryset = foss_news_queryset.filter(state='UNKNOWN')
-            foss_news_current_queryset = foss_news_queryset.filter(digest_issue__number=DigestIssue.objects.order_by('-number')[0].number, state='IN_DIGEST')
+            foss_news_current_queryset = queryset.filter(digest_issue__number=DigestIssue.objects.order_by('-number')[0].number, state='IN_DIGEST')
             unknown_content_type_queryset = foss_news_current_queryset.filter(content_type='UNKNOWN')
             none_content_type_queryset = foss_news_current_queryset.filter(content_type=None)
             none_is_main_queryset = foss_news_current_queryset.filter(is_main=None)

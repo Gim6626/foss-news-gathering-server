@@ -62,7 +62,7 @@ class DigestRecordsLookingSimilarFilter(filters.FilterSet):
         ]
 
     def digest_filter(self, queryset, name, value):
-        return queryset.filter(digest_issue=value)
+        return queryset.filter(digest_issue__number=value)
 
     def content_type_filter(self, queryset, name, value):
         return queryset.filter(content_type=value)

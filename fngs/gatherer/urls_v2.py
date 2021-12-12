@@ -1,14 +1,8 @@
-from django.urls import path
 from rest_framework import routers
 from gatherer.views import *
-from rest_framework_simplejwt.views import TokenObtainPairView
-
-urlpatterns = [
-    path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-]
 
 router = routers.DefaultRouter()
-router.register('digest-record',
+router.register('digest-record/simple',
                 # OLD: 'digest-records',
                 DigestRecordViewSet,
                 basename='digest-record')
@@ -28,7 +22,7 @@ router.register('digest-record/detailed',
                 # OLD: 'specific-digest-records',
                 DetailedDigestRecordViewSet,
                 basename='digest-record/detailed')
-router.register('similar-digest-record',
+router.register('similar-digest-record/simple',
                 # OLD: 'similar-digest-records',
                 SimilarDigestRecordsViewSet,
                 basename='similar-digest-record')
@@ -60,4 +54,4 @@ router.register('digest/(?P<digest_number>.*?)/previous/similar-records',
                 SimilarRecordsInPreviousNonSpecialDigest,
                 basename='similar-records-in-previous-digest')
 
-urlpatterns += router.urls
+urlpatterns = router.urls

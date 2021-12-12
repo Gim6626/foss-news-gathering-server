@@ -190,7 +190,7 @@ class DigestRecordsCategorizedByTbotViewSet(mixins.ListModelMixin,
     permission_classes = [permissions.IsAdminUser]
 
     def list(self, request, *args, **kwargs):
-        not_fully_categorized_digest_records = self.not_categorized_records_queryset()
+        not_fully_categorized_digest_records = self.not_categorized_records_queryset(from_bot=True)
         tbot_categorizations_attempts_for_unknown_records = TelegramBotDigestRecordCategorizationAttempt.objects.filter(digest_record__in=not_fully_categorized_digest_records)
         categorizations_data_by_digest_record = {}
         categorization_attempt: TelegramBotDigestRecordCategorizationAttempt
