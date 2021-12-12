@@ -56,9 +56,8 @@ router.register('content-category/guess',
                 # OLD: 'guess-content-category'
                 GuessContentCategoryView,
                 basename='content-category/guess')
-# TODO: Rewrite ViewSet in style similar to other new endpoints
-router.register('similar-records-in-previous-digest',
-                SimilarRecordsInPreviousDigest,
+router.register('digest/(?P<digest_number>.*?)/previous/similar-records',
+                SimilarRecordsInPreviousNonSpecialDigest,
                 basename='similar-records-in-previous-digest')
 
 urlpatterns += router.urls

@@ -232,6 +232,45 @@ class GuessContentCategoryView(mixins.ListModelMixin, GenericViewSet):
         return Response({'title': title, 'matches': matched_keywords_by_content_category}, status=status.HTTP_200_OK)
 
 
+class SimilarRecordsInPreviousNonSpecialDigest(mixins.ListModelMixin, GenericViewSet):
+    permission_classes = [permissions.IsAdminUser | TelegramBotReadOnlyPermission]
+
+    def list(self, request, *args, **kwargs):
+        digest_number_str = kwargs.get('digest_number', None)
+        if not digest_number_str:
+            return Response({'error': '"digest_number_str" option is required'},
+                            status=status.HTTP_400_BAD_REQUEST)
+        if not digest_number_str.isdigit():
+            return Response({'error': '"digest_number_str" option should be integer'},
+                            status=status.HTTP_400_BAD_REQUEST)
+        digest_number = int(digest_number_str)
+
+        keywords_str = request.query_params.get('keywords', None)
+        if not keywords_str:
+            return Response({'error': '"keywords" option is required'},
+                            status=status.HTTP_400_BAD_REQUEST)
+        keywords = keywords_str.split(',')
+
+        similar_records_in_previous_digest = []
+        for keyword in keywords:
+            i = digest_number
+            while True:
+                previous_digest_issue = DigestIssue(number=i - 1)
+                if not previous_digest_issue.is_special:
+                    break
+                else:
+                    i -= 1
+            records = DigestRecord.objects.filter(digest_issue=previous_digest_issue, state='IN_DIGEST')
+            for record in records:
+                if re.search(rf'\b{re.escape(keyword)}\b', record.title, re.IGNORECASE) and record not in similar_records_in_previous_digest:
+                    similar_records_in_previous_digest.append(record)
+        similar_records_in_previous_digest_titles = [DigestRecordDetailedSerializer(r).data
+                                                     for r in similar_records_in_previous_digest]
+
+        return Response(similar_records_in_previous_digest_titles,
+                        status=status.HTTP_200_OK)
+
+
 # TODO: Obsolete, remove with removal of api/v1 by adding search by keywords to DigestRecordsLookingSimilarFilter
 class SimilarRecordsInPreviousDigest(mixins.ListModelMixin, GenericViewSet):
     permission_classes = [permissions.IsAdminUser | TelegramBotReadOnlyPermission]
