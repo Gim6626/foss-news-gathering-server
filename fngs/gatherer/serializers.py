@@ -37,21 +37,10 @@ class DigestRecordSerializer(serializers.ModelSerializer):
 
 
 class SimilarDigestRecordsSerializer(serializers.ModelSerializer):
+    digest_records = DigestRecordSerializer(many=True, read_only=True)
 
     class Meta:
         model = SimilarDigestRecords
-        fields = [
-            'id',
-            'digest_issue',
-            'digest_records',
-        ]
-
-
-class SimilarDigestRecordsDetailedSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = SimilarDigestRecords
-        depth = 2
         fields = [
             'id',
             'digest_issue',
@@ -117,6 +106,19 @@ class DigestRecordDetailedSerializer(serializers.ModelSerializer):
             'projects',
             'language',
             'tbot_estimations',
+        ]
+
+
+class SimilarDigestRecordsDetailedSerializer(serializers.ModelSerializer):
+    digest_records = DigestRecordDetailedSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = SimilarDigestRecords
+        depth = 2
+        fields = [
+            'id',
+            'digest_issue',
+            'digest_records',
         ]
 
 
