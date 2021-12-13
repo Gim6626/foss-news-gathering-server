@@ -50,7 +50,7 @@ router.register('content-category/guess',
                 # OLD: 'guess-content-category'
                 GuessContentCategoryView,
                 basename='content-category/guess')
-router.register('digest/(?P<digest_number>.*?)/previous/similar-records',
+router.register('digest-issue/(?P<digest_number>.*?)/previous/similar-records',
                 SimilarRecordsInPreviousNonSpecialDigest,
                 basename='similar-records-in-previous-digest')
 

@@ -90,6 +90,8 @@ class OldestNotCategorizedDigestRecordViewSet(GenericViewSet,
     permission_classes = [permissions.IsAdminUser]
     serializer_class = DigestRecordDetailedSerializer
 
+    queryset = []
+
     def list(self, request, *args, **kwargs):
         project_name = request.query_params.get('project', None)
         if not project_name:
@@ -102,9 +104,15 @@ class OldestNotCategorizedDigestRecordViewSet(GenericViewSet,
         queryset = queryset.order_by('dt')
         if queryset:
             digest_record = queryset[0]
-            return Response(DigestRecordSerializer(digest_record).data, status=status.HTTP_200_OK)
+            return Response({
+                                'results': [DigestRecordDetailedSerializer(digest_record).data],
+                                'links': {
+                                    'next': None,
+                                },
+                            },
+                            status=status.HTTP_200_OK)
         else:
-            return Response([], status=status.HTTP_404_NOT_FOUND)
+            return Response(None, status=status.HTTP_404_NOT_FOUND)
 
 
 # TODO: Obsolete, remove with removal of api/v1
@@ -235,6 +243,8 @@ class GuessContentCategoryView(mixins.ListModelMixin, GenericViewSet):
 class SimilarRecordsInPreviousNonSpecialDigest(mixins.ListModelMixin, GenericViewSet):
     permission_classes = [permissions.IsAdminUser | TelegramBotReadOnlyPermission]
 
+    queryset = []
+
     def list(self, request, *args, **kwargs):
         digest_number_str = kwargs.get('digest_number', None)
         if not digest_number_str:
@@ -255,7 +265,11 @@ class SimilarRecordsInPreviousNonSpecialDigest(mixins.ListModelMixin, GenericVie
         for keyword in keywords:
             i = digest_number
             while True:
-                previous_digest_issue = DigestIssue(number=i - 1)
+                previous_digest_issues = DigestIssue.objects.filter(number=i - 1)
+                if not previous_digest_issues:
+                    return DigestRecordsSource({'error': 'bad digest number'},
+                                               status=status.HTTP_400_BAD_REQUEST)
+                previous_digest_issue = previous_digest_issues[0]
                 if not previous_digest_issue.is_special:
                     break
                 else:

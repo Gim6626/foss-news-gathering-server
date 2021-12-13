@@ -14,7 +14,7 @@ class NotCategorizedDigestRecordsMixin:
             dt_now_minus_2w = dt_now - datetime.timedelta(days=14)
             recent_tbot_attempts = TelegramBotDigestRecordCategorizationAttempt.objects.filter(dt__gt=dt_now_minus_2w)
             recent_tbot_attempts_records_ids = [attempt.digest_record.id for attempt in recent_tbot_attempts]
-            queryset = queryset.filter(id__in=recent_tbot_attempts_records_ids)
+            queryset = unknown_state_queryset.filter(id__in=recent_tbot_attempts_records_ids)
             return queryset
         else:
             foss_news_current_queryset = queryset.filter(digest_issue__number=DigestIssue.objects.order_by('-number')[0].number, state='IN_DIGEST')
