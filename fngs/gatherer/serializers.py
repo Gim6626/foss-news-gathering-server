@@ -3,7 +3,7 @@ from rest_framework import serializers
 from gatherer.models import *
 
 
-DATETIME_FORMAT = '%Y-%m-%dT%H:%M:%S%z'
+DATETIME_FORMAT = '%Y-%m-%dT%H:%M:%S.%f%z'
 
 
 class DigestRecordSerializer(serializers.ModelSerializer):
