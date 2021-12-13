@@ -114,6 +114,8 @@ class TelegramBotOneRandomNotCategorizedDigestRecordViewSet(mixins.ListModelMixi
     permission_classes = [permissions.IsAdminUser | TelegramBotFullPermission]
     serializer_class = DigestRecordDetailedSerializer
 
+    queryset = []
+
     def list(self, request, *args, **kwargs):
         tbot_user_id = request.query_params.get('tbot-user-id', None)
         if not tbot_user_id:
