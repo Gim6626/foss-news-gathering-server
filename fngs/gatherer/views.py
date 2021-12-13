@@ -29,7 +29,7 @@ class DigestRecordViewSet(viewsets.ModelViewSet):
 class DetailedDigestRecordViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAdminUser]
     queryset = DigestRecord.objects.all().order_by('dt')
-    serializer_class = DigestRecordSerializer
+    serializer_class = DigestRecordDetailedSerializer
     model = DigestRecord
     filter_class = SpecificDigestRecordsFilter
     filter_backends = [DjangoFilterBackend]
