@@ -112,7 +112,6 @@ class TelegramBotOneRandomNotCategorizedDigestRecordViewSet(mixins.ListModelMixi
                                                             viewsets.GenericViewSet,
                                                             NotCategorizedFossNewsDigestRecordsMixin):
     permission_classes = [permissions.IsAdminUser | TelegramBotFullPermission]
-    serializer_class = DigestRecordDetailedSerializer
 
     queryset = []
 
@@ -127,7 +126,7 @@ class TelegramBotOneRandomNotCategorizedDigestRecordViewSet(mixins.ListModelMixi
                                                                                                     project_name)
         if not_categorized_by_this_user_digest_records_but_still_actual:
             random_record = random.choice(not_categorized_by_this_user_digest_records_but_still_actual)
-            return Response({'results': [DigestRecordSerializer(random_record).data]}, status=status.HTTP_200_OK)
+            return Response({'results': [DigestRecordDetailedSerializer(random_record).data]}, status=status.HTTP_200_OK)
         else:
             return Response({}, status=status.HTTP_404_NOT_FOUND)
 
