@@ -137,6 +137,7 @@ class DigestRecordsSourceAdmin(admin.ModelAdmin):
         'data_url',
         'links_to_projects',
         'language',
+        'text_fetching_enabled',
     )
 
     search_fields = (

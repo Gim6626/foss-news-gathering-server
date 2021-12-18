@@ -260,6 +260,8 @@ class DigestRecordsSource(models.Model):
                                 max_length=15,
                                 null=True,
                                 blank=True)
+    text_fetching_enabled = models.BooleanField(verbose_name='Text fetching enabled',
+                                                default=False)
 
     class Meta:
         verbose_name = 'Digest Records Source'

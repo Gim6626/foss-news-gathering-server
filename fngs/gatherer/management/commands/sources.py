@@ -1,3 +1,6 @@
+import requests
+from urllib.parse import urlparse
+from bs4 import BeautifulSoup
 from typing import List, Tuple
 from abc import ABCMeta, abstractmethod
 import xml.etree.ElementTree as ET
@@ -137,6 +140,18 @@ class BasicParsingModule(metaclass=ABCMeta):
     @abstractmethod
     def _parse(self) -> List[PostData]:
         pass
+
+    def fetch_tag_from_url_by_selector(self, url, container_tag, container_selector):
+        # TODO: Add retries and handle errors
+        response = requests.get(url, timeout=30)
+        html = response.content
+        parser = BeautifulSoup(html, 'html.parser')
+        content = parser.find(container_tag, container_selector)
+        return content
+
+    # TODO: Make abstract when it will be implemented for all sources
+    def fetch_url(self, url):
+        return None
 
     def _fill_keywords(self, posts_data: List[PostData]):
         keywords_to_check = []
@@ -343,7 +358,9 @@ class SimpleRssBasicParsingModule(RssBasicParsingModule):
 
 
 class OpenNetRuParsingModule(SimpleRssBasicParsingModule):
-    pass
+
+    def fetch_url(self, url):
+        return self.fetch_tag_from_url_by_selector(url, 'table', 'ttxt2')
 
 
 class LinuxComParsingModule(SimpleRssBasicParsingModule):
@@ -522,6 +539,9 @@ class LinuxFoundationOrgParsingModule(SimpleRssBasicParsingModule):
 
 class HabrComBasicParsingModule(SimpleRssBasicParsingModule):
 
+    def fetch_url(self, url):
+        return self.fetch_tag_from_url_by_selector(url, 'div', 'tm-article-body')
+
     def process_url(self, url: str):
         return re.sub('/\?utm_campaign=.*&utm_source=habrahabr&utm_medium=rss',
                       '',
@@ -625,7 +645,9 @@ class DmitryRobionekAtYouTubeParsingModule(YouTubeComBasicParsingModule):
 
 
 class LosstRuParsingModule(SimpleRssBasicParsingModule):
-    pass
+
+    def fetch_url(self, url):
+        return self.fetch_tag_from_url_by_selector(url, 'div', 'post-single-content box mark-links entry-content')
 
 
 class AstraLinuxRuParsingModule(SimpleRssBasicParsingModule):
