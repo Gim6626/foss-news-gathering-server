@@ -11,6 +11,7 @@ class DigestRecordAdmin(admin.ModelAdmin):
 
     readonly_fields = (
         'id',
+        'cleared_text',
     )
     list_display = (
         'id',

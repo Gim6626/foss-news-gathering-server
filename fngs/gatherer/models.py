@@ -1,5 +1,6 @@
 from django.db import models
 from enum import Enum
+from bs4 import BeautifulSoup
 
 
 class DigestRecordState(Enum):
@@ -147,6 +148,12 @@ class DigestRecord(models.Model):
     cleared_description = models.TextField(verbose_name='Cleared description',
                                            null=True,
                                            blank=True)
+    text = models.TextField(verbose_name='Text',
+                            null=True,
+                            blank=True)
+
+    def cleared_text(self):
+        return BeautifulSoup(self.text, 'lxml').text if self.text else None
 
     def projects_names(self):
         return f'{", ".join([p.name for p in self.projects.all()])}'
