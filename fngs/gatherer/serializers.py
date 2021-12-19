@@ -122,6 +122,43 @@ class SimilarDigestRecordsDetailedSerializer(serializers.ModelSerializer):
         ]
 
 
+class DigestRecordWithSimilarSerializer(serializers.ModelSerializer):
+    not_proprietary_keywords = KeywordSerializer(many=True, read_only=True)
+    proprietary_keywords = KeywordSerializer(many=True, read_only=True)
+    similar_records = SimilarDigestRecordsDetailedSerializer(many=True, read_only=True)
+
+    def to_representation(self, instance):
+        # TODO: Extract common code from here and DigestRecordSerializer
+        representation = super().to_representation(instance)
+        representation['dt'] = instance.dt.strftime(DATETIME_FORMAT) if instance.dt else None
+        representation['gather_dt'] = instance.gather_dt.strftime(DATETIME_FORMAT) if instance.gather_dt else None
+        return representation
+
+    class Meta:
+        model = DigestRecord
+        depth = 2
+        fields = [
+            'id',
+            'dt',
+            'gather_dt',
+            'source',
+            'title',
+            'url',
+            'additional_url',
+            'state',
+            'digest_issue',
+            'is_main',
+            'content_type',
+            'content_category',
+            'title_keywords',
+            'not_proprietary_keywords',
+            'proprietary_keywords',
+            'projects',
+            'language',
+            'tbot_estimations',
+        ]
+
+
 class DigestIssueSerializer(serializers.ModelSerializer):
 
     class Meta:
