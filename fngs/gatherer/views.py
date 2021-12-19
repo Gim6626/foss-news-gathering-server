@@ -139,8 +139,10 @@ class NotCategorizedDigestRecordsCountViewSet(mixins.ListModelMixin,
     def list(self, request, *args, **kwargs):
         project_name = request.query_params.get('project', None)
         if not project_name:
-            project_name = 'FOSS News'  # TODO: Obsolete, remove with removal of api/v1
-            # return Response({'error': 'Missing "project" option'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'error': 'Missing "project" option'}, status=status.HTTP_400_BAD_REQUEST)
+        from_bot = request.query_params.get('from-bot', None)
+        if not from_bot:
+            return Response({'error': 'Missing "from-bot" option'}, status=status.HTTP_400_BAD_REQUEST)
         queryset = self.not_categorized_records_queryset(from_bot=False, project_name=project_name)
         count = queryset.count()
         return Response({'count': count}, status=status.HTTP_200_OK)
