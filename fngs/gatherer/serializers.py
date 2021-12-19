@@ -122,10 +122,38 @@ class SimilarDigestRecordsDetailedSerializer(serializers.ModelSerializer):
         ]
 
 
+class DigestRecordSimplifiedSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = DigestRecord
+        fields = [
+            'id',
+            'dt',
+            'gather_dt',
+            'source',
+            'title',
+            'url',
+            'additional_url',
+        ]
+
+
+class SimilarDigestRecordsSimplifiedSerializer(serializers.ModelSerializer):
+    digest_records = DigestRecordSimplifiedSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = SimilarDigestRecords
+        depth = 2
+        fields = [
+            'id',
+            'digest_issue',
+            'digest_records',
+        ]
+
+
 class DigestRecordWithSimilarSerializer(serializers.ModelSerializer):
     not_proprietary_keywords = KeywordSerializer(many=True, read_only=True)
     proprietary_keywords = KeywordSerializer(many=True, read_only=True)
-    similar_records = SimilarDigestRecordsDetailedSerializer(many=True, read_only=True)
+    similar_records = SimilarDigestRecordsSimplifiedSerializer(many=True, read_only=True)
 
     def to_representation(self, instance):
         # TODO: Extract common code from here and DigestRecordSerializer
