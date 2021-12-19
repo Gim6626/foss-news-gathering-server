@@ -143,7 +143,7 @@ class NotCategorizedDigestRecordsCountViewSet(mixins.ListModelMixin,
         from_bot = request.query_params.get('from-bot', None)
         if not from_bot:
             return Response({'error': 'Missing "from-bot" option'}, status=status.HTTP_400_BAD_REQUEST)
-        queryset = self.not_categorized_records_queryset(from_bot=False, project_name=project_name)
+        queryset = self.not_categorized_records_queryset(from_bot=from_bot, project_name=project_name)
         count = queryset.count()
         return Response({'count': count}, status=status.HTTP_200_OK)
 
