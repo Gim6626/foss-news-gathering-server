@@ -156,6 +156,7 @@ class DigestRecordWithSimilarSerializer(serializers.ModelSerializer):
             'projects',
             'language',
             'tbot_estimations',
+            'similar_records',
         ]
 
 
