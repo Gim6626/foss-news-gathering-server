@@ -112,7 +112,13 @@ class OldestNotCategorizedDigestRecordViewSet(GenericViewSet,
                             },
                             status=status.HTTP_200_OK)
         else:
-            return Response(None, status=status.HTTP_404_NOT_FOUND)
+            return Response({
+                                'results': [],
+                                'links': {
+                                    'next': None,
+                                },
+                            },
+                            status=status.HTTP_200_OK)
 
 
 # TODO: Obsolete, remove with removal of api/v1
