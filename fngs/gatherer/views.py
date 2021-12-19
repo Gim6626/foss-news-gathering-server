@@ -186,7 +186,7 @@ class SimilarDigestRecordsDetailedViewSet(viewsets.ModelViewSet):
 class DigestRecordsLookingSimilarViewSet(GenericViewSet, mixins.ListModelMixin):
     permission_classes = [permissions.IsAdminUser]
     model = DigestRecord
-    serializer_class = DigestRecordSerializer
+    serializer_class = DigestRecordDetailedSerializer
     queryset = DigestRecord.objects.filter(state='IN_DIGEST')
     filter_class = DigestRecordsLookingSimilarFilter
     filter_backends = [DjangoFilterBackend]
