@@ -20,6 +20,10 @@ class NotCategorizedDigestRecordsMixin:
             recent_tbot_attempts = TelegramBotDigestRecordCategorizationAttempt.objects.filter(dt__gt=dt_now_minus_1m)
             recent_tbot_attempts_records_ids = [attempt.digest_record.id for attempt in recent_tbot_attempts]
             recent_foss_news_records = partially_categorized_queryset.filter(id__in=recent_tbot_attempts_records_ids)
-            return recent_foss_news_records
+            fully_categorized_records = recent_foss_news_records.filter(state='IN_DIGEST',
+                                                                        content_type__in=DigestRecordContentType,
+                                                                        content_category__in=DigestRecordContentCategory)
+            recent_not_fully_categorized_foss_news_records = fully_categorized_records.exclude(pk__in=fully_categorized_records)
+            return recent_not_fully_categorized_foss_news_records
         else:
             return partially_categorized_queryset.filter(digest_issue__number=DigestIssue.objects.order_by('-number')[0].number, state='IN_DIGEST')
