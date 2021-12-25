@@ -37,7 +37,6 @@ class DigestRecordSerializer(serializers.ModelSerializer):
 
 
 class SimilarDigestRecordsSerializer(serializers.ModelSerializer):
-    digest_records = DigestRecordSerializer(many=True)
 
     class Meta:
         model = SimilarDigestRecords
