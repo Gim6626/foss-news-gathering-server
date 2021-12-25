@@ -27,4 +27,4 @@ class NotCategorizedDigestRecordsMixin:
             recent_partially_categorized_foss_news_records = partially_categorized_queryset.filter(id__in=recent_tbot_attempts_records_ids)
             return recent_partially_categorized_foss_news_records
         else:
-            return partially_categorized_queryset.filter(digest_issue__number=DigestIssue.objects.order_by('-number')[0].number, state='IN_DIGEST')
+            return unknown_state_queryset
