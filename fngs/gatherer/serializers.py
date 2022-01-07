@@ -37,7 +37,6 @@ class DigestRecordSerializer(serializers.ModelSerializer):
 
 
 class SimilarDigestRecordsSerializer(serializers.ModelSerializer):
-    digest_records = DigestRecordSerializer(many=True, read_only=True)
 
     class Meta:
         model = SimilarDigestRecords
@@ -119,6 +118,49 @@ class SimilarDigestRecordsDetailedSerializer(serializers.ModelSerializer):
             'id',
             'digest_issue',
             'digest_records',
+        ]
+
+
+class DigestRecordSimplifiedSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = DigestRecord
+        fields = [
+            'id',
+            'dt',
+            'gather_dt',
+            'source',
+            'title',
+            'url',
+            'additional_url',
+        ]
+
+
+class SimilarDigestRecordsSimplifiedSerializer(serializers.ModelSerializer):
+    digest_records = DigestRecordSimplifiedSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = SimilarDigestRecords
+        depth = 2
+        fields = [
+            'id',
+            'digest_issue',
+            'digest_records',
+        ]
+
+
+class DigestRecordWithSimilarSerializer(serializers.ModelSerializer):
+    similar_records = SimilarDigestRecordsSimplifiedSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = DigestRecord
+        depth = 2
+        fields = [
+            'id',
+            'title',
+            'url',
+            'additional_url',
+            'similar_records',
         ]
 
 

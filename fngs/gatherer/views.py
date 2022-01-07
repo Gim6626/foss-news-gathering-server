@@ -112,7 +112,13 @@ class OldestNotCategorizedDigestRecordViewSet(GenericViewSet,
                             },
                             status=status.HTTP_200_OK)
         else:
-            return Response(None, status=status.HTTP_404_NOT_FOUND)
+            return Response({
+                                'results': [],
+                                'links': {
+                                    'next': None,
+                                },
+                            },
+                            status=status.HTTP_200_OK)
 
 
 # TODO: Obsolete, remove with removal of api/v1
@@ -138,10 +144,13 @@ class NotCategorizedDigestRecordsCountViewSet(mixins.ListModelMixin,
 
     def list(self, request, *args, **kwargs):
         project_name = request.query_params.get('project', None)
-        if not project_name:
-            project_name = 'FOSS News'  # TODO: Obsolete, remove with removal of api/v1
-            # return Response({'error': 'Missing "project" option'}, status=status.HTTP_400_BAD_REQUEST)
-        queryset = self.not_categorized_records_queryset(from_bot=False, project_name=project_name)
+        if project_name is None:
+            return Response({'error': 'Missing "project" option'}, status=status.HTTP_400_BAD_REQUEST)
+        from_bot = request.query_params.get('from-bot', None)
+        if from_bot is None:
+            return Response({'error': 'Missing "from-bot" option'}, status=status.HTTP_400_BAD_REQUEST)
+        from_bot = from_bot == 'true'
+        queryset = self.not_categorized_records_queryset(from_bot=from_bot, project_name=project_name)
         count = queryset.count()
         return Response({'count': count}, status=status.HTTP_200_OK)
 
@@ -186,7 +195,7 @@ class SimilarDigestRecordsDetailedViewSet(viewsets.ModelViewSet):
 class DigestRecordsLookingSimilarViewSet(GenericViewSet, mixins.ListModelMixin):
     permission_classes = [permissions.IsAdminUser]
     model = DigestRecord
-    serializer_class = DigestRecordSerializer
+    serializer_class = DigestRecordWithSimilarSerializer
     queryset = DigestRecord.objects.filter(state='IN_DIGEST')
     filter_class = DigestRecordsLookingSimilarFilter
     filter_backends = [DjangoFilterBackend]
