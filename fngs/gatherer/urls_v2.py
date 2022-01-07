@@ -1,8 +1,9 @@
 from rest_framework import routers
+from rest_framework.urlpatterns import format_suffix_patterns
 from gatherer.views import *
 
 router = routers.DefaultRouter()
-router.register('digest-record/simple',
+router.register('digest-record',
                 # OLD: 'digest-records',
                 DigestRecordViewSet,
                 basename='digest-record')
@@ -18,22 +19,10 @@ router.register('digest-record/not-categorized/count',
                 # OLD: 'not-categorized-digest-records-count'
                 NotCategorizedDigestRecordsCountViewSet,
                 basename='digest-record/not-categorized/count')
-router.register('digest-record/detailed',
-                # OLD: 'specific-digest-records',
-                DetailedDigestRecordViewSet,
-                basename='digest-record/detailed')
-router.register('similar-digest-record/simple',
+router.register('similar-digest-record',
                 # OLD: 'similar-digest-records',
                 SimilarDigestRecordsViewSet,
                 basename='similar-digest-record')
-router.register('similar-digest-record/detailed',
-                # OLD: 'similar-digest-records-detailed',
-                SimilarDigestRecordsDetailedViewSet,
-                basename='similar-digest-record/detailed')
-router.register('digest-record/similar',
-                # OLD: 'digest-records-looking-similar',
-                DigestRecordsLookingSimilarViewSet,
-                basename='digest-record/similar')
 router.register('project',
                 # OLD: 'projects'
                 ProjectViewSet,

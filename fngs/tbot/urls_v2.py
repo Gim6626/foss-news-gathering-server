@@ -2,14 +2,10 @@ from rest_framework import routers
 from tbot.views import *
 
 router = routers.DefaultRouter()
-router.register('user/simple',
+router.register('user',
                 # OLD: 'telegram-bot-user'
                 TelegramBotUserViewSet,
                 basename='user')
-router.register('user/detailed',
-                # OLD: 'telegram-bot-user-detailed'
-                TelegramBotUserDetailedViewSet,
-                basename='user/detailed')
 router.register('group',
                 # OLD: 'telegram-bot-user-group'
                 TelegramBotUserGroupViewSet,

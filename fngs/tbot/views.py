@@ -1,5 +1,6 @@
 import random
 
+from rest_framework.decorators import action
 from django.forms.models import model_to_dict
 from rest_framework import (
     viewsets,
@@ -34,6 +35,17 @@ class TelegramBotUserViewSet(viewsets.ModelViewSet):
             return Response(TelegramBotUserDetailedSerializer(telegram_bot_user).data,
                             status=status.HTTP_200_OK)
         return super().list(request, *args, **kwargs)
+
+    @action(detail=False, methods=['get'], url_path='detailed')
+    def detailed_list(self, request, *args, **kwargs):
+        data = TelegramBotUserDetailedSerializer(self.paginate_queryset(self.queryset), many=True).data
+        return self.get_paginated_response(data)
+
+    @action(detail=True, methods=['get'], url_path='detailed')
+    def detailed_one(self, request, *args, **kwargs):
+        data = TelegramBotUserDetailedSerializer(self.get_object()).data
+        return Response(data,
+                        status=status.HTTP_200_OK)
 
 
 class TelegramBotUserDetailedViewSet(viewsets.ModelViewSet):

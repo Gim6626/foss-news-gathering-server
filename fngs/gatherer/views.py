@@ -1,8 +1,7 @@
-from django.db.models import Q
-
 import datetime
 import re
 
+from rest_framework.decorators import action
 from rest_framework import (
     viewsets,
     mixins,
@@ -25,7 +24,34 @@ class DigestRecordViewSet(viewsets.ModelViewSet):
     queryset = DigestRecord.objects.all().order_by('dt')
     serializer_class = DigestRecordSerializer
 
+    @action(detail=False, methods=['get'], url_path='detailed')
+    def detailed_list(self, request, *args, **kwargs):
+        data = DigestRecordDetailedSerializer(self.paginate_queryset(self.queryset), many=True).data
+        return self.get_paginated_response(data)
 
+    @action(detail=True, methods=['get'], url_path='detailed')
+    def detailed_one(self, request, *args, **kwargs):
+        data = DigestRecordDetailedSerializer(self.get_object()).data
+        return Response(data,
+                        status=status.HTTP_200_OK)
+
+    @action(detail=False, methods=['get'], url_path='similar')
+    def similar(self, request, *args, **kwargs):
+        queryset = self.queryset.filter(state='IN_DIGEST')
+        digest_issue = request.query_params.get('digest_issue', None)
+        if digest_issue is not None:
+            queryset = queryset.filter(digest_issue=digest_issue)
+        content_type = request.query_params.get('content_type', None)
+        if content_type is not None:
+            queryset = queryset.filter(content_type=content_type)
+        content_category = request.query_params.get('content_category', None)
+        if content_category is not None:
+            queryset = queryset.filter(content_category=content_category)
+        data = DigestRecordWithSimilarSerializer(self.paginate_queryset(queryset), many=True).data
+        return self.get_paginated_response(data)
+
+
+# TODO: Obsolete, remove with removal of api/v1
 class DetailedDigestRecordViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAdminUser]
     queryset = DigestRecord.objects.all().order_by('dt')
@@ -182,16 +208,35 @@ class SimilarDigestRecordsViewSet(viewsets.ModelViewSet):
     queryset = SimilarDigestRecords.objects.all()
     serializer_class = SimilarDigestRecordsSerializer
 
+    @action(detail=False, methods=['get'], url_path='detailed')
+    def detailed_list(self, request, *args, **kwargs):
+        queryset = self.queryset.filter(state='IN_DIGEST')
+        digest_issue = request.query_params.get('digest_issue', None)
+        if digest_issue is not None:
+            queryset = queryset.filter(digest_issue=digest_issue)
+        digest_record = request.query_params.get('digest_record', None)
+        if digest_record is not None:
+            queryset = queryset.filter(digest_records__in=digest_record)
+        data = SimilarDigestRecordsDetailedSerializer(self.paginate_queryset(queryset), many=True).data
+        return self.get_paginated_response(data)
 
+    @action(detail=True, methods=['get'], url_path='detailed')
+    def detailed_one(self, request, *args, **kwargs):
+        data = SimilarDigestRecordsDetailedSerializer(self.get_object()).data
+        return Response(data,
+                        status=status.HTTP_200_OK)
+
+
+# TODO: Obsolete, remove with removal of api/v1
 class SimilarDigestRecordsDetailedViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAdminUser]
     queryset = SimilarDigestRecords.objects.all()
     serializer_class = SimilarDigestRecordsDetailedSerializer
     filter_class = SimilarDigestRecordsFilter
     filter_backends = [DjangoFilterBackend]
-    model = SimilarDigestRecords
 
 
+# TODO: Obsolete, remove with removal of api/v1
 class DigestRecordsLookingSimilarViewSet(GenericViewSet, mixins.ListModelMixin):
     permission_classes = [permissions.IsAdminUser]
     model = DigestRecord
