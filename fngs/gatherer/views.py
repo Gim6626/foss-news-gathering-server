@@ -26,7 +26,11 @@ class DigestRecordViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['get'], url_path='detailed')
     def detailed_list(self, request, *args, **kwargs):
-        data = DigestRecordDetailedSerializer(self.paginate_queryset(self.queryset), many=True).data
+        queryset = self.queryset
+        digest_issue = request.query_params.get('digest_issue', None)
+        if digest_issue is not None:
+            queryset = queryset.filter(digest_issue=digest_issue)
+        data = DigestRecordDetailedSerializer(self.paginate_queryset(queryset), many=True).data
         return self.get_paginated_response(data)
 
     @action(detail=True, methods=['get'], url_path='detailed')
