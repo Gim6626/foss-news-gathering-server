@@ -140,7 +140,7 @@ class TelegramBotOneRandomNotCategorizedDigestRecordViewSet(mixins.ListModelMixi
             random_record = random.choice(not_categorized_by_this_user_digest_records_but_still_actual)
             return Response({'results': [DigestRecordDetailedSerializer(random_record).data]}, status=status.HTTP_200_OK)
         else:
-            return Response({}, status=status.HTTP_404_NOT_FOUND)
+            return Response({'results': []}, status=status.HTTP_200_OK)
 
 
 # TODO: Obsolete, remove with removal of api/v1
@@ -155,7 +155,7 @@ class TelegramBotNotCategorizedFossNewsDigestRecordsCountViewSet(mixins.ListMode
         if not_categorized_by_this_user_digest_records_but_still_actual:
             return Response({'count': not_categorized_by_this_user_digest_records_but_still_actual.count()}, status=status.HTTP_200_OK)
         else:
-            return Response({}, status=status.HTTP_404_NOT_FOUND)
+            return Response(None, status=status.HTTP_200_OK)
 
 
 class TelegramBotNotCategorizedDigestRecordsCountViewSet(mixins.ListModelMixin,
@@ -175,7 +175,7 @@ class TelegramBotNotCategorizedDigestRecordsCountViewSet(mixins.ListModelMixin,
         if not_categorized_by_this_user_digest_records_but_still_actual:
             return Response({'count': not_categorized_by_this_user_digest_records_but_still_actual.count()}, status=status.HTTP_200_OK)
         else:
-            return Response({}, status=status.HTTP_404_NOT_FOUND)
+            return Response(None, status=status.HTTP_200_OK)
 
 
 # TODO: Obsolete, remove with removal of api/v1
