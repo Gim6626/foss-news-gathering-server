@@ -210,7 +210,7 @@ class SimilarDigestRecordsViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['get'], url_path='detailed')
     def detailed_list(self, request, *args, **kwargs):
-        queryset = self.queryset.filter(state='IN_DIGEST')
+        queryset = self.queryset
         digest_issue = request.query_params.get('digest_issue', None)
         if digest_issue is not None:
             queryset = queryset.filter(digest_issue=digest_issue)
