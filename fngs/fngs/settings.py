@@ -30,7 +30,7 @@ ALLOWED_HOSTS = [
     '127.0.0.1',
     'localhost',
     'fn.permlug.org',
-    'fn-dev.permlug.org',
+    'dev.fn.permlug.org',
 ]
 
 
