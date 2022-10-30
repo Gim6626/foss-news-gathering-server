@@ -21,7 +21,7 @@ def with_login(func):
     return _wrapper
 
 
-class KeywordTests(APITestCase, TestMixin):
+class KeywordViewSetTests(APITestCase, TestMixin):
 
     EXAMPLE_KEYWORD = {
         'name': 'Linux',
