@@ -100,10 +100,20 @@ DATABASES = {
         'NAME': DB_NAME,
         'PASSWORD': DB_PASSWORD,
         'PORT': DB_PORT,
-        'USER': 'postgres',
+        'USER': DB_USER,
     },
+    'test': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'HOST': 'localhost',
+        'NAME': f'test_fossnews',
+        'PASSWORD': DB_PASSWORD,
+        'PORT': DB_PORT,
+        'USER': DB_USER,
+    }
 }
 
+default_database = os.environ.get('DJANGO_DATABASE', 'default')
+DATABASES['default'] = DATABASES[default_database]
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators

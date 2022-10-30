@@ -35,6 +35,12 @@ jobs:
         source env/bin/activate
         cd fngs
         python3 manage.py migrate
+    - name: Run tests
+      working-directory: ${{ env.FNGS_DEV_DIR }}
+      run: |
+        source env/bin/activate
+        cd fngs
+        python3 manage.py test
     - name: Start FNGS Dev
       run: sudo systemctl start fngs-dev.service
     - name: Wait a bit to let FNGS Dev start

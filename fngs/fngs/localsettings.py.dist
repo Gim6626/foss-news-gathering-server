@@ -1,0 +1,5 @@
+DJANGO_SECRET_KEY = ''
+DB_NAME = ''
+DB_PASSWORD = ''
+DB_PORT = 5433
+DB_USER = ''
