@@ -40,7 +40,7 @@ jobs:
       run: |
         source env/bin/activate
         cd fngs
-        python3 manage.py test
+        bash test.sh
     - name: Start FNGS
       run: sudo systemctl start fngs.service
     - name: Wait a bit to let FNGS start
