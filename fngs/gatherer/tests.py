@@ -2,6 +2,7 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
 from gatherer.models import *
+from django.forms.models import model_to_dict
 
 
 TEST_USERNAME = 'admin'
@@ -12,6 +13,10 @@ class TestMixin:
 
     def login(self):
         self.client.login(username=TEST_USERNAME, password=TEST_PASSWORD)
+
+    def strip_id(self, dictionary):
+        dictionary = {k: v for k, v in dictionary.items() if k != 'id'}
+        return dictionary
 
 
 def with_login(func):
@@ -42,7 +47,8 @@ class KeywordViewSetTests(APITestCase, TestMixin):
         response = self.client.post(url, self.EXAMPLE_KEYWORD)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Keyword.objects.count(), 1)
-        self.assertEqual(Keyword.objects.get().name, self.EXAMPLE_KEYWORD['name'])
+        created_object_without_id = self.strip_id(model_to_dict(Keyword.objects.get()))
+        self.assertEqual(created_object_without_id, self.EXAMPLE_KEYWORD)
 
     @with_login
     def test_read_one_keyword(self):
@@ -74,7 +80,10 @@ class KeywordViewSetTests(APITestCase, TestMixin):
         new_name = 'BSD'
         response = self.client.patch(url, {'name': new_name})
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(Keyword.objects.get().name, new_name)
+        changed_object_without_id = self.strip_id(model_to_dict(Keyword.objects.get()))
+        original_object_with_changed_name = self.EXAMPLE_KEYWORD.copy()
+        original_object_with_changed_name['name'] = new_name
+        self.assertEqual(changed_object_without_id, original_object_with_changed_name)
 
     @with_login
     def test_delete_keyword(self):
