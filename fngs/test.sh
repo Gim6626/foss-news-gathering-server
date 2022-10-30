@@ -2,8 +2,8 @@
 set -e
 set -u
 DATABASE_USER='postgres'
-DATABASE='test_fossnews'
 SCRIPT_DIR="$( dirname -- "${BASH_SOURCE[0]}"; )"
+DATABASE=$(grep DB_NAME "${SCRIPT_DIR}/fngs/localsettings.py" | sed -E "s#.* = '|'##g")
 DATABASE_LOG_FILE="${SCRIPT_DIR}/db.log"
 echo "Dropping database"
 sudo -u "${DATABASE_USER}" psql -c "DROP DATABASE ${DATABASE}" || {
