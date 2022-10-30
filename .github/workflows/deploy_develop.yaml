@@ -14,29 +14,29 @@ jobs:
     runs-on: self-hosted
     if: github.repository == 'foss-news/foss-news-gathering-server'
     env:
-      FNGS_DEV_DIR: /home/gim6626/fngs-dev
+      FNGS_DIR: /home/gim6626/fngs-dev
     steps:
     - name: Checkout "develop" branch
-      working-directory: ${{ env.FNGS_DEV_DIR }}
+      working-directory: ${{ env.FNGS_DIR }}
       run: git checkout develop
     - name: Fetch code
-      working-directory: ${{ env.FNGS_DEV_DIR }}
+      working-directory: ${{ env.FNGS_DIR }}
       run: git pull
     - name: Install requirements
-      working-directory: ${{ env.FNGS_DEV_DIR }}
+      working-directory: ${{ env.FNGS_DIR }}
       run: |
         source env/bin/activate
         pip3 install -r requirements.txt
     - name: Stop FNGS Dev
       run: sudo systemctl stop fngs-dev.service
     - name: Run migrations
-      working-directory: ${{ env.FNGS_DEV_DIR }}
+      working-directory: ${{ env.FNGS_DIR }}
       run: |
         source env/bin/activate
         cd fngs
         python3 manage.py migrate
     - name: Run tests
-      working-directory: ${{ env.FNGS_DEV_DIR }}
+      working-directory: ${{ env.FNGS_DIR }}
       run: |
         source env/bin/activate
         cd fngs
