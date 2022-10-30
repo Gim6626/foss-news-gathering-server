@@ -31,6 +31,11 @@ class KeywordTests(APITestCase, TestMixin):
         'enabled': True,
     }
 
+    def test_without_login(self):
+        url = reverse('keyword-list')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
     @with_login
     def test_create_keyword(self):
         url = reverse('keyword-list')
