@@ -129,7 +129,7 @@ class OldestNotCategorizedDigestRecordViewSet(GenericViewSet,
         from_bot = request.query_params.get('from-bot', None)
         if not from_bot:
             return Response({'error': 'Missing "from-bot" option'}, status=status.HTTP_400_BAD_REQUEST)
-        from_bot = False if from_bot == 'false' else True
+        from_bot = False if from_bot.lower() == 'false' else True
         queryset = self.not_categorized_records_queryset(from_bot, project_name)
         queryset = queryset.order_by('dt')
         if queryset:
