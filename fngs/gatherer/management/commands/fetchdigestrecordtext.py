@@ -26,6 +26,9 @@ class Command(BaseCommand):
                             '--save-to-db',
                             action='store_true',
                             help='Save fetched text to database')
+        parser.add_argument('-c',
+                            '--source',
+                            help='Source to select random digest record from')
         parser.add_argument('-d',
                             '--digest-record-id',
                             help='Digest record ID')
@@ -40,11 +43,25 @@ class Command(BaseCommand):
                 logger.error('Specific digest record and random digest record are not compatible')
                 sys.exit(1)
             sources_with_enabled_text_fetching = DigestRecordsSource.objects.filter(text_fetching_enabled=True)
-            digest_record: DigestRecord = random.choice(DigestRecord.objects.filter(source__in=sources_with_enabled_text_fetching, text=None))
+            if options['source']:
+                selected_sources = DigestRecordsSource.objects.filter(name=options['source'])
+                if not selected_sources:
+                    logger.error(f'Failed to find source with name "{options["source"]}"')
+                    sys.exit(1)
+                selected_source = selected_sources[0]
+                if selected_source not in sources_with_enabled_text_fetching:
+                    logger.error(f'Text fetching is not enabled for source with name "{options["source"]}", available are {[s.name for s in sources_with_enabled_text_fetching]}')
+                    sys.exit(1)
+            else:
+                selected_source = random.choice(sources_with_enabled_text_fetching)
+            digest_record: DigestRecord = random.choice(DigestRecord.objects.filter(source=selected_source, text=None))
             logger.info(f'Randomly selected record #{digest_record.pk} "{digest_record.title}" {digest_record.url}')
         else:
             if not options['digest_record_id']:
-                logger.error('"digest_record_id" option is required if random flag not used')
+                logger.error('`--digest-record-id` option is required if random flag not used')
+                sys.exit(1)
+            if options['source']:
+                logger.error('`--source` option is incompatible with `--digest-record-id`')
                 sys.exit(1)
             digest_record_id = options['digest_record_id']
             digest_record: DigestRecord = DigestRecord.objects.get(pk=digest_record_id)
