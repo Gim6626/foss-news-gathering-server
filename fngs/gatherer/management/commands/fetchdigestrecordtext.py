@@ -1,3 +1,4 @@
+import pathlib
 import sys
 
 from django.core.management.base import BaseCommand
@@ -62,11 +63,11 @@ class Command(BaseCommand):
             if not options['output_file']:
                 logger.error('"output_file" option is required if not saving to database')
                 sys.exit(1)
-            output_file_path = options['output_file']
-            logger.info(f'Saving to {output_file_path}')
+            output_file_path = pathlib.Path(options['output_file']).absolute()
+            logger.info(f'Saving to "{output_file_path}"')
             fout = open(output_file_path, 'w')
             fout.write(str(text))
-            logger.info(f'Saved to {output_file_path}')
+            logger.info(f'Saved to "{output_file_path}"')
 
 
 def fetch_digest_record_text(digest_record: DigestRecord, logger):
