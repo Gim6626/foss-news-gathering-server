@@ -55,7 +55,7 @@ class Command(BaseCommand):
                 digest_record: DigestRecord = random.choice(DigestRecord.objects.filter(source=selected_source, text=None))
                 logger.info(f'Randomly selected record #{digest_record.pk} "{digest_record.title}" {digest_record.url}')
             else:
-                if not options['digest_record_id']:
+                if options['digest_record_id'] is None:
                     raise Exception('`--digest-record-id` option is required if random flag not used')
                 if options['source']:
                     raise Exception('`--source` option is incompatible with `--digest-record-id`')
@@ -72,13 +72,20 @@ class Command(BaseCommand):
                 digest_record.save()
                 logger.info(f'Saved to database')
             else:
-                if not options['output_file']:
-                    raise Exception('"output_file" option is required if not saving to database')
-                output_file_path = pathlib.Path(options['output_file']).absolute()
-                logger.info(f'Saving to "{output_file_path}"')
-                fout = open(output_file_path, 'w')
+                if options['output_file'] is None:
+                    logger.info('"output_file" option is not set, using STDOUT')
+                    logger.info(f'Printing digest record text to STDOUT')
+                    fout = sys.stdout
+                else:
+                    output_file_path = pathlib.Path(options['output_file']).absolute()
+                    logger.info(f'Saving digest record text to "{output_file_path}"')
+                    fout = open(output_file_path, 'w')
                 fout.write(str(text))
-                logger.info(f'Saved to "{output_file_path}"')
+                if options['output_file'] is None:
+                    logger.info(f'Printed digest record text to STDOUT')
+                else:
+                    logger.info(f'Saved digest record text to "{output_file_path}"')
+                    fout.close()
         except Exception as e:
             logger.error(e)
 
