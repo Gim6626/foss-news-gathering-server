@@ -38,53 +38,49 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         logger = Logger(os.path.join(SCRIPT_DIRECTORY, 'textsfetcher.log'))
-        if options['use_random']:
-            if options['digest_record_id']:
-                logger.error('Specific digest record and random digest record are not compatible')
-                sys.exit(1)
-            sources_with_enabled_text_fetching = DigestRecordsSource.objects.filter(text_fetching_enabled=True)
-            if options['source']:
-                selected_sources = DigestRecordsSource.objects.filter(name=options['source'])
-                if not selected_sources:
-                    logger.error(f'Failed to find source with name "{options["source"]}"')
-                    sys.exit(1)
-                selected_source = selected_sources[0]
-                if selected_source not in sources_with_enabled_text_fetching:
-                    logger.error(f'Text fetching is not enabled for source with name "{options["source"]}", available are {[s.name for s in sources_with_enabled_text_fetching]}')
-                    sys.exit(1)
+        try:
+            if options['use_random']:
+                if options['digest_record_id']:
+                    raise Exception('Specific digest record and random digest record are not compatible')
+                sources_with_enabled_text_fetching = DigestRecordsSource.objects.filter(text_fetching_enabled=True)
+                if options['source']:
+                    selected_sources = DigestRecordsSource.objects.filter(name=options['source'])
+                    if not selected_sources:
+                        raise Exception(f'Failed to find source with name "{options["source"]}"')
+                    selected_source = selected_sources[0]
+                    if selected_source not in sources_with_enabled_text_fetching:
+                        raise Exception(f'Text fetching is not enabled for source with name "{options["source"]}", available are {[s.name for s in sources_with_enabled_text_fetching]}')
+                else:
+                    selected_source = random.choice(sources_with_enabled_text_fetching)
+                digest_record: DigestRecord = random.choice(DigestRecord.objects.filter(source=selected_source, text=None))
+                logger.info(f'Randomly selected record #{digest_record.pk} "{digest_record.title}" {digest_record.url}')
             else:
-                selected_source = random.choice(sources_with_enabled_text_fetching)
-            digest_record: DigestRecord = random.choice(DigestRecord.objects.filter(source=selected_source, text=None))
-            logger.info(f'Randomly selected record #{digest_record.pk} "{digest_record.title}" {digest_record.url}')
-        else:
-            if not options['digest_record_id']:
-                logger.error('`--digest-record-id` option is required if random flag not used')
-                sys.exit(1)
-            if options['source']:
-                logger.error('`--source` option is incompatible with `--digest-record-id`')
-                sys.exit(1)
-            digest_record_id = options['digest_record_id']
-            digest_record: DigestRecord = DigestRecord.objects.get(pk=digest_record_id)
-        logger.info(f'Fetching {digest_record.url}')
-        text = fetch_digest_record_text(digest_record, logger)
-        logger.info(f'Fetched {digest_record.url}')
-        if options['save_to_db']:
-            if options['output_file']:
-                logger.error('Saving to DB and to file options are not compatible')
-                sys.exit(1)
-            digest_record.text = str(text)
-            logger.info(f'Saving to database')
-            digest_record.save()
-            logger.info(f'Saved to database')
-        else:
-            if not options['output_file']:
-                logger.error('"output_file" option is required if not saving to database')
-                sys.exit(1)
-            output_file_path = pathlib.Path(options['output_file']).absolute()
-            logger.info(f'Saving to "{output_file_path}"')
-            fout = open(output_file_path, 'w')
-            fout.write(str(text))
-            logger.info(f'Saved to "{output_file_path}"')
+                if not options['digest_record_id']:
+                    raise Exception('`--digest-record-id` option is required if random flag not used')
+                if options['source']:
+                    raise Exception('`--source` option is incompatible with `--digest-record-id`')
+                digest_record_id = options['digest_record_id']
+                digest_record: DigestRecord = DigestRecord.objects.get(pk=digest_record_id)
+            logger.info(f'Fetching {digest_record.url}')
+            text = fetch_digest_record_text(digest_record, logger)
+            logger.info(f'Fetched {digest_record.url}')
+            if options['save_to_db']:
+                if options['output_file']:
+                    raise Exception('Saving to DB and to file options are not compatible')
+                digest_record.text = str(text)
+                logger.info(f'Saving to database')
+                digest_record.save()
+                logger.info(f'Saved to database')
+            else:
+                if not options['output_file']:
+                    raise Exception('"output_file" option is required if not saving to database')
+                output_file_path = pathlib.Path(options['output_file']).absolute()
+                logger.info(f'Saving to "{output_file_path}"')
+                fout = open(output_file_path, 'w')
+                fout.write(str(text))
+                logger.info(f'Saved to "{output_file_path}"')
+        except Exception as e:
+            logger.error(e)
 
 
 def fetch_digest_record_text(digest_record: DigestRecord, logger):
