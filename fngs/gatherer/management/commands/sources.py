@@ -368,7 +368,9 @@ class LinuxComParsingModule(SimpleRssBasicParsingModule):
 
 
 class OpenSourceComParsingModule(SimpleRssBasicParsingModule):
-    pass
+
+    def fetch_url(self, url):
+        return self.fetch_tag_from_url_by_selector(url, 'div', 'clearfix text-formatted field field--name-body field--type-text-with-summary field--label-hidden field__item')
 
 
 class ItsFossComParsingModule(SimpleRssBasicParsingModule):
@@ -376,7 +378,9 @@ class ItsFossComParsingModule(SimpleRssBasicParsingModule):
 
 
 class LinuxOrgRuParsingModule(SimpleRssBasicParsingModule):
-    pass
+
+    def fetch_url(self, url):
+        return self.fetch_tag_from_url_by_selector(url, 'div', 'msg_body')
 
 
 class AnalyticsIndiaMagComParsingModule(SimpleRssBasicParsingModule):
@@ -385,6 +389,9 @@ class AnalyticsIndiaMagComParsingModule(SimpleRssBasicParsingModule):
     filters = (
         FiltrationType.SPECIFIC,
     )
+
+    def fetch_url(self, url):
+        return self.fetch_tag_from_url_by_selector(url, 'div', 'elementor-element elementor-element-4dc5d005 elementor-widget elementor-widget-theme-post-content')
 
 
 class ArsTechnicaComParsingModule(SimpleRssBasicParsingModule):
@@ -438,6 +445,9 @@ class SecurityBoulevardComParsingModule(SimpleRssBasicParsingModule):
     filters = (
         FiltrationType.SPECIFIC,
     )
+
+    def fetch_url(self, url):
+        return self.fetch_tag_from_url_by_selector(url, 'div', 'article-content clearfix')
 
 
 class SiliconAngleComParsingModule(SimpleRssBasicParsingModule):
@@ -519,6 +529,9 @@ class TechRadarComParsingModule(SimpleRssBasicParsingModule):
         FiltrationType.SPECIFIC,
     )
 
+    def fetch_url(self, url):
+        return self.fetch_tag_from_url_by_selector(url, 'div', 'text-copy bodyCopy auto')
+
 
 class TfirIoParsingModule(SimpleRssBasicParsingModule):
 
@@ -526,6 +539,9 @@ class TfirIoParsingModule(SimpleRssBasicParsingModule):
     filters = (
         FiltrationType.SPECIFIC,
     )
+
+    def fetch_url(self, url):
+        return self.fetch_tag_from_url_by_selector(url, 'div', 'single-body single-body--wide entry-content typography-copy')
 
 
 class ZdNetComLinuxParsingModule(SimpleRssBasicParsingModule):
