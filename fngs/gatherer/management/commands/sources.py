@@ -647,7 +647,7 @@ class DmitryRobionekAtYouTubeParsingModule(YouTubeComBasicParsingModule):
 class LosstRuParsingModule(SimpleRssBasicParsingModule):
 
     def fetch_url(self, url):
-        return self.fetch_tag_from_url_by_selector(url, 'div', 'post-single-content box mark-links entry-content')
+        return self.fetch_tag_from_url_by_selector(url, 'div', 'entry-content')
 
 
 class AstraLinuxRuParsingModule(SimpleRssBasicParsingModule):
