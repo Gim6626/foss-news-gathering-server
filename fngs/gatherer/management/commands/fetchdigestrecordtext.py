@@ -103,9 +103,6 @@ class Command(BaseCommand):
             for option_key in options_required_for_daemon_mode:
                 if not options[option_key]:
                     raise Exception(f'`--{option_key.replace("_", "-")}` argument is required for daemon mode')
-        else:
-            if options['timeout']:
-                raise Exception('`--timeout` is supported only for `daemon` mode')
         if options['random'] and options['digest_record_id']:
             raise Exception('`--digest-record-id` and `--random` options are not compatible')
         if not options['random']:
