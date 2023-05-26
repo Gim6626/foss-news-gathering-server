@@ -118,28 +118,30 @@ class Command(BaseCommand):
 
     @staticmethod
     def _fetch_one(options):
+        digest_record: DigestRecord
         if options['random']:
             sources_with_enabled_text_fetching = DigestRecordsSource.objects.filter(text_fetching_enabled=True)
             if options['source']:
+                logging.info(f'Selected source - "{options["source"].name}"')
                 selected_sources = DigestRecordsSource.objects.filter(name=options['source'])
                 if not selected_sources:
                     raise Exception(f'Failed to find source with name "{options["source"]}"')
                 selected_source = selected_sources[0]
                 if selected_source not in sources_with_enabled_text_fetching:
                     raise Exception(f'Text fetching is not enabled for source with name "{options["source"]}", available are {[s.name for s in sources_with_enabled_text_fetching]}')  # noqa
+                digest_records_without_text_from_selected_source = DigestRecord.objects.filter(source=selected_source, text=None)
+                if not digest_records_without_text_from_selected_source:
+                    logging.info(f'No digest records without text found in selected source "{options["source"].name}"')
+                    return
+                digest_record = random.choice(digest_records_without_text_from_selected_source)
             else:
-                selected_source = random.choice(sources_with_enabled_text_fetching)
                 logging.info(f'{len(sources_with_enabled_text_fetching)} source(s) with enabled text fetching found')
                 digest_records_without_text = DigestRecord.objects.filter(source__in=sources_with_enabled_text_fetching, text=None)
                 logging.info(f'{len(digest_records_without_text)} digest records without text found')
-            digest_records_without_text_from_selected_source = DigestRecord.objects.filter(source=selected_source, text=None)
-            if not digest_records_without_text_from_selected_source:
-                logging.info('No digest records without text found')
-                return
-            digest_record: DigestRecord = random.choice(digest_records_without_text_from_selected_source)
+                digest_record = random.choice(digest_records_without_text)
             logging.info(f'Randomly selected digest record - #{digest_record.pk} "{digest_record.title}"')
         else:
-            digest_record: DigestRecord = DigestRecord.objects.get(pk=options['digest_record_id'])
+            digest_record = DigestRecord.objects.get(pk=options['digest_record_id'])
             logging.info(f'Taken digest record from option - #{digest_record.pk} "{digest_record.title}"')
         logging.info(f'Fetching text from URL {digest_record.url}')
         text = fetch_digest_record_text(digest_record)
