@@ -31,7 +31,7 @@ ALLOWED_HOSTS = [
     'localhost',
     'fn.permlug.org',
     'dev.fn.permlug.org',
-]
+] + LOCAL_ALLOWED_HOSTS
 
 
 # Application definition
