@@ -374,7 +374,9 @@ class OpenSourceComParsingModule(SimpleRssBasicParsingModule):
 
 
 class ItsFossComParsingModule(SimpleRssBasicParsingModule):
-    pass
+
+    def fetch_url(self, url):
+        return self.fetch_tag_from_url_by_selector(url, 'article', 'content')
 
 
 class LinuxOrgRuParsingModule(SimpleRssBasicParsingModule):
